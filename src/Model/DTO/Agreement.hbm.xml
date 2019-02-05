@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 4, 2019 1:15:40 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Model.DTO.Agreement" table="agreement" catalog="proyecto_sisconv" optimistic-lock="version">
+        <id name="idAgreementNumber" type="java.lang.Long">
+            <column name="id_agreementNumber" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="concept" class="Model.DTO.Concept" fetch="select">
+            <column name="concept_id_concept" not-null="true" />
+        </many-to-one>
+        <many-to-one name="property" class="Model.DTO.Property" fetch="select">
+            <column name="property_id_property" />
+        </many-to-one>
+        <many-to-one name="taxpayer" class="Model.DTO.Taxpayer" fetch="select">
+            <column name="taxpayer_id_docNumber" not-null="true" />
+        </many-to-one>
+        <many-to-one name="vehicle" class="Model.DTO.Vehicle" fetch="select">
+            <column name="vehicle_id_vehicle" />
+        </many-to-one>
+        <property name="amountOfDebt" type="double">
+            <column name="amountOfDebt" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="cuotsNumber" type="int">
+            <column name="cuotsNumber" not-null="true" />
+        </property>
+        <property name="creationDate" type="date">
+            <column name="creationDate" length="10" not-null="true" />
+        </property>
+        <property name="expirationDate" type="date">
+            <column name="expirationDate" length="10" not-null="true" />
+        </property>
+        <property name="state" type="string">
+            <column name="state" length="20" not-null="true" />
+        </property>
+        <property name="description" type="string">
+            <column name="description" length="100" />
+        </property>
+        <set name="payments" table="payment" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="agreement_id_agreementNumber" not-null="true" />
+            </key>
+            <one-to-many class="Model.DTO.Payment" />
+        </set>
+    </class>
+</hibernate-mapping>

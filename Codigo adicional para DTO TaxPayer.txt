@@ -1,0 +1,7 @@
+/**
+     * Added by me.
+     * @param idDocNumber 
+     */
+    public Taxpayer(Long idDocNumber) {
+        this.idDocNumber = idDocNumber;
+    }

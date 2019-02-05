@@ -1,0 +1,7 @@
+ /**
+     * Added by me.
+     * @param domain 
+     */
+    public Vehicle(String domain) {
+        
+    }

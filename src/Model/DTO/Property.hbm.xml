@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 4, 2019 1:15:40 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Model.DTO.Property" table="property" catalog="proyecto_sisconv" optimistic-lock="version">
+        <id name="idProperty" type="long">
+            <column name="id_property" />
+            <generator class="assigned" />
+        </id>
+        <property name="appleNumber" type="int">
+            <column name="appleNumber" not-null="true" />
+        </property>
+        <property name="lotNumber" type="int">
+            <column name="lotNumber" not-null="true" />
+        </property>
+        <property name="adjudicationDecree" type="string">
+            <column name="adjudicationDecree" length="20" />
+        </property>
+        <set name="agreements" table="agreement" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="property_id_property" />
+            </key>
+            <one-to-many class="Model.DTO.Agreement" />
+        </set>
+    </class>
+</hibernate-mapping>

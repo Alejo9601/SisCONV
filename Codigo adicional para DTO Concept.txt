@@ -1,0 +1,7 @@
+/**
+     * Added by me.
+     * @param conceptCode 
+     */
+    public Concept(Integer conceptCode) {
+        this.idConceptCode = conceptCode;
+    }

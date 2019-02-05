@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 4, 2019 1:15:40 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Model.DTO.Payment" table="payment" catalog="proyecto_sisconv" optimistic-lock="version">
+        <id name="idReceiptNumber" type="long">
+            <column name="id_receiptNumber" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="agreement" class="Model.DTO.Agreement" fetch="select">
+            <column name="agreement_id_agreementNumber" not-null="true" />
+        </many-to-one>
+        <property name="paymentDate" type="date">
+            <column name="paymentDate" length="10" not-null="true" />
+        </property>
+        <property name="amount" type="double">
+            <column name="amount" precision="22" scale="0" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

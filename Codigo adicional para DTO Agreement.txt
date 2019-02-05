@@ -1,0 +1,41 @@
+/**
+     * Added by me.
+     * @param amountOfDebt
+     * @param cuotsNumber
+     * @param creationDate
+     * @param expirationDate
+     * @param state 
+     */
+    public Agreement(double amountOfDebt, int cuotsNumber, Date creationDate, Date expirationDate, String state) {
+        this.amountOfDebt = amountOfDebt;
+        this.cuotsNumber = cuotsNumber;
+        this.creationDate = creationDate;
+        this.expirationDate = expirationDate;
+        this.state = state;
+    }
+
+
+ /**
+     * Added by me
+     * @param conceptCode 
+     */
+    public void setConcept(Integer conceptCode) {
+        this.concept = new Concept(conceptCode);
+    }
+
+/**
+     * Added by me.
+     * @param taxPayerDocNumeber 
+     */
+    public void setTaxpayer(Long taxPayerDocNumeber) {
+        this.taxpayer = new Taxpayer(taxPayerDocNumeber);
+    }
+
+ /**
+     * Added by me.
+     * @param domain
+     */
+    public void setVehicle(String domain) {
+        this.vehicle = new Vehicle(domain);
+    }
+    
