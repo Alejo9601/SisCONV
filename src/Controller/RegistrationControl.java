@@ -2,13 +2,16 @@ package Controller;
 
 import Model.AgreementsManager;
 import Model.ParametersManager;
-import Model.TaxPayerManager;
+import Model.TaxpayerManager;
 import View.AgreementRegister;
-import View.TaxPayerSelection;
+import View.ConceptRegistration;
+import View.TaxpayerRegistration;
+import View.TaxpayerSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EnumMap;
 import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,13 +22,17 @@ import javax.swing.table.DefaultTableModel;
 public class RegistrationControl implements ActionListener {
 
     AgreementRegister agreementsRV;
-    TaxPayerSelection taxpayerSV;
+    TaxpayerSelection taxpayerSV;
+    TaxpayerRegistration taxpayerRV;
+    ConceptRegistration conceptRV;
 
     public RegistrationControl() {
         this.agreementsRV = new AgreementRegister();
-        this.taxpayerSV = new TaxPayerSelection(agreementsRV, true);
+        this.taxpayerSV = new TaxpayerSelection(agreementsRV, true);
+        this.taxpayerRV = new TaxpayerRegistration(agreementsRV, true);
         this.agreementsRV.setController(this);
         this.taxpayerSV.setController(this);
+        this.taxpayerRV.setController(this);
     }
 
     /**
@@ -36,12 +43,11 @@ public class RegistrationControl implements ActionListener {
     public void showAgreementRegistrationView(Boolean condition) {
         if (condition.equals(true)) {
             ParametersManager pm = new ParametersManager();
-            List<EnumMap<ParametersManager.concept_param, String>> conceptsMap = pm.consultAllConcepts();
+            List<EnumMap<ParametersManager.concept_param, String>> conceptsMap = pm.consultAll();
             for (EnumMap<ParametersManager.concept_param, String> ct : conceptsMap) {
                 this.agreementsRV.setCmbConcept(ct.get(ParametersManager.concept_param.CONCEPT_CODE)
                         + " : " + ct.get(ParametersManager.concept_param.CONCEPT_NAME));
             }
-
             AgreementsManager am = new AgreementsManager();
             agreementsRV.setTfAgreementNumber(Long.toString(am.consultLastAgreementNumber()));
             agreementsRV.setVisible(true);
@@ -56,7 +62,7 @@ public class RegistrationControl implements ActionListener {
      *
      * @return
      */
-    public EnumMap<AgreementsManager.agreement_param, String> getAgreementInfo() {
+    private EnumMap<AgreementsManager.agreement_param, String> getAgreementInfo() {
         EnumMap<AgreementsManager.agreement_param, String> agreementMap = new EnumMap<>(AgreementsManager.agreement_param.class);
 
         agreementMap.put(AgreementsManager.agreement_param.AGREEMENT_NUMBER, agreementsRV.getTfAgreementNumber());
@@ -79,11 +85,40 @@ public class RegistrationControl implements ActionListener {
     }
 
     /**
+     * Gets the taxpayer information from the view.
+     *
+     * @return
+     */
+    private EnumMap<TaxpayerManager.taxpayer_param, String> getTaxpayerInfo() {
+        EnumMap<TaxpayerManager.taxpayer_param, String> taxpayerMap = new EnumMap<>(TaxpayerManager.taxpayer_param.class);
+        taxpayerMap.put(TaxpayerManager.taxpayer_param.NAMES, taxpayerRV.getTfTaxpayerNames());
+        taxpayerMap.put(TaxpayerManager.taxpayer_param.LASTNAME, taxpayerRV.getTfLastname());
+        taxpayerMap.put(TaxpayerManager.taxpayer_param.DOC_NUMBER, taxpayerRV.getTfDocNumber());
+        taxpayerMap.put(TaxpayerManager.taxpayer_param.DOC_TYPE, taxpayerRV.getCmbDocType());
+        taxpayerMap.put(TaxpayerManager.taxpayer_param.ADDRESS, taxpayerRV.getTfAddress());
+        taxpayerMap.put(TaxpayerManager.taxpayer_param.PHONE_NUMBER, taxpayerRV.getTfPhoneNumber());
+        return taxpayerMap;
+    }
+
+    /**
+     * Gets the concept information from the view.
+     *
+     * @return
+     */
+    private EnumMap<ParametersManager.concept_param, String> getConceptInfo() {
+        EnumMap<ParametersManager.concept_param, String> conceptMap = new EnumMap<>(ParametersManager.concept_param.class);
+        conceptMap.put(ParametersManager.concept_param.CONCEPT_CODE, conceptRV.getTfCode());
+        conceptMap.put(ParametersManager.concept_param.CONCEPT_NAME, conceptRV.getTfName());
+        conceptMap.put(ParametersManager.concept_param.DESCRIPTION, conceptRV.getTfDescription());
+        return conceptMap;
+    }
+
+    /**
      * Will show the taxpayer selection view.
      */
     private void showTaxpayerSelectionView() {
-        TaxPayerManager tm = new TaxPayerManager();
-        List<EnumMap<TaxPayerManager.taxpayer_param, String>> taxpayerEL = tm.consultAll();
+        TaxpayerManager tm = new TaxpayerManager();
+        List<EnumMap<TaxpayerManager.taxpayer_param, String>> taxpayerEL = tm.consultAll();
         //Table model creation
         DefaultTableModel tableModel = new DefaultTableModel(null, new String[]{"Nro. Doc", "Nombre", "Apellido"}) {
             @Override
@@ -92,11 +127,11 @@ public class RegistrationControl implements ActionListener {
             }
         };
         //For each EnumMap on taxpayerEL
-        for (EnumMap<TaxPayerManager.taxpayer_param, String> tp : taxpayerEL) {
+        for (EnumMap<TaxpayerManager.taxpayer_param, String> tp : taxpayerEL) {
             Object nuevo[] = new Object[]{
-                tp.get(TaxPayerManager.taxpayer_param.DOC_NUMBER),
-                tp.get(TaxPayerManager.taxpayer_param.NAMES),
-                tp.get(TaxPayerManager.taxpayer_param.LASTNAME)};
+                tp.get(TaxpayerManager.taxpayer_param.DOC_NUMBER),
+                tp.get(TaxpayerManager.taxpayer_param.NAMES),
+                tp.get(TaxpayerManager.taxpayer_param.LASTNAME)};
             tableModel.addRow(nuevo);
         }
         taxpayerSV.setTableModel(tableModel); //Setting model to the view.
@@ -104,10 +139,33 @@ public class RegistrationControl implements ActionListener {
         taxpayerSV.setVisible(true);
     }
 
+    /**
+     * Will show taxpayer registration view.
+     *
+     * @param condition
+     */
+    public void showTaxpayerRegistrationView(Boolean condition) {
+        taxpayerRV.setLocationRelativeTo(null);
+        taxpayerRV.setVisible(condition);
+    }
+
+    /**
+     * Will show concept registratio view.
+     *
+     * @param parent
+     */
+    public void showConceptRegistrationView(JFrame parent) {
+        conceptRV = new ConceptRegistration(parent, true);
+        conceptRV.setController(this);
+        conceptRV.setLocationRelativeTo(null);
+        conceptRV.setVisible(true);
+    }
+
     @Override
-    public void actionPerformed(ActionEvent ae
-    ) {
+    public void actionPerformed(ActionEvent ae) {
         AgreementsManager am = new AgreementsManager();
+        TaxpayerManager tm = new TaxpayerManager();
+        ParametersManager pm = new ParametersManager();
         switch (ae.getActionCommand()) {
             case "SAVE_AGREEMENT":
                 if (agreementsRV.verifyInformation() == true) {
@@ -125,6 +183,25 @@ public class RegistrationControl implements ActionListener {
             case "TAXPAYER_SELECTED":
                 agreementsRV.setTfTaxPayer(taxpayerSV.getSelectedRecord());
                 taxpayerSV.dispose();
+                break;
+            case "NEW_TAXPAYER":
+                showTaxpayerRegistrationView(true);
+                break;
+            case "SAVE_TAXPAYER":
+                if (taxpayerRV.verifyInformation() == true) {
+                    if (tm.newTaxpayer(getTaxpayerInfo()) == true) {
+                        JOptionPane.showMessageDialog(agreementsRV, "Se ha registrado con exito", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                        agreementsRV.setTfTaxPayer(taxpayerRV.getTfDocNumber()
+                                + " : " + taxpayerRV.getTfTaxpayerNames()
+                                + " : " + taxpayerRV.getTfLastname());
+                        showTaxpayerRegistrationView(false);
+                    } else {
+                        JOptionPane.showMessageDialog(agreementsRV, "No se ha podido registrar el convenio", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+                break;
+            case "SAVE_CONCEPT":
+                pm.newConcept(getConceptInfo());
                 break;
         }
     }

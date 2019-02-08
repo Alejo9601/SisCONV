@@ -1,5 +1,5 @@
 package Model.DTO;
-// Generated Feb 4, 2019 1:15:39 PM by Hibernate Tools 4.3.1
+// Generated Feb 7, 2019 9:37:40 AM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -11,7 +11,7 @@ import java.util.Set;
 public class Property  implements java.io.Serializable {
 
 
-     private long idProperty;
+     private Long idProperty;
      private int appleNumber;
      private int lotNumber;
      private String adjudicationDecree;
@@ -21,24 +21,22 @@ public class Property  implements java.io.Serializable {
     }
 
 	
-    public Property(long idProperty, int appleNumber, int lotNumber) {
-        this.idProperty = idProperty;
+    public Property(int appleNumber, int lotNumber) {
         this.appleNumber = appleNumber;
         this.lotNumber = lotNumber;
     }
-    public Property(long idProperty, int appleNumber, int lotNumber, String adjudicationDecree, Set agreements) {
-       this.idProperty = idProperty;
+    public Property(int appleNumber, int lotNumber, String adjudicationDecree, Set agreements) {
        this.appleNumber = appleNumber;
        this.lotNumber = lotNumber;
        this.adjudicationDecree = adjudicationDecree;
        this.agreements = agreements;
     }
    
-    public long getIdProperty() {
+    public Long getIdProperty() {
         return this.idProperty;
     }
     
-    public void setIdProperty(long idProperty) {
+    public void setIdProperty(Long idProperty) {
         this.idProperty = idProperty;
     }
     public int getAppleNumber() {

@@ -1,5 +1,5 @@
 package Model.DTO;
-// Generated Feb 4, 2019 1:15:39 PM by Hibernate Tools 4.3.1
+// Generated Feb 7, 2019 9:37:40 AM by Hibernate Tools 4.3.1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,12 +10,11 @@ import java.util.Set;
 public class Vehicle implements java.io.Serializable {
 
     private long idVehicle;
-    private String patentNumber;
+    private String domain;
     private String type;
+    private String fabricant;
+    private String model;
     private Set agreements = new HashSet(0);
-
-    public Vehicle() {
-    }
 
     /**
      * Added by me.
@@ -26,16 +25,23 @@ public class Vehicle implements java.io.Serializable {
 
     }
 
-    public Vehicle(long idVehicle, String patentNumber, String type) {
-        this.idVehicle = idVehicle;
-        this.patentNumber = patentNumber;
-        this.type = type;
+    public Vehicle() {
     }
 
-    public Vehicle(long idVehicle, String patentNumber, String type, Set agreements) {
+    public Vehicle(long idVehicle, String domain, String type, String fabricant, String model) {
         this.idVehicle = idVehicle;
-        this.patentNumber = patentNumber;
+        this.domain = domain;
         this.type = type;
+        this.fabricant = fabricant;
+        this.model = model;
+    }
+
+    public Vehicle(long idVehicle, String domain, String type, String fabricant, String model, Set agreements) {
+        this.idVehicle = idVehicle;
+        this.domain = domain;
+        this.type = type;
+        this.fabricant = fabricant;
+        this.model = model;
         this.agreements = agreements;
     }
 
@@ -47,12 +53,12 @@ public class Vehicle implements java.io.Serializable {
         this.idVehicle = idVehicle;
     }
 
-    public String getPatentNumber() {
-        return this.patentNumber;
+    public String getDomain() {
+        return this.domain;
     }
 
-    public void setPatentNumber(String patentNumber) {
-        this.patentNumber = patentNumber;
+    public void setDomain(String domain) {
+        this.domain = domain;
     }
 
     public String getType() {
@@ -61,6 +67,22 @@ public class Vehicle implements java.io.Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getFabricant() {
+        return this.fabricant;
+    }
+
+    public void setFabricant(String fabricant) {
+        this.fabricant = fabricant;
+    }
+
+    public String getModel() {
+        return this.model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
     }
 
     public Set getAgreements() {

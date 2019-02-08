@@ -8,8 +8,6 @@ package View;
 import Controller.RegistrationControl;
 import datechooser.beans.DateChooserDialog;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 import javax.swing.JOptionPane;
 
 /**
@@ -33,8 +31,12 @@ public class AgreementRegister extends javax.swing.JFrame {
     public void setController(RegistrationControl control) {
         this.btnSaveAgreement.addActionListener(control);
         this.btnSaveAgreement.setActionCommand("SAVE_AGREEMENT");
-        this.btnSetTaxPayer.addActionListener(control);
-        this.btnSetTaxPayer.setActionCommand("SELECT_TAXPAYER");
+        
+        this.btnSetTaxpayer.addActionListener(control);
+        this.btnSetTaxpayer.setActionCommand("SELECT_TAXPAYER");
+        
+        this.btnNewTaxpayer.addActionListener(control);
+        this.btnNewTaxpayer.setActionCommand("NEW_TAXPAYER");
     }
 
     /**
@@ -135,7 +137,7 @@ public class AgreementRegister extends javax.swing.JFrame {
      * @return
      */
     public String getTfDescription() {
-        return tfDescription.getText().split("     ")[0];
+        return tfDescription.getText().replace("    ", "");
     }
 
     /**
@@ -159,7 +161,7 @@ public class AgreementRegister extends javax.swing.JFrame {
     /**
      * Gets the domain of the vehicle.
      *
-     * @return
+     * @return //
      */
     public String getTfVehicle() {
         return tfVehicle.getText().split(" : ")[0];
@@ -206,9 +208,8 @@ public class AgreementRegister extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         tfAmountOfDebt = new javax.swing.JTextField();
-        tfDescription = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        btnSetTaxPayer = new javax.swing.JButton();
+        btnSetTaxpayer = new javax.swing.JButton();
         jLabel21 = new javax.swing.JLabel();
         tfTaxPayer = new javax.swing.JTextField();
         jLabel22 = new javax.swing.JLabel();
@@ -225,9 +226,11 @@ public class AgreementRegister extends javax.swing.JFrame {
         btnDateOfCreation = new javax.swing.JButton();
         btnDateOfExpiration = new javax.swing.JButton();
         tfDateOfCreation = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnNewTaxpayer = new javax.swing.JButton();
+        btnNewVehicle = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tfDescription = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("INFORMACION DEL CONVENIO");
@@ -260,10 +263,10 @@ public class AgreementRegister extends javax.swing.JFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("sansserif", 0, 18), new java.awt.Color(0, 0, 0))); // NOI18N
 
+        tfAgreementNumber.setEditable(false);
         tfAgreementNumber.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         tfAgreementNumber.setForeground(new java.awt.Color(0, 0, 0));
         tfAgreementNumber.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        tfAgreementNumber.setEnabled(false);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setText("Nro. Convenio :");
@@ -276,6 +279,7 @@ public class AgreementRegister extends javax.swing.JFrame {
 
         tfDateOfExpiration.setEditable(false);
         tfDateOfExpiration.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        tfDateOfExpiration.setForeground(new java.awt.Color(0, 0, 0));
         tfDateOfExpiration.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -288,6 +292,7 @@ public class AgreementRegister extends javax.swing.JFrame {
         jLabel11.setText("Monto de la deuda :");
 
         tfAmountOfDebt.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        tfAmountOfDebt.setForeground(new java.awt.Color(0, 0, 0));
         tfAmountOfDebt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         tfAmountOfDebt.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -295,19 +300,18 @@ public class AgreementRegister extends javax.swing.JFrame {
             }
         });
 
-        tfDescription.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel12.setText("Descripcion :");
 
-        btnSetTaxPayer.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        btnSetTaxPayer.setText("...");
+        btnSetTaxpayer.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        btnSetTaxpayer.setText("...");
 
         jLabel21.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel21.setText("Titular :");
 
         tfTaxPayer.setEditable(false);
         tfTaxPayer.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        tfTaxPayer.setForeground(new java.awt.Color(0, 0, 0));
         tfTaxPayer.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jLabel22.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -315,6 +319,7 @@ public class AgreementRegister extends javax.swing.JFrame {
 
         tfVehicle.setEditable(false);
         tfVehicle.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        tfVehicle.setForeground(new java.awt.Color(0, 0, 0));
         tfVehicle.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jLabel23.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -322,11 +327,14 @@ public class AgreementRegister extends javax.swing.JFrame {
 
         tfProperty.setEditable(false);
         tfProperty.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        tfProperty.setForeground(new java.awt.Color(0, 0, 0));
         tfProperty.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         cmbSetConcept.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        cmbSetConcept.setForeground(new java.awt.Color(0, 0, 0));
 
         cmbSetCuots.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        cmbSetCuots.setForeground(new java.awt.Color(0, 0, 0));
         cmbSetCuots.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30" }));
 
         btnSetVehicle.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -370,16 +378,23 @@ public class AgreementRegister extends javax.swing.JFrame {
 
         tfDateOfCreation.setEditable(false);
         tfDateOfCreation.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        tfDateOfCreation.setForeground(new java.awt.Color(0, 0, 0));
         tfDateOfCreation.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jButton1.setText("Nuevo");
+        btnNewTaxpayer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnNewTaxpayer.setText("Nuevo");
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jButton2.setText("Nuevo");
+        btnNewVehicle.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnNewVehicle.setText("Nuevo");
 
         jButton3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jButton3.setText("Nuevo");
+
+        tfDescription.setColumns(20);
+        tfDescription.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        tfDescription.setForeground(new java.awt.Color(0, 0, 0));
+        tfDescription.setRows(5);
+        jScrollPane1.setViewportView(tfDescription);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -388,7 +403,7 @@ public class AgreementRegister extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tfDescription)
+                    .addComponent(jScrollPane1)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -407,7 +422,7 @@ public class AgreementRegister extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addComponent(jButton2)
+                                        .addComponent(btnNewVehicle)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btnSetVehicle))
                                     .addGroup(jPanel4Layout.createSequentialGroup()
@@ -422,9 +437,9 @@ public class AgreementRegister extends javax.swing.JFrame {
                                             .addComponent(tfTaxPayer, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLabel22))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton1)
+                                        .addComponent(btnNewTaxpayer)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnSetTaxPayer)))
+                                        .addComponent(btnSetTaxpayer)))
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -472,7 +487,7 @@ public class AgreementRegister extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmbSetConcept, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 24, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -494,16 +509,16 @@ public class AgreementRegister extends javax.swing.JFrame {
                             .addComponent(cmbSetCuots, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel12)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tfDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel21)
                 .addGap(11, 11, 11)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfTaxPayer, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEraseTaxPayer)
-                    .addComponent(jButton1)
-                    .addComponent(btnSetTaxPayer))
+                    .addComponent(btnNewTaxpayer)
+                    .addComponent(btnSetTaxpayer))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel22)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -511,7 +526,7 @@ public class AgreementRegister extends javax.swing.JFrame {
                     .addComponent(tfVehicle, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSetVehicle)
                     .addComponent(btnEraseVehicle)
-                    .addComponent(jButton2))
+                    .addComponent(btnNewVehicle))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel23)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -620,15 +635,15 @@ public class AgreementRegister extends javax.swing.JFrame {
     private javax.swing.JButton btnEraseProperty;
     private javax.swing.JButton btnEraseTaxPayer;
     private javax.swing.JButton btnEraseVehicle;
+    private javax.swing.JButton btnNewTaxpayer;
+    private javax.swing.JButton btnNewVehicle;
     private javax.swing.JButton btnSaveAgreement;
     private javax.swing.JButton btnSetProperty;
-    private javax.swing.JButton btnSetTaxPayer;
+    private javax.swing.JButton btnSetTaxpayer;
     private javax.swing.JButton btnSetVehicle;
     private javax.swing.JComboBox<String> cmbSetConcept;
     private javax.swing.JComboBox<String> cmbSetCuots;
     private datechooser.beans.DateChooserDialog dateChooserDialog1;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -643,11 +658,12 @@ public class AgreementRegister extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField tfAgreementNumber;
     private javax.swing.JTextField tfAmountOfDebt;
     private javax.swing.JTextField tfDateOfCreation;
     private javax.swing.JTextField tfDateOfExpiration;
-    private javax.swing.JTextField tfDescription;
+    private javax.swing.JTextArea tfDescription;
     private javax.swing.JTextField tfProperty;
     private javax.swing.JTextField tfTaxPayer;
     private javax.swing.JTextField tfVehicle;

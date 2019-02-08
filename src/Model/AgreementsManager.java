@@ -98,10 +98,13 @@ public class AgreementsManager {
         Agreement agreement = null;
         try {
             SQLQuery consulta = session.createSQLQuery(
-                    "SELECT * FROM agreement WHERE agreemet.id_agreementNumber = " + agreementNumber);
+                    "SELECT * FROM agreement WHERE agreement.id_agreementNumber = " + agreementNumber);
             consulta.addEntity(Agreement.class);
             agreement = (Agreement) consulta.uniqueResult();
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Excepcion consultando el convenio" + e);
+        } finally {
+            session.close();
         }
         return agreementOnEnumMap(agreement);
     }
@@ -134,6 +137,7 @@ public class AgreementsManager {
                 Integer.parseInt(agreementMap.get(agreement_param.CUOTS_NUMBER)),
                 Date.valueOf(agreementMap.get(agreement_param.CREATION_DATE)),
                 Date.valueOf(agreementMap.get(agreement_param.EXPIRATION_DATE)),
+                agreementMap.get(agreement_param.DESCRIPTION),
                 agreementMap.get(agreement_param.STATE));
 
         //Setting the other entities on the agreement, based on their DB keys.
@@ -157,16 +161,22 @@ public class AgreementsManager {
      * @return
      */
     public EnumMap<agreement_param, String> agreementOnEnumMap(Agreement a) {
-        EnumMap<agreement_param, String> agreementMap = new EnumMap<>(agreement_param.class);
-        agreementMap.put(agreement_param.AGREEMENT_NUMBER, a.getIdAgreementNumber().toString());
-        agreementMap.put(agreement_param.AMOUNT_OF_DEBT, Double.toString(a.getAmountOfDebt()));
-        agreementMap.put(agreement_param.CREATION_DATE, a.getCreationDate().toString());
-        agreementMap.put(agreement_param.EXPIRATION_DATE, a.getExpirationDate().toString());
-        agreementMap.put(agreement_param.CUOTS_NUMBER, Integer.toString(a.getCuotsNumber()));
-        agreementMap.put(agreement_param.DESCRIPTION, a.getDescription());
-        agreementMap.put(agreement_param.STATE, a.getState());
-        agreementMap.put(agreement_param.TAXPAYER_DNI, Long.toString(a.getTaxPayerID()));
-        return agreementMap;
+        if (a != null) {
+            EnumMap<agreement_param, String> agreementMap = new EnumMap<>(agreement_param.class);
+            agreementMap.put(agreement_param.AGREEMENT_NUMBER, a.getIdAgreementNumber().toString());
+            agreementMap.put(agreement_param.AMOUNT_OF_DEBT, Double.toString(a.getAmountOfDebt()));
+            agreementMap.put(agreement_param.CREATION_DATE, a.getCreationDate().toString());
+            agreementMap.put(agreement_param.EXPIRATION_DATE, a.getExpirationDate().toString());
+            agreementMap.put(agreement_param.CUOTS_NUMBER, Integer.toString(a.getCuotsNumber()));
+            agreementMap.put(agreement_param.DESCRIPTION, a.getDescription());
+            agreementMap.put(agreement_param.STATE, a.getState());
+            agreementMap.put(agreement_param.TAXPAYER_DNI, Long.toString(a.getTaxpayerID()));
+            agreementMap.put(agreement_param.CONCEPT_CODE, Integer.toString(a.getConceptID()));
+//            agreementMap.put(agreement_param.VEHICLE_DOMAIN, v);
+//            agreementMap.put(agreement_param.PROPERTY_DECRET, v);
+            return agreementMap;
+        }
+        return null;
     }
 
     /**
@@ -190,6 +200,30 @@ public class AgreementsManager {
             session.close();
         }
         return lastNumber;
+    }
+
+    /**
+     * Will leave an agreement without effect.
+     *
+     * @param agreementNumber
+     * @return
+     */
+    public boolean leaveWithoutEffect(Long agreementNumber) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        boolean flag = true;
+        try {
+            SQLQuery consult = session.createSQLQuery(
+                    "UPDATE agreement SET state ='"
+                    + agreement_states.WITHOUT_EFFECT.toString()
+                    + "'WHERE agreement.id_agreementNumber = " + agreementNumber);
+            consult.executeUpdate();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Advertencia", "Excepcion consultando el ultimo nro. del convenio", JOptionPane.WARNING_MESSAGE);
+            flag = false;
+        } finally {
+            session.close();
+        }
+        return flag;
     }
 
 }

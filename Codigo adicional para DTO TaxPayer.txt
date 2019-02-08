@@ -5,3 +5,22 @@
     public Taxpayer(Long idDocNumber) {
         this.idDocNumber = idDocNumber;
     }
+
+ /**
+     * Added by me.
+     *
+     * @param idDocNumber
+     * @param name
+     * @param lastName
+     * @param docType
+     * @param address
+     * @param phoneNumber
+     */
+    public Taxpayer(long idDocNumber, String name, String lastName, String docType, String address, String phoneNumber) {
+        this.idDocNumber = idDocNumber;
+        this.name = name;
+        this.lastName = lastName;
+        this.docType = docType;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+    }

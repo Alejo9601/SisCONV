@@ -1,8 +1,13 @@
 package Controller;
 
+import Model.UsersManager;
 import View.LoginView;
+import View.UserRegistration;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.EnumMap;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -10,16 +15,38 @@ import java.awt.event.ActionListener;
  */
 public class UserControl implements ActionListener {
 
-    LoginView lView;
+    LoginView loginV;
+    UserRegistration userRV;
 
     /**
      * Constructor of the class
      */
     public UserControl() {
 
-        lView = new LoginView();
-        lView.setController(this);
+        loginV = new LoginView();
+        loginV.setController(this);
 
+    }
+
+    public void showRegistrationView(JFrame parent) {
+        userRV = new UserRegistration(parent, true);
+        userRV.setController(this);
+        userRV.setLocationRelativeTo(null);
+        userRV.setVisible(true);
+    }
+
+    /**
+     * Will get user info from the view.
+     *
+     * @return
+     */
+    private EnumMap<UsersManager.user_param, String> getUserInfo() {
+        EnumMap<UsersManager.user_param, String> userMap = new EnumMap<>(UsersManager.user_param.class);
+        userMap.put(UsersManager.user_param.NAMES, userRV.getTfNames());
+        userMap.put(UsersManager.user_param.LASTNAME, userRV.getTfLastname());
+        userMap.put(UsersManager.user_param.NICKNAME, userRV.getTfNickName());
+        userMap.put(UsersManager.user_param.PASSWORD, userRV.getTfPassword());
+        return userMap;
     }
 
     /**
@@ -29,24 +56,29 @@ public class UserControl implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent event) {
-
+        UsersManager um = new UsersManager();
         switch (event.getActionCommand()) {
 
             case "LOGIN":
-
-                MainControl pControl = new MainControl();
-                pControl.showPrincipalView();
-
-                lView.dispose();
-
+                if (um.validateSession(loginV.getTfPassword(), loginV.getTfNickName()) == true) {
+                    MainControl pControl = new MainControl();
+                    pControl.showPrincipalView();
+                    loginV.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "El usuario o contraseña son incorrectos");
+                }
                 break;
-
             case "CANCEL":
-
-                lView.dispose();
-                
+                System.exit(0);
                 break;
-
+            case "SAVE_USER":
+                if (um.newUser(getUserInfo()) == true) {
+                    JOptionPane.showMessageDialog(userRV, "Se ha registrado con exito", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                    userRV.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se pudo registrar el usuario");
+                }
+                break;
         }
 
     }
@@ -56,8 +88,8 @@ public class UserControl implements ActionListener {
      */
     public void showLoginView() {
 
-        lView.setLocationRelativeTo(null);
-        lView.setVisible(true);
+        loginV.setLocationRelativeTo(null);
+        loginV.setVisible(true);
 
     }
 

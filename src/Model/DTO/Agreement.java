@@ -1,5 +1,5 @@
 package Model.DTO;
-// Generated Feb 4, 2019 1:15:39 PM by Hibernate Tools 4.3.1
+// Generated Feb 7, 2019 9:37:40 AM by Hibernate Tools 4.3.1
 
 import java.util.Date;
 import java.util.HashSet;
@@ -23,9 +23,6 @@ public class Agreement implements java.io.Serializable {
     private String description;
     private Set payments = new HashSet(0);
 
-    public Agreement() {
-    }
-
     /**
      * Added by me.
      *
@@ -33,32 +30,25 @@ public class Agreement implements java.io.Serializable {
      * @param cuotsNumber
      * @param creationDate
      * @param expirationDate
+     * @param description
      * @param state
      */
-    public Agreement(double amountOfDebt, int cuotsNumber, Date creationDate, Date expirationDate, String state) {
+    public Agreement(double amountOfDebt, int cuotsNumber, Date creationDate, Date expirationDate, String description, String state) {
         this.amountOfDebt = amountOfDebt;
         this.cuotsNumber = cuotsNumber;
         this.creationDate = creationDate;
         this.expirationDate = expirationDate;
+        this.description = description;
         this.state = state;
     }
 
     /**
-     * Added by me.
+     * Added by me
      *
      * @param conceptCode
      */
     public void setConcept(Integer conceptCode) {
         this.concept = new Concept(conceptCode);
-    }
-
-    /**
-     * Added by me.
-     *
-     * @return
-     */
-    public long getConceptID() {
-        return this.concept.getIdConceptCode();
     }
 
     /**
@@ -73,28 +63,29 @@ public class Agreement implements java.io.Serializable {
     /**
      * Added by me.
      *
-     * @return
-     */
-    public long getTaxPayerID() {
-        return this.taxpayer.getIdDocNumber();
-    }
-
-    /**
-     * Added by me.
-     *
      * @param domain
      */
     public void setVehicle(String domain) {
         this.vehicle = new Vehicle(domain);
     }
-
+    
     /**
      * Added by me.
-     *
-     * @return
+     * @return 
      */
-    public long getVehicleID() {
-        return this.vehicle.getIdVehicle();
+    public Long getTaxpayerID() {
+        return this.taxpayer.getIdDocNumber();
+    }
+    
+     /**
+     * Added by me.
+     * @return 
+     */
+    public int getConceptID() {
+        return this.concept.getIdConceptCode();
+    }
+
+    public Agreement() {
     }
 
     public Agreement(Concept concept, Taxpayer taxpayer, double amountOfDebt, int cuotsNumber, Date creationDate, Date expirationDate, String state) {

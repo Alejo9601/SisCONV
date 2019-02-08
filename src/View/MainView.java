@@ -29,6 +29,10 @@ public class MainView extends javax.swing.JFrame {
         btnCreateAgreement.setActionCommand("REGISTER_AGREEMENT");
         btnAgreementsList.addActionListener(control);
         btnAgreementsList.setActionCommand("AGREEMENTS_LIST");
+        miConceptList.addActionListener(control);
+        miConceptList.setActionCommand("CONCEPTS_LIST");
+        btnUserRegistration.addActionListener(control);
+        btnUserRegistration.setActionCommand("USER_REGISTRATION");
 
     }
 
@@ -66,7 +70,10 @@ public class MainView extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
+        miConceptList = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenu5 = new javax.swing.JMenu();
+        btnUserRegistration = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
 
@@ -245,17 +252,32 @@ public class MainView extends javax.swing.JFrame {
         jMenuBar1.setBorder(null);
         jMenuBar1.setForeground(new java.awt.Color(0, 0, 0));
 
-        jMenu1.setText(" Ajustes del Sistema ");
+        jMenu1.setText(" Ajustes");
         jMenu1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jMenu4.setText("Parametros del Sistema");
         jMenu4.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+
+        miConceptList.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        miConceptList.setText("Conceptos");
+        jMenu4.add(miConceptList);
+
         jMenu1.add(jMenu4);
 
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText(" Administrador ");
         jMenu2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jMenu5.setText("Usuarios");
+        jMenu5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+
+        btnUserRegistration.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnUserRegistration.setText("Registrar");
+        jMenu5.add(btnUserRegistration);
+
+        jMenu2.add(jMenu5);
+
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText(" Mi Perfil ");
@@ -341,10 +363,12 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JButton btnCreateAgreement;
     private javax.swing.JButton btnPaymentsOfToday;
     private javax.swing.JButton btnTaxPayerList;
+    private javax.swing.JMenuItem btnUserRegistration;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
@@ -353,6 +377,7 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
+    private javax.swing.JMenuItem miConceptList;
     private org.edisoncor.gui.panel.PanelImage panelImage1;
     // End of variables declaration//GEN-END:variables
 }

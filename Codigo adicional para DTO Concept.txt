@@ -5,3 +5,16 @@
     public Concept(Integer conceptCode) {
         this.idConceptCode = conceptCode;
     }
+
+  /**
+     * Added by me.
+     *
+     * @param idConceptCode
+     * @param conceptName
+     * @param description
+     */
+    public Concept(int idConceptCode, String conceptName, String description) {
+        this.idConceptCode = idConceptCode;
+        this.conceptName = conceptName;
+        this.description = description;
+    }

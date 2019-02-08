@@ -1,5 +1,5 @@
 package Model.DTO;
-// Generated Feb 4, 2019 1:15:39 PM by Hibernate Tools 4.3.1
+// Generated Feb 7, 2019 9:37:40 AM by Hibernate Tools 4.3.1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,13 +9,10 @@ import java.util.Set;
  */
 public class Concept implements java.io.Serializable {
 
-    private Integer idConceptCode;
+    private int idConceptCode;
     private String conceptName;
     private String description;
     private Set agreements = new HashSet(0);
-
-    public Concept() {
-    }
 
     /**
      * Added by me.
@@ -25,22 +22,42 @@ public class Concept implements java.io.Serializable {
     public Concept(Integer conceptCode) {
         this.idConceptCode = conceptCode;
     }
+    
 
-    public Concept(String conceptName) {
-        this.conceptName = conceptName;
-    }
-
-    public Concept(String conceptName, String description, Set agreements) {
+    /**
+     * Added by me.
+     *
+     * @param idConceptCode
+     * @param conceptName
+     * @param description
+     */
+    public Concept(int idConceptCode, String conceptName, String description) {
+        this.idConceptCode = idConceptCode;
         this.conceptName = conceptName;
         this.description = description;
-        this.agreements = agreements;
     }
-
-    public Integer getIdConceptCode() {
+    
+    /**
+     * Adde by me.
+     * @return 
+     */
+    public int getConceptID() {
         return this.idConceptCode;
     }
 
-    public void setIdConceptCode(Integer idConceptCode) {
+    public Concept() {
+    }
+
+    public Concept(int idConceptCode, String conceptName) {
+        this.idConceptCode = idConceptCode;
+        this.conceptName = conceptName;
+    }
+
+    public int getIdConceptCode() {
+        return this.idConceptCode;
+    }
+
+    public void setIdConceptCode(int idConceptCode) {
         this.idConceptCode = idConceptCode;
     }
 

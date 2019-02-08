@@ -23,14 +23,25 @@ public class AgreementsList extends javax.swing.JFrame {
 
     /**
      * Will set the controller of this view.
+     *
      * @param control
      */
     public void setController(DetailControl control) {
+        tblAgreements.addMouseListener(control);
+    }
 
+    /**
+     * Gets the agreement number of the selected row.
+     *
+     * @return
+     */
+    public Long getSelectedAgreementNumber() {
+        return Long.parseLong((String) tblAgreements.getValueAt(tblAgreements.getSelectedRow(), 2));
     }
 
     /**
      * Sets the model for the table.
+     *
      * @param model
      */
     public void setTableModel(DefaultTableModel model) {
@@ -61,6 +72,7 @@ public class AgreementsList extends javax.swing.JFrame {
         setTitle("PADRON GENERAL DE CONVENIOS");
         setMinimumSize(new java.awt.Dimension(1366, 768));
         setPreferredSize(new java.awt.Dimension(1366, 768));
+        setResizable(false);
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 

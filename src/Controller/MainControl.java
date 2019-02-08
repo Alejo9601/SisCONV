@@ -9,25 +9,26 @@ import java.awt.event.ActionListener;
  * @author Alejandro Juarez
  */
 public class MainControl implements ActionListener {
-    
-    MainView pView;
-    
+
+    MainView mainV;
+
     public MainControl() {
-        this.pView = new MainView();
-        this.pView.setController(this);
+        this.mainV = new MainView();
+        this.mainV.setController(this);
     }
-    
+
     /**
-     * This methos captures the action of the controlled view "MainView".
-     * @param event 
+     * This methods captures the action of the controlled view "MainView".
+     *
+     * @param event
      */
     @Override
     public void actionPerformed(ActionEvent event) {
         RegistrationControl rc = new RegistrationControl();
         DetailControl dc = new DetailControl();
-        switch(event.getActionCommand()) {
-            
-            case "REGISTER_AGREEMENT": 
+        UserControl uc = new UserControl();
+        switch (event.getActionCommand()) {
+            case "REGISTER_AGREEMENT":
                 rc.showAgreementRegistrationView(true);
                 break;
             case "AGREEMENTS_LIST":
@@ -35,17 +36,21 @@ public class MainControl implements ActionListener {
                 break;
             case "PAYMENTS_LIST":
                 break;
-            
+            case "CONCEPTS_LIST":
+                dc.showConceptsListView();
+                break;
+            case "USER_REGISTRATION":
+                uc.showRegistrationView(mainV);
+                break;
         }
-        
     }
 
     /**
      * Will show the MainView.
      */
     void showPrincipalView() {
-        pView.setVisible(true);
-        pView.setLocationRelativeTo(null);
-    }    
-    
+        mainV.setVisible(true);
+        mainV.setLocationRelativeTo(null);
+    }
+
 }

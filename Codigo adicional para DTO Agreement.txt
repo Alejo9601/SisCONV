@@ -1,19 +1,20 @@
 /**
      * Added by me.
+     *
      * @param amountOfDebt
      * @param cuotsNumber
      * @param creationDate
      * @param expirationDate
-     * @param state 
+     * @param state
      */
-    public Agreement(double amountOfDebt, int cuotsNumber, Date creationDate, Date expirationDate, String state) {
+    public Agreement(double amountOfDebt, int cuotsNumber, Date creationDate, Date expirationDate, String description, String state) {
         this.amountOfDebt = amountOfDebt;
         this.cuotsNumber = cuotsNumber;
         this.creationDate = creationDate;
         this.expirationDate = expirationDate;
+        this.description = description;
         this.state = state;
     }
-
 
  /**
      * Added by me
@@ -39,3 +40,19 @@
         this.vehicle = new Vehicle(domain);
     }
     
+ /**
+     * Added by me.
+     * @return 
+     */
+    public Long getTaxpayerID() {
+        return this.taxpayer.getIdDocNumber();
+    }
+    
+     /**
+     * Added by me.
+     * @return 
+     */
+    public int getConceptID() {
+        return this.concept.getConceptID();
+    }
+	

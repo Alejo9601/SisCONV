@@ -2,6 +2,7 @@ package View;
 
 import Controller.UserControl;
 import java.awt.Color;
+import java.util.Arrays;
 
 /**
  *
@@ -24,10 +25,18 @@ public class LoginView extends javax.swing.JFrame {
 
         jBtnLogin.addActionListener(controller);
         jBtnLogin.setActionCommand("LOGIN");
-        
+
         jBtnCancel.addActionListener(controller);
         jBtnCancel.setActionCommand("CANCEL");
 
+    }
+
+    public char[] getTfPassword() {
+        return tfPassword.getPassword();
+    }
+
+    public String getTfNickName() {
+        return tfNickName.getText();
     }
 
     /**
@@ -43,10 +52,10 @@ public class LoginView extends javax.swing.JFrame {
         panelImage1 = new org.edisoncor.gui.panel.PanelImage();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jPassword = new javax.swing.JPasswordField();
+        tfPassword = new javax.swing.JPasswordField();
         jBtnLogin = new javax.swing.JButton();
         panelImage2 = new org.edisoncor.gui.panel.PanelImage();
-        jUserText = new javax.swing.JTextField();
+        tfNickName = new javax.swing.JTextField();
         jBtnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -64,12 +73,12 @@ public class LoginView extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Contraseña");
 
-        jPassword.setBackground(new java.awt.Color(0, 51, 102));
-        jPassword.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jPassword.setForeground(new java.awt.Color(255, 255, 255));
-        jPassword.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jPassword.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
-        jPassword.setCaretColor(java.awt.Color.white);
+        tfPassword.setBackground(new java.awt.Color(0, 51, 102));
+        tfPassword.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        tfPassword.setForeground(new java.awt.Color(255, 255, 255));
+        tfPassword.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfPassword.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
+        tfPassword.setCaretColor(java.awt.Color.white);
 
         jBtnLogin.setBackground(new java.awt.Color(0, 51, 102));
         jBtnLogin.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -97,13 +106,13 @@ public class LoginView extends javax.swing.JFrame {
             .addGap(0, 206, Short.MAX_VALUE)
         );
 
-        jUserText.setBackground(new java.awt.Color(0, 51, 102));
-        jUserText.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jUserText.setForeground(new java.awt.Color(255, 255, 255));
-        jUserText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jUserText.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
-        jUserText.setCaretColor(new java.awt.Color(255, 255, 255));
-        jUserText.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        tfNickName.setBackground(new java.awt.Color(0, 51, 102));
+        tfNickName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        tfNickName.setForeground(new java.awt.Color(255, 255, 255));
+        tfNickName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfNickName.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+        tfNickName.setCaretColor(new java.awt.Color(255, 255, 255));
+        tfNickName.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
         jBtnCancel.setBackground(new java.awt.Color(0, 51, 102));
         jBtnCancel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -132,12 +141,12 @@ public class LoginView extends javax.swing.JFrame {
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
                 .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPassword)
+                    .addComponent(tfPassword)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImage1Layout.createSequentialGroup()
                         .addComponent(jBtnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jBtnLogin))
-                    .addComponent(jUserText))
+                    .addComponent(tfNickName))
                 .addGap(19, 19, 19))
         );
         panelImage1Layout.setVerticalGroup(
@@ -146,11 +155,11 @@ public class LoginView extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jUserText, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfNickName, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(37, 37, 37)
                 .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(56, 56, 56)
                 .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBtnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -195,6 +204,7 @@ public class LoginView extends javax.swing.JFrame {
     }//GEN-LAST:event_jBtnLoginMouseExited
     /**
      * Mouse entered method handler for jBtnCancelar.
+     *
      * @param evt
      */
     private void jBtnCancelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBtnCancelMouseEntered
@@ -202,6 +212,7 @@ public class LoginView extends javax.swing.JFrame {
     }//GEN-LAST:event_jBtnCancelMouseEntered
     /**
      * Mouse exited method handler for jBtnCancelar.
+     *
      * @param evt
      */
     private void jBtnCancelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBtnCancelMouseExited
@@ -215,9 +226,9 @@ public class LoginView extends javax.swing.JFrame {
     private javax.swing.JButton jBtnLogin;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPasswordField jPassword;
-    private javax.swing.JTextField jUserText;
     private org.edisoncor.gui.panel.PanelImage panelImage1;
     private org.edisoncor.gui.panel.PanelImage panelImage2;
+    private javax.swing.JTextField tfNickName;
+    private javax.swing.JPasswordField tfPassword;
     // End of variables declaration//GEN-END:variables
 }
