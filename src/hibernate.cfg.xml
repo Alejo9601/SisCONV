@@ -46,12 +46,14 @@ Contributor(s):
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/proyecto_sisconv?zeroDateTimeBehavior=convertToNull</property>
     <property name="hibernate.connection.username">root</property>
     <property name="hibernate.connection.password">holasoyalej</property>
+    <mapping resource="Model/DTO/ActionCommitted.hbm.xml"/>
     <mapping resource="Model/DTO/User.hbm.xml"/>
-    <mapping resource="Model/DTO/Payment.hbm.xml"/>
     <mapping resource="Model/DTO/Vehicle.hbm.xml"/>
+    <mapping resource="Model/DTO/Payment.hbm.xml"/>
     <mapping resource="Model/DTO/Agreement.hbm.xml"/>
-    <mapping resource="Model/DTO/Property.hbm.xml"/>
+    <mapping resource="Model/DTO/LandProperty.hbm.xml"/>
     <mapping resource="Model/DTO/Concept.hbm.xml"/>
     <mapping resource="Model/DTO/Taxpayer.hbm.xml"/>
+    <mapping resource="Model/DTO/Receipt.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

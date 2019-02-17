@@ -41,11 +41,13 @@ Contributor(s):
 -->
 <hibernate-reverse-engineering>
   <schema-selection match-catalog="proyecto_sisconv"/>
-  <table-filter match-name="property"/>
-  <table-filter match-name="agreement"/>
-  <table-filter match-name="concept"/>
-  <table-filter match-name="payment"/>
-  <table-filter match-name="user"/>
   <table-filter match-name="taxpayer"/>
+  <table-filter match-name="payment"/>
+  <table-filter match-name="concept"/>
+  <table-filter match-name="receipt"/>
   <table-filter match-name="vehicle"/>
+  <table-filter match-name="agreement"/>
+  <table-filter match-name="action_committed"/>
+  <table-filter match-name="land_property"/>
+  <table-filter match-name="user"/>
 </hibernate-reverse-engineering>

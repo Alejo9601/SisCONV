@@ -1,16 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package View;
 
 import Controller.DetailControl;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author usuario
+ * @author Alejandro Juarez
  */
 public class ConceptsList extends javax.swing.JFrame {
 
@@ -20,9 +18,10 @@ public class ConceptsList extends javax.swing.JFrame {
     public ConceptsList() {
         initComponents();
     }
-    
+
     /**
      * Sets the controller of this view.
+     *
      * @param control
      */
     public void setController(DetailControl control) {
@@ -30,12 +29,25 @@ public class ConceptsList extends javax.swing.JFrame {
         btnRegisterConcept.setActionCommand("CONCEPT_REGISTRATION");
     }
 
-    public  void setTableModel(DefaultTableModel model) {
-        tblConceptsDetail.setModel(model);
-        tblConceptsDetail.setRowHeight(25);
-        tblConceptsDetail.setFont(new java.awt.Font("Tahoma", 0, 18));
+    /**
+     * Will set the table model on this view.
+     *
+     * @param model
+     */
+    public void setTableModel(DefaultTableModel model) {
+        //Indicamos la alineacion de las columnas
+        DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
+        tcr.setHorizontalAlignment(SwingConstants.CENTER); //CENTER o LEFT
+        tblConceptsDetail.setModel(model);  //Setting model
+        tblConceptsDetail.setRowHeight(25); //Setting rows height
+        tblConceptsDetail.setFont(new java.awt.Font("Tahoma", 0, 18)); //Changing font
+        tblConceptsDetail.getTableHeader().setReorderingAllowed(false); //Disabling reordering columns
+        //Indico la columna que quiero alinear siendo 1 el numero de columna
+        for (int i = 0; i < tblConceptsDetail.getColumnCount(); i++) {
+            tblConceptsDetail.getColumnModel().getColumn(i).setCellRenderer(tcr);
+        }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -59,6 +71,7 @@ public class ConceptsList extends javax.swing.JFrame {
 
         jPanel1.setBorder(null);
 
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         btnRegisterConcept.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -101,6 +114,7 @@ public class ConceptsList extends javax.swing.JFrame {
                 .addGap(188, 188, 188))
         );
 
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         tblConceptsDetail.setModel(new javax.swing.table.DefaultTableModel(
@@ -138,22 +152,22 @@ public class ConceptsList extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(4, 4, 4)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(4, 4, 4)
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(4, 4, 4))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(4, 4, 4)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addGap(4, 4, 4))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

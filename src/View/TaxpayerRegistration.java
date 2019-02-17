@@ -34,35 +34,56 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
         this.btnSaveTaxpayer.addActionListener(control);
         this.btnSaveTaxpayer.setActionCommand("SAVE_TAXPAYER");
     }
-    
+
     /**
      * Will verify if the field are completed or not.
-     * @return 
+     *
+     * @return
      */
     public boolean verifyInformation() {
-    
+
         if (tfNames.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "El nombre del contribuyente es obligatorio", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    this,
+                    "El nombre del contribuyente es obligatorio",
+                    "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
             return false;
         }
         if (tfLastname.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "EL apellido del contribuyente es obligatorio", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    this,
+                    "EL apellido del contribuyente es obligatorio",
+                    "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
             return false;
         }
         if (tfDocNum.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "El nro de documento del contribuyente es obligatorio", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    this,
+                    "El nro de documento del contribuyente es obligatorio",
+                    "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
             return false;
         }
         if (tfAddress.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "El domicilio del contribuyente es obligatorio", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    this,
+                    "El domicilio del contribuyente es obligatorio",
+                    "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
             return false;
         }
         if (tfPhoneNum.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "El nro de telefono del contribuyente es obligatorio", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    this,
+                    "El nro de telefono del contribuyente es obligatorio",
+                    "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
             return false;
         }
         return true;
-            
+
     }
 
     /**
@@ -70,7 +91,7 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
      * @return
      */
     public String getTfTaxpayerNames() {
-        return tfNames.getText();
+        return tfNames.getText().toUpperCase();
     }
 
     /**
@@ -78,7 +99,7 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
      * @return
      */
     public String getTfLastname() {
-        return tfLastname.getText();
+        return tfLastname.getText().toUpperCase();
     }
 
     /**
@@ -86,7 +107,7 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
      * @return
      */
     public String getTfDocNumber() {
-        return tfDocNum.getText();
+        return tfDocNum.getText().toUpperCase();
     }
 
     /**
@@ -94,7 +115,7 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
      * @return
      */
     public String getCmbDocType() {
-        return cmbDocType.getSelectedItem().toString();
+        return cmbDocType.getSelectedItem().toString().toUpperCase();
     }
 
     /**
@@ -102,7 +123,7 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
      * @return
      */
     public String getTfAddress() {
-        return tfAddress.getText();
+        return tfAddress.getText().toUpperCase();
     }
 
     /**
@@ -110,7 +131,7 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
      * @return
      */
     public String getTfPhoneNumber() {
-        return tfPhoneNum.getText();
+        return tfPhoneNum.getText().toUpperCase();
     }
 
     /**
@@ -144,10 +165,8 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
         setBackground(new java.awt.Color(153, 153, 153));
         setUndecorated(true);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 157), 3));
         jPanel1.setLayout(new java.awt.BorderLayout());
-
-        jPanel2.setBackground(new java.awt.Color(204, 204, 204));
 
         btnSaveTaxpayer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnSaveTaxpayer.setText("Guardar");
@@ -165,11 +184,11 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(511, Short.MAX_VALUE)
+                .addContainerGap(405, Short.MAX_VALUE)
                 .addComponent(btnCancel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnSaveTaxpayer)
-                .addContainerGap())
+                .addGap(4, 4, 4))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -181,10 +200,10 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
                 .addGap(14, 14, 14))
         );
 
-        jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_END);
+        jPanel1.add(jPanel2, java.awt.BorderLayout.CENTER);
 
-        jPanel6.setBackground(new java.awt.Color(204, 204, 204));
-        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "REGISTRO CONTRIBUYENTE", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("sansserif", 0, 14), new java.awt.Color(0, 0, 0))); // NOI18N
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "REGISTRO CONTRIBUYENTE", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14), new java.awt.Color(0, 0, 0))); // NOI18N
 
         tfNames.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tfNames.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -234,11 +253,11 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addGap(18, 18, 18)
-                        .addComponent(tfPhoneNum, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE))
+                        .addComponent(tfPhoneNum))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -247,22 +266,22 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
                                 .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING))
                             .addComponent(jLabel4))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfLastname)
-                            .addComponent(tfNames)
-                            .addComponent(tfAddress)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(tfDocNum, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(tfDocNum, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel7)
                                 .addGap(18, 18, 18)
-                                .addComponent(cmbDocType, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap())
+                                .addComponent(cmbDocType, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tfNames, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfLastname, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(14, 14, 14)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(tfNames, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -284,10 +303,10 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfPhoneNum, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addGap(16, 16, 16))
+                .addGap(14, 14, 14))
         );
 
-        jPanel1.add(jPanel6, java.awt.BorderLayout.CENTER);
+        jPanel1.add(jPanel6, java.awt.BorderLayout.PAGE_START);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -295,14 +314,13 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 611, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
         );
 
@@ -318,47 +336,6 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TaxpayerRegistration.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TaxpayerRegistration.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TaxpayerRegistration.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TaxpayerRegistration.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                TaxpayerRegistration dialog = new TaxpayerRegistration(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;

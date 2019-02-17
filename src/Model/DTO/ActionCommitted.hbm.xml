@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 16, 2019 12:20:16 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Model.DTO.ActionCommitted" table="action_committed" catalog="proyecto_sisconv" optimistic-lock="version">
+        <id name="idAction" type="long">
+            <column name="idAction" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="user" class="Model.DTO.User" fetch="select">
+            <column name="user_id_user" not-null="true" />
+        </many-to-one>
+        <property name="actionCommitted" type="string">
+            <column name="actionCommitted" length="45" not-null="true" />
+        </property>
+        <property name="date" type="date">
+            <column name="date" length="10" not-null="true" />
+        </property>
+        <property name="description" type="string">
+            <column name="description" length="400" />
+        </property>
+    </class>
+</hibernate-mapping>

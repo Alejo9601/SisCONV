@@ -22,10 +22,8 @@ public class UserControl implements ActionListener {
      * Constructor of the class
      */
     public UserControl() {
-
         loginV = new LoginView();
         loginV.setController(this);
-
     }
 
     public void showRegistrationView(JFrame parent) {
@@ -46,6 +44,11 @@ public class UserControl implements ActionListener {
         userMap.put(UsersManager.user_param.LASTNAME, userRV.getTfLastname());
         userMap.put(UsersManager.user_param.NICKNAME, userRV.getTfNickName());
         userMap.put(UsersManager.user_param.PASSWORD, userRV.getTfPassword());
+        if (userRV.getChkAdministrator() == true) {
+            userMap.put(UsersManager.user_param.ADMINISTRATOR, "1");
+        } else {
+            userMap.put(UsersManager.user_param.ADMINISTRATOR, "0");
+        }
         return userMap;
     }
 
@@ -58,7 +61,6 @@ public class UserControl implements ActionListener {
     public void actionPerformed(ActionEvent event) {
         UsersManager um = new UsersManager();
         switch (event.getActionCommand()) {
-
             case "LOGIN":
                 if (um.validateSession(loginV.getTfPassword(), loginV.getTfNickName()) == true) {
                     MainControl pControl = new MainControl();
@@ -87,10 +89,8 @@ public class UserControl implements ActionListener {
      * Will show the LoginView so it can be manipulated for the user.
      */
     public void showLoginView() {
-
         loginV.setLocationRelativeTo(null);
         loginV.setVisible(true);
-
     }
 
 }

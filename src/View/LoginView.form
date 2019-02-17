@@ -47,7 +47,7 @@
           <Color blue="0" green="0" red="0" type="rgb"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Imagenes/windows_7__beta_wallpaper_by_vinis13.jpg"/>
+          <Image iconType="3" name="/Images/windows_7__beta_wallpaper_by_vinis13.jpg"/>
         </Property>
       </Properties>
 
@@ -172,7 +172,7 @@
         <Container class="org.edisoncor.gui.panel.PanelImage" name="panelImage2">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/Candado amarillo.png"/>
+              <Image iconType="3" name="/Images/Candado amarillo.png"/>
             </Property>
           </Properties>
 

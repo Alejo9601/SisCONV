@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 16, 2019 12:20:16 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Model.DTO.Receipt" table="receipt" catalog="proyecto_sisconv" optimistic-lock="version">
+        <id name="idReceiptNumber" type="long">
+            <column name="id_receiptNumber" />
+            <generator class="assigned" />
+        </id>
+        <property name="date" type="date">
+            <column name="date" length="10" not-null="true" />
+        </property>
+        <property name="amount" type="double">
+            <column name="amount" precision="22" scale="0" not-null="true" />
+        </property>
+        <set name="payments" table="payment" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="receipt_id_receiptNumber" not-null="true" />
+            </key>
+            <one-to-many class="Model.DTO.Payment" />
+        </set>
+    </class>
+</hibernate-mapping>

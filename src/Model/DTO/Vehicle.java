@@ -1,5 +1,5 @@
 package Model.DTO;
-// Generated Feb 7, 2019 9:37:40 AM by Hibernate Tools 4.3.1
+// Generated Feb 16, 2019 12:20:15 PM by Hibernate Tools 4.3.1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,47 +9,45 @@ import java.util.Set;
  */
 public class Vehicle implements java.io.Serializable {
 
-    private long idVehicle;
+    private Long idVehicle;
     private String domain;
     private String type;
-    private String fabricant;
+    private String manufacturer;
     private String model;
     private Set agreements = new HashSet(0);
-
-    /**
-     * Added by me.
-     *
-     * @param domain
-     */
-    public Vehicle(String domain) {
-
-    }
 
     public Vehicle() {
     }
 
-    public Vehicle(long idVehicle, String domain, String type, String fabricant, String model) {
+    /**
+     * Added by me.
+     *
+     * @param idVehicle
+     */
+    public Vehicle(Long idVehicle) {
         this.idVehicle = idVehicle;
+    }
+
+    public Vehicle(String domain, String type, String manufacturer, String model) {
         this.domain = domain;
         this.type = type;
-        this.fabricant = fabricant;
+        this.manufacturer = manufacturer;
         this.model = model;
     }
 
-    public Vehicle(long idVehicle, String domain, String type, String fabricant, String model, Set agreements) {
-        this.idVehicle = idVehicle;
+    public Vehicle(String domain, String type, String manufacturer, String model, Set agreements) {
         this.domain = domain;
         this.type = type;
-        this.fabricant = fabricant;
+        this.manufacturer = manufacturer;
         this.model = model;
         this.agreements = agreements;
     }
 
-    public long getIdVehicle() {
+    public Long getIdVehicle() {
         return this.idVehicle;
     }
 
-    public void setIdVehicle(long idVehicle) {
+    public void setIdVehicle(Long idVehicle) {
         this.idVehicle = idVehicle;
     }
 
@@ -69,12 +67,12 @@ public class Vehicle implements java.io.Serializable {
         this.type = type;
     }
 
-    public String getFabricant() {
-        return this.fabricant;
+    public String getManufacturer() {
+        return this.manufacturer;
     }
 
-    public void setFabricant(String fabricant) {
-        this.fabricant = fabricant;
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
     }
 
     public String getModel() {

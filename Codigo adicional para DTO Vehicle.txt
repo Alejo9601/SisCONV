@@ -1,7 +1,8 @@
- /**
+    /**
      * Added by me.
-     * @param domain 
+     *
+     * @param idVehicle
      */
-    public Vehicle(String domain) {
-        
+    public Vehicle(Long idVehicle) {
+        this.idVehicle = idVehicle;
     }

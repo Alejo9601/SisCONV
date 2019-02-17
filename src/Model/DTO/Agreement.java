@@ -1,5 +1,5 @@
 package Model.DTO;
-// Generated Feb 7, 2019 9:37:40 AM by Hibernate Tools 4.3.1
+// Generated Feb 16, 2019 12:20:15 PM by Hibernate Tools 4.3.1
 
 import java.util.Date;
 import java.util.HashSet;
@@ -12,14 +12,14 @@ public class Agreement implements java.io.Serializable {
 
     private Long idAgreementNumber;
     private Concept concept;
-    private Property property;
+    private LandProperty landProperty;
     private Taxpayer taxpayer;
     private Vehicle vehicle;
     private double amountOfDebt;
-    private int cuotsNumber;
+    private int feesNumber;
     private Date creationDate;
     private Date expirationDate;
-    private String state;
+    private String status;
     private String description;
     private Set payments = new HashSet(0);
 
@@ -27,19 +27,28 @@ public class Agreement implements java.io.Serializable {
      * Added by me.
      *
      * @param amountOfDebt
-     * @param cuotsNumber
+     * @param feesNumber
      * @param creationDate
      * @param expirationDate
      * @param description
-     * @param state
+     * @param status
      */
-    public Agreement(double amountOfDebt, int cuotsNumber, Date creationDate, Date expirationDate, String description, String state) {
+    public Agreement(double amountOfDebt, int feesNumber, Date creationDate, Date expirationDate, String description, String status) {
         this.amountOfDebt = amountOfDebt;
-        this.cuotsNumber = cuotsNumber;
+        this.feesNumber = feesNumber;
         this.creationDate = creationDate;
         this.expirationDate = expirationDate;
         this.description = description;
-        this.state = state;
+        this.status = status;
+    }
+
+    /**
+     * Added by me.
+     *
+     * @param agreementNumber
+     */
+    public Agreement(Long agreementNumber) {
+        this.idAgreementNumber = agreementNumber;
     }
 
     /**
@@ -63,51 +72,71 @@ public class Agreement implements java.io.Serializable {
     /**
      * Added by me.
      *
-     * @param domain
+     * @param vehicleIdentifier
      */
-    public void setVehicle(String domain) {
-        this.vehicle = new Vehicle(domain);
+    public void setVehicle(Long vehicleIdentifier) {
+        this.vehicle = new Vehicle(vehicleIdentifier);
     }
-    
+
     /**
      * Added by me.
-     * @return 
+     *
+     * @return
      */
     public Long getTaxpayerID() {
         return this.taxpayer.getIdDocNumber();
     }
-    
-     /**
+
+    /**
      * Added by me.
-     * @return 
+     *
+     * @return
      */
     public int getConceptID() {
         return this.concept.getIdConceptCode();
     }
-
+    
+    /**
+     * Added by me.
+     *
+     * @return
+     */
+    public Long getVehicleID() {
+        return this.vehicle.getIdVehicle();
+    }
+    
+    /**
+     * Added by me.
+     *
+     * @return
+     */
+    public Long getLandPropertyID() {
+        return this.landProperty.getIdProperty();
+    }
+   
     public Agreement() {
     }
 
-    public Agreement(Concept concept, Taxpayer taxpayer, double amountOfDebt, int cuotsNumber, Date creationDate, Date expirationDate, String state) {
+    public Agreement(Concept concept, Taxpayer taxpayer, double amountOfDebt, int feesNumber, Date creationDate, Date expirationDate, String status) {
         this.concept = concept;
         this.taxpayer = taxpayer;
         this.amountOfDebt = amountOfDebt;
-        this.cuotsNumber = cuotsNumber;
+        this.feesNumber = feesNumber;
         this.creationDate = creationDate;
         this.expirationDate = expirationDate;
-        this.state = state;
+        this.status = status;
     }
 
-    public Agreement(Concept concept, Property property, Taxpayer taxpayer, Vehicle vehicle, double amountOfDebt, int cuotsNumber, Date creationDate, Date expirationDate, String state, String description, Set payments) {
+    public Agreement(Concept concept, LandProperty landProperty, Taxpayer taxpayer, Vehicle vehicle, double amountOfDebt, int feesNumber, Date creationDate, Date expirationDate, String status, String description, Set payments) {
         this.concept = concept;
-        this.property = property;
+        this.landProperty = landProperty;
         this.taxpayer = taxpayer;
         this.vehicle = vehicle;
         this.amountOfDebt = amountOfDebt;
-        this.cuotsNumber = cuotsNumber;
+        this.feesNumber = feesNumber;
         this.creationDate = creationDate;
         this.expirationDate = expirationDate;
-        this.state = state;
+        this.status = status;
         this.description = description;
         this.payments = payments;
     }
@@ -128,12 +157,12 @@ public class Agreement implements java.io.Serializable {
         this.concept = concept;
     }
 
-    public Property getProperty() {
-        return this.property;
+    public LandProperty getLandProperty() {
+        return this.landProperty;
     }
 
-    public void setProperty(Property property) {
-        this.property = property;
+    public void setLandProperty(LandProperty landProperty) {
+        this.landProperty = landProperty;
     }
 
     public Taxpayer getTaxpayer() {
@@ -160,12 +189,12 @@ public class Agreement implements java.io.Serializable {
         this.amountOfDebt = amountOfDebt;
     }
 
-    public int getCuotsNumber() {
-        return this.cuotsNumber;
+    public int getFeesNumber() {
+        return this.feesNumber;
     }
 
-    public void setCuotsNumber(int cuotsNumber) {
-        this.cuotsNumber = cuotsNumber;
+    public void setFeesNumber(int feesNumber) {
+        this.feesNumber = feesNumber;
     }
 
     public Date getCreationDate() {
@@ -184,12 +213,12 @@ public class Agreement implements java.io.Serializable {
         this.expirationDate = expirationDate;
     }
 
-    public String getState() {
-        return this.state;
+    public String getStatus() {
+        return this.status;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getDescription() {

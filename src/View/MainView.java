@@ -67,6 +67,7 @@ public class MainView extends javax.swing.JFrame {
         btnPaymentsOfToday = new javax.swing.JButton();
         jSeparator5 = new javax.swing.JSeparator();
         jSeparator6 = new javax.swing.JSeparator();
+        panelImage2 = new org.edisoncor.gui.panel.PanelImage();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
@@ -91,7 +92,7 @@ public class MainView extends javax.swing.JFrame {
         btnAgreementsList.setBackground(new java.awt.Color(0, 102, 153));
         btnAgreementsList.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnAgreementsList.setForeground(new java.awt.Color(255, 255, 255));
-        btnAgreementsList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Listar.png"))); // NOI18N
+        btnAgreementsList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ListOFAgreements.png"))); // NOI18N
         btnAgreementsList.setText("  Padron de Convenios");
         btnAgreementsList.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 153), 23));
         btnAgreementsList.setFocusPainted(false);
@@ -114,7 +115,7 @@ public class MainView extends javax.swing.JFrame {
         btnTaxPayerList.setBackground(new java.awt.Color(0, 102, 153));
         btnTaxPayerList.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnTaxPayerList.setForeground(new java.awt.Color(255, 255, 255));
-        btnTaxPayerList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/pI.png"))); // NOI18N
+        btnTaxPayerList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ListOfTaxpayer.png"))); // NOI18N
         btnTaxPayerList.setText("  Padron de Contribuyentes");
         btnTaxPayerList.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 153), 23));
         btnTaxPayerList.setFocusPainted(false);
@@ -137,7 +138,7 @@ public class MainView extends javax.swing.JFrame {
         btnCreateAgreement.setBackground(new java.awt.Color(0, 102, 153));
         btnCreateAgreement.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnCreateAgreement.setForeground(new java.awt.Color(255, 255, 255));
-        btnCreateAgreement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/1495570256_Add.png"))); // NOI18N
+        btnCreateAgreement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/New.png"))); // NOI18N
         btnCreateAgreement.setText("  Registrar Convenio de Pago");
         btnCreateAgreement.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 153), 23));
         btnCreateAgreement.setFocusPainted(false);
@@ -155,7 +156,7 @@ public class MainView extends javax.swing.JFrame {
             }
         });
 
-        panelImage1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/escudo28denoviembre.png"))); // NOI18N
+        panelImage1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/escudo28denoviembre.png"))); // NOI18N
 
         javax.swing.GroupLayout panelImage1Layout = new javax.swing.GroupLayout(panelImage1);
         panelImage1.setLayout(panelImage1Layout);
@@ -177,7 +178,7 @@ public class MainView extends javax.swing.JFrame {
         btnPaymentsOfToday.setBackground(new java.awt.Color(0, 102, 153));
         btnPaymentsOfToday.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnPaymentsOfToday.setForeground(new java.awt.Color(255, 255, 255));
-        btnPaymentsOfToday.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/if_Purse_669953.png"))); // NOI18N
+        btnPaymentsOfToday.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/if_Purse_669953.png"))); // NOI18N
         btnPaymentsOfToday.setText("  Historial de Pagos ");
         btnPaymentsOfToday.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 153), 23));
         btnPaymentsOfToday.setFocusable(false);
@@ -248,10 +249,24 @@ public class MainView extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        panelImage2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/28 de Noviembre 2.JPG"))); // NOI18N
+
+        javax.swing.GroupLayout panelImage2Layout = new javax.swing.GroupLayout(panelImage2);
+        panelImage2.setLayout(panelImage2Layout);
+        panelImage2Layout.setHorizontalGroup(
+            panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 998, Short.MAX_VALUE)
+        );
+        panelImage2Layout.setVerticalGroup(
+            panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
         jMenuBar1.setBackground(new java.awt.Color(255, 255, 255));
         jMenuBar1.setBorder(null);
         jMenuBar1.setForeground(new java.awt.Color(0, 0, 0));
 
+        jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Settings.png"))); // NOI18N
         jMenu1.setText(" Ajustes");
         jMenu1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
@@ -266,6 +281,7 @@ public class MainView extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
+        jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Administrator.png"))); // NOI18N
         jMenu2.setText(" Administrador ");
         jMenu2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
@@ -280,6 +296,7 @@ public class MainView extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
+        jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Profile.png"))); // NOI18N
         jMenu3.setText(" Mi Perfil ");
         jMenu3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
@@ -297,11 +314,13 @@ public class MainView extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(1002, Short.MAX_VALUE))
+                .addGap(4, 4, 4)
+                .addComponent(panelImage2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 743, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 733, Short.MAX_VALUE)
+            .addComponent(panelImage2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -379,5 +398,6 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JMenuItem miConceptList;
     private org.edisoncor.gui.panel.PanelImage panelImage1;
+    private org.edisoncor.gui.panel.PanelImage panelImage2;
     // End of variables declaration//GEN-END:variables
 }

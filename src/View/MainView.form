@@ -17,6 +17,9 @@
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="jMenu1">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/Images/Settings.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value=" Ajustes"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="18" style="0"/>
@@ -45,6 +48,9 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu2">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/Images/Administrator.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value=" Administrador "/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="18" style="0"/>
@@ -73,6 +79,9 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu3">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/Images/Profile.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value=" Mi Perfil "/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="18" style="0"/>
@@ -127,13 +136,15 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Component id="jPanel1" min="-2" pref="364" max="-2" attributes="0"/>
-              <EmptySpace pref="1002" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+              <Component id="panelImage2" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanel1" alignment="0" pref="743" max="32767" attributes="0"/>
+          <Component id="jPanel1" pref="733" max="32767" attributes="0"/>
+          <Component id="panelImage2" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -222,7 +233,7 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/Listar.png"/>
+              <Image iconType="3" name="/Images/ListOFAgreements.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="  Padron de Convenios"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -264,7 +275,7 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/pI.png"/>
+              <Image iconType="3" name="/Images/ListOfTaxpayer.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="  Padron de Contribuyentes"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -306,7 +317,7 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/1495570256_Add.png"/>
+              <Image iconType="3" name="/Images/New.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="  Registrar Convenio de Pago"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -331,7 +342,7 @@
         <Container class="org.edisoncor.gui.panel.PanelImage" name="panelImage1">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/escudo28denoviembre.png"/>
+              <Image iconType="3" name="/Images/escudo28denoviembre.png"/>
             </Property>
           </Properties>
 
@@ -381,7 +392,7 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/if_Purse_669953.png"/>
+              <Image iconType="3" name="/Images/if_Purse_669953.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="  Historial de Pagos "/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -425,6 +436,26 @@
           </Properties>
         </Component>
       </SubComponents>
+    </Container>
+    <Container class="org.edisoncor.gui.panel.PanelImage" name="panelImage2">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/Images/28 de Noviembre 2.JPG"/>
+        </Property>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <EmptySpace min="0" pref="998" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+      </Layout>
     </Container>
   </SubComponents>
 </Form>

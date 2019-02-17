@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Feb 7, 2019 9:37:41 AM by Hibernate Tools 4.3.1 -->
+<!-- Generated Feb 16, 2019 12:20:16 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="Model.DTO.Vehicle" table="vehicle" catalog="proyecto_sisconv" optimistic-lock="version">
-        <id name="idVehicle" type="long">
+        <id name="idVehicle" type="java.lang.Long">
             <column name="id_vehicle" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <property name="domain" type="string">
             <column name="domain" length="15" not-null="true" unique="true" />
@@ -14,8 +14,8 @@
         <property name="type" type="string">
             <column name="type" length="20" not-null="true" />
         </property>
-        <property name="fabricant" type="string">
-            <column name="fabricant" length="30" not-null="true" />
+        <property name="manufacturer" type="string">
+            <column name="manufacturer" length="30" not-null="true" />
         </property>
         <property name="model" type="string">
             <column name="model" length="30" not-null="true" />

@@ -63,7 +63,7 @@ public class LoginView extends javax.swing.JFrame {
 
         panelImage1.setBackground(new java.awt.Color(0, 0, 0));
         panelImage1.setForeground(new java.awt.Color(0, 0, 0));
-        panelImage1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/windows_7__beta_wallpaper_by_vinis13.jpg"))); // NOI18N
+        panelImage1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/windows_7__beta_wallpaper_by_vinis13.jpg"))); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -93,7 +93,7 @@ public class LoginView extends javax.swing.JFrame {
             }
         });
 
-        panelImage2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Candado amarillo.png"))); // NOI18N
+        panelImage2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Candado amarillo.png"))); // NOI18N
 
         javax.swing.GroupLayout panelImage2Layout = new javax.swing.GroupLayout(panelImage2);
         panelImage2.setLayout(panelImage2Layout);

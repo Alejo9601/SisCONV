@@ -1,58 +1,72 @@
-/**
+   /**
      * Added by me.
      *
      * @param amountOfDebt
-     * @param cuotsNumber
+     * @param feesNumber
      * @param creationDate
      * @param expirationDate
-     * @param state
+     * @param description
+     * @param status
      */
-    public Agreement(double amountOfDebt, int cuotsNumber, Date creationDate, Date expirationDate, String description, String state) {
+    public Agreement(double amountOfDebt, int feesNumber, Date creationDate, Date expirationDate, String description, String status) {
         this.amountOfDebt = amountOfDebt;
-        this.cuotsNumber = cuotsNumber;
+        this.feesNumber = feesNumber;
         this.creationDate = creationDate;
         this.expirationDate = expirationDate;
         this.description = description;
-        this.state = state;
+        this.status = status;
     }
 
- /**
+    /**
+     * Added by me.
+     *
+     * @param agreementNumber
+     */
+    public Agreement(Long agreementNumber) {
+        this.idAgreementNumber = agreementNumber;
+    }
+
+    /**
      * Added by me
-     * @param conceptCode 
+     *
+     * @param conceptCode
      */
     public void setConcept(Integer conceptCode) {
         this.concept = new Concept(conceptCode);
     }
 
-/**
+    /**
      * Added by me.
-     * @param taxPayerDocNumeber 
+     *
+     * @param taxPayerDocNumeber
      */
     public void setTaxpayer(Long taxPayerDocNumeber) {
         this.taxpayer = new Taxpayer(taxPayerDocNumeber);
     }
 
- /**
+//    /**
+//     * Added by me.
+//     *
+//     * @param domain
+//     */
+//    public void setVehicle(String domain) {
+//        this.vehicle = new Vehicle(domain);
+//    }
+
+    /**
      * Added by me.
-     * @param domain
-     */
-    public void setVehicle(String domain) {
-        this.vehicle = new Vehicle(domain);
-    }
-    
- /**
-     * Added by me.
-     * @return 
+     *
+     * @return
      */
     public Long getTaxpayerID() {
         return this.taxpayer.getIdDocNumber();
     }
-    
-     /**
+
+    /**
      * Added by me.
-     * @return 
+     *
+     * @return
      */
     public int getConceptID() {
-        return this.concept.getConceptID();
+        return this.concept.getIdConceptCode();
     }
-	

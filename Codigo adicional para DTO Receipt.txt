@@ -1,0 +1,8 @@
+ /**
+     * Added by me.
+     *
+     * @param receiptNumber
+     */
+    public Receipt(Long receiptNumber) {
+        this.idReceiptNumber = receiptNumber;
+    }

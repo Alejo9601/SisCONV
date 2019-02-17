@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package View;
 
 import Controller.RegistrationControl;
@@ -14,13 +9,25 @@ import javax.swing.JOptionPane;
  *
  * @author Alejandro Juarez
  */
-public class AgreementRegister extends javax.swing.JFrame {
+public class AgreementRegistration extends javax.swing.JFrame {
 
     /**
      * Creates new form Agreement
      */
-    public AgreementRegister() {
+    public AgreementRegistration() {
         initComponents();
+    }
+
+    public void enableVehicleSelection(boolean condition) {
+        btnSetVehicle.setEnabled(condition);
+        btnEraseVehicle.setEnabled(condition);
+        btnNewVehicle.setEnabled(condition);
+    }
+
+    public void enableLandPropertySelection(boolean condition) {
+        btnSetLandProperty.setEnabled(condition);
+        btnEraseLandProperty.setEnabled(condition);
+        btnNewLandProperty.setEnabled(condition);
     }
 
     /**
@@ -31,12 +38,21 @@ public class AgreementRegister extends javax.swing.JFrame {
     public void setController(RegistrationControl control) {
         this.btnSaveAgreement.addActionListener(control);
         this.btnSaveAgreement.setActionCommand("SAVE_AGREEMENT");
-        
-        this.btnSetTaxpayer.addActionListener(control);
-        this.btnSetTaxpayer.setActionCommand("SELECT_TAXPAYER");
-        
+
         this.btnNewTaxpayer.addActionListener(control);
         this.btnNewTaxpayer.setActionCommand("NEW_TAXPAYER");
+        this.btnSetTaxpayer.addActionListener(control);
+        this.btnSetTaxpayer.setActionCommand("SELECT_TAXPAYER");
+
+        this.btnNewVehicle.addActionListener(control);
+        this.btnNewVehicle.setActionCommand("NEW_VEHICLE");
+        this.btnSetVehicle.addActionListener(control);
+        this.btnSetVehicle.setActionCommand("SELECT_VEHICLE");
+
+        this.btnNewLandProperty.addActionListener(control);
+        this.btnNewLandProperty.setActionCommand("NEW_LANDPROPERTY");
+        this.btnSetLandProperty.addActionListener(control);
+        this.btnSetLandProperty.setActionCommand("SELECT_LANDPROPERTY");
     }
 
     /**
@@ -45,7 +61,7 @@ public class AgreementRegister extends javax.swing.JFrame {
      * @param concept
      */
     public void setCmbConcept(String concept) {
-        this.cmbSetConcept.addItem(concept);
+        this.cmbConcept.addItem(concept);
     }
 
     /**
@@ -67,30 +83,84 @@ public class AgreementRegister extends javax.swing.JFrame {
     }
 
     /**
+     * Sets the tfVehicle.
+     *
+     * @param vehicle
+     */
+    public void setTfVehicle(String vehicle) {
+        this.tfVehicle.setText(vehicle);
+    }
+    
+    /**
+     * Sets the tfLandPoperty.
+     *
+     * @param landProperty
+     */
+    public void setTfLandProperty(String landProperty) {
+        this.tfLandProperty.setText(landProperty);
+    }
+
+    /**
      * Verifies the information is completed.
      *
      * @return
      */
     public boolean verifyInformation() {
-//        if (cmbSetConcept.getSelectedItem().toString().equals("")) {
-//            JOptionPane.showMessageDialog(this, "Advertencia", "El concepto de la deuda es obligatorio", JOptionPane.WARNING_MESSAGE);
-//            return false;
-//        }
         if (tfAmountOfDebt.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "El monto de la deuda es obligatorio", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    this,
+                    "El monto de la deuda es obligatorio",
+                    "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
             return false;
         }
         if (tfDateOfCreation.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "La fecha de efectuacion del convenio es obligatoria", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    this,
+                    "La fecha de efectuacion del convenio es obligatoria",
+                    "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
             return false;
         }
         if (tfDateOfExpiration.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "La fecha de vencimiento del convenio es obligatoria", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    this,
+                    "La fecha de vencimiento del convenio es obligatoria",
+                    "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
             return false;
         }
         if (tfTaxPayer.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "La seleccion del titular del convenio es obligatoria", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    this,
+                    "La seleccion del titular del convenio es obligatoria",
+                    "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
             return false;
+        }
+        switch (cmbConcept.getSelectedItem().toString().split(" : ")[0]) {
+            case "1201":
+            case "110101":
+            case "110201":
+                if (tfLandProperty.getText().equals("")) {
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "La seleccion del terreno / inmueble es obligatorio para este concepto",
+                            "Advertencia",
+                            JOptionPane.WARNING_MESSAGE);
+                    return false;
+                }
+                break;
+            case "110104":
+                if (tfVehicle.getText().equals("")) {
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "La seleccion del vehiculo es obligatorio para este concepto",
+                            "Advertencia",
+                            JOptionPane.WARNING_MESSAGE);
+                    return false;
+                }
+                break;
         }
         return true;
     }
@@ -155,7 +225,7 @@ public class AgreementRegister extends javax.swing.JFrame {
      * @return
      */
     public String getCmbConcept() {
-        return cmbSetConcept.getSelectedItem().toString().split(" : ")[0];
+        return cmbConcept.getSelectedItem().toString().split(" : ")[0];
     }
 
     /**
@@ -172,8 +242,8 @@ public class AgreementRegister extends javax.swing.JFrame {
      *
      * @return
      */
-    public String getTfProperty() {
-        return tfProperty.getText().split(" : ")[0];
+    public String getTfLandProperty() {
+        return tfLandProperty.getText().split(" : ")[0];
     }
 
     /**
@@ -215,25 +285,26 @@ public class AgreementRegister extends javax.swing.JFrame {
         jLabel22 = new javax.swing.JLabel();
         tfVehicle = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
-        tfProperty = new javax.swing.JTextField();
-        cmbSetConcept = new javax.swing.JComboBox<>();
+        tfLandProperty = new javax.swing.JTextField();
         cmbSetCuots = new javax.swing.JComboBox<>();
         btnSetVehicle = new javax.swing.JButton();
-        btnSetProperty = new javax.swing.JButton();
+        btnSetLandProperty = new javax.swing.JButton();
         btnEraseTaxPayer = new javax.swing.JButton();
         btnEraseVehicle = new javax.swing.JButton();
-        btnEraseProperty = new javax.swing.JButton();
+        btnEraseLandProperty = new javax.swing.JButton();
         btnDateOfCreation = new javax.swing.JButton();
         btnDateOfExpiration = new javax.swing.JButton();
         tfDateOfCreation = new javax.swing.JTextField();
         btnNewTaxpayer = new javax.swing.JButton();
         btnNewVehicle = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnNewLandProperty = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tfDescription = new javax.swing.JTextArea();
+        cmbConcept = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("INFORMACION DEL CONVENIO");
+        setTitle("REGISTRO DE CONVENIO");
+        setMinimumSize(new java.awt.Dimension(738, 776));
         setResizable(false);
 
         jPanel1.setLayout(new java.awt.BorderLayout());
@@ -241,26 +312,29 @@ public class AgreementRegister extends javax.swing.JFrame {
         jPanel2.setBorder(null);
 
         btnSaveAgreement.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnSaveAgreement.setText("Guardar datos");
+        btnSaveAgreement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Guardar.png"))); // NOI18N
+        btnSaveAgreement.setText("Guardar");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 587, Short.MAX_VALUE)
-                .addComponent(btnSaveAgreement))
+                .addContainerGap(600, Short.MAX_VALUE)
+                .addComponent(btnSaveAgreement)
+                .addGap(0, 0, 0))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(btnSaveAgreement)
-                .addGap(14, 14, 14))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_END);
 
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("sansserif", 0, 18), new java.awt.Color(0, 0, 0))); // NOI18N
 
         tfAgreementNumber.setEditable(false);
@@ -269,12 +343,15 @@ public class AgreementRegister extends javax.swing.JFrame {
         tfAgreementNumber.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Nro. Convenio :");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
         jLabel7.setText("Concepto :");
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(0, 0, 0));
         jLabel8.setText("Fecha Vencimiento :");
 
         tfDateOfExpiration.setEditable(false);
@@ -283,12 +360,15 @@ public class AgreementRegister extends javax.swing.JFrame {
         tfDateOfExpiration.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(0, 0, 0));
         jLabel9.setText("Cantidad de cuotas :");
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(0, 0, 0));
         jLabel10.setText("Fecha Efectuacion  :");
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(0, 0, 0));
         jLabel11.setText("Monto de la deuda :");
 
         tfAmountOfDebt.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -301,37 +381,38 @@ public class AgreementRegister extends javax.swing.JFrame {
         });
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(0, 0, 0));
         jLabel12.setText("Descripcion :");
 
         btnSetTaxpayer.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnSetTaxpayer.setText("...");
 
         jLabel21.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel21.setForeground(new java.awt.Color(0, 0, 0));
         jLabel21.setText("Titular :");
 
         tfTaxPayer.setEditable(false);
-        tfTaxPayer.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        tfTaxPayer.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         tfTaxPayer.setForeground(new java.awt.Color(0, 0, 0));
         tfTaxPayer.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jLabel22.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel22.setForeground(new java.awt.Color(0, 0, 0));
         jLabel22.setText("Vehiculo:");
 
         tfVehicle.setEditable(false);
-        tfVehicle.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        tfVehicle.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         tfVehicle.setForeground(new java.awt.Color(0, 0, 0));
         tfVehicle.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jLabel23.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel23.setForeground(new java.awt.Color(0, 0, 0));
         jLabel23.setText("Terreno / Inmueble :");
 
-        tfProperty.setEditable(false);
-        tfProperty.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        tfProperty.setForeground(new java.awt.Color(0, 0, 0));
-        tfProperty.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-
-        cmbSetConcept.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        cmbSetConcept.setForeground(new java.awt.Color(0, 0, 0));
+        tfLandProperty.setEditable(false);
+        tfLandProperty.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        tfLandProperty.setForeground(new java.awt.Color(0, 0, 0));
+        tfLandProperty.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         cmbSetCuots.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         cmbSetCuots.setForeground(new java.awt.Color(0, 0, 0));
@@ -340,8 +421,8 @@ public class AgreementRegister extends javax.swing.JFrame {
         btnSetVehicle.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnSetVehicle.setText("...");
 
-        btnSetProperty.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        btnSetProperty.setText("...");
+        btnSetLandProperty.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        btnSetLandProperty.setText("...");
 
         btnEraseTaxPayer.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnEraseTaxPayer.setForeground(new java.awt.Color(255, 0, 0));
@@ -355,10 +436,15 @@ public class AgreementRegister extends javax.swing.JFrame {
         btnEraseVehicle.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnEraseVehicle.setForeground(new java.awt.Color(255, 0, 0));
         btnEraseVehicle.setText("X");
+        btnEraseVehicle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEraseVehicleActionPerformed(evt);
+            }
+        });
 
-        btnEraseProperty.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        btnEraseProperty.setForeground(new java.awt.Color(255, 0, 0));
-        btnEraseProperty.setText("X");
+        btnEraseLandProperty.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        btnEraseLandProperty.setForeground(new java.awt.Color(255, 0, 0));
+        btnEraseLandProperty.setText("X");
 
         btnDateOfCreation.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnDateOfCreation.setText("...");
@@ -387,14 +473,22 @@ public class AgreementRegister extends javax.swing.JFrame {
         btnNewVehicle.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnNewVehicle.setText("Nuevo");
 
-        jButton3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jButton3.setText("Nuevo");
+        btnNewLandProperty.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnNewLandProperty.setText("Nuevo");
 
         tfDescription.setColumns(20);
         tfDescription.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tfDescription.setForeground(new java.awt.Color(0, 0, 0));
         tfDescription.setRows(5);
         jScrollPane1.setViewportView(tfDescription);
+
+        cmbConcept.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        cmbConcept.setForeground(new java.awt.Color(0, 0, 0));
+        cmbConcept.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbConceptActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -403,21 +497,11 @@ public class AgreementRegister extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cmbSetConcept, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tfAgreementNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(tfProperty, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(tfLandProperty)
                                     .addComponent(tfVehicle))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -426,17 +510,20 @@ public class AgreementRegister extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btnSetVehicle))
                                     .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addComponent(jButton3)
+                                        .addComponent(btnNewLandProperty)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnSetProperty))))
+                                        .addComponent(btnSetLandProperty))))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
-                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(tfTaxPayer, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel22))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                                .addComponent(jLabel22)
+                                                .addGap(446, 446, 446))
+                                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                                .addComponent(tfTaxPayer)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                                         .addComponent(btnNewTaxpayer)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btnSetTaxpayer)))
@@ -444,36 +531,46 @@ public class AgreementRegister extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(btnEraseVehicle)
-                                .addComponent(btnEraseProperty, javax.swing.GroupLayout.Alignment.TRAILING))
-                            .addComponent(btnEraseTaxPayer, javax.swing.GroupLayout.Alignment.TRAILING)))
+                                .addComponent(btnEraseTaxPayer)
+                                .addComponent(btnEraseVehicle, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(btnEraseLandProperty, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tfAgreementNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(tfDateOfCreation, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnDateOfCreation))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(tfDateOfExpiration, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnDateOfExpiration)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel11))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfAmountOfDebt)
+                            .addComponent(cmbSetCuots, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel21)
-                            .addComponent(jLabel12)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addComponent(jLabel10)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(tfDateOfCreation, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnDateOfCreation))
-                                    .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addComponent(jLabel8)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(tfDateOfExpiration, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnDateOfExpiration)))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel11))
-                                .addGap(21, 21, 21)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(cmbSetCuots, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(tfAmountOfDebt, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addComponent(jLabel12))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(18, 18, 18)
+                        .addComponent(cmbConcept, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -485,9 +582,9 @@ public class AgreementRegister extends javax.swing.JFrame {
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmbSetConcept, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel7)
+                    .addComponent(cmbConcept, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -521,7 +618,7 @@ public class AgreementRegister extends javax.swing.JFrame {
                     .addComponent(btnSetTaxpayer))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel22)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(11, 11, 11)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfVehicle, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSetVehicle)
@@ -529,13 +626,13 @@ public class AgreementRegister extends javax.swing.JFrame {
                     .addComponent(btnNewVehicle))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel23)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(11, 11, 11)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfProperty, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSetProperty)
-                    .addComponent(btnEraseProperty)
-                    .addComponent(jButton3))
-                .addGap(49, 49, 49))
+                    .addComponent(tfLandProperty, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSetLandProperty)
+                    .addComponent(btnEraseLandProperty)
+                    .addComponent(btnNewLandProperty))
+                .addGap(18, 18, 18))
         );
 
         jPanel1.add(jPanel4, java.awt.BorderLayout.CENTER);
@@ -553,8 +650,8 @@ public class AgreementRegister extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 764, Short.MAX_VALUE)
+                .addGap(6, 6, 6))
         );
 
         pack();
@@ -571,7 +668,7 @@ public class AgreementRegister extends javax.swing.JFrame {
      */
     public void showDateChooser() {
         this.dateChooserDialog1 = new DateChooserDialog();
-        this.dateChooserDialog1.showDialog(this);
+        this.dateChooserDialog1.showDialog(null);
     }
 
     private void btnDateOfCreationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDateOfCreationActionPerformed
@@ -588,63 +685,53 @@ public class AgreementRegister extends javax.swing.JFrame {
                 + "-" + calendar.get(Calendar.DAY_OF_MONTH));
     }//GEN-LAST:event_btnDateOfExpirationActionPerformed
 
-    //Will set on blank tfTaxPayer
+    private void btnEraseVehicleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEraseVehicleActionPerformed
+        this.tfVehicle.setText("");
+    }//GEN-LAST:event_btnEraseVehicleActionPerformed
+
     private void btnEraseTaxPayerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEraseTaxPayerActionPerformed
-        tfTaxPayer.setText("");
+        this.tfTaxPayer.setText("");
     }//GEN-LAST:event_btnEraseTaxPayerActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AgreementRegister.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AgreementRegister.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AgreementRegister.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AgreementRegister.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void cmbConceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbConceptActionPerformed
+        switch (cmbConcept.getSelectedItem().toString().split(" : ")[0]) {
+            case "1201":
+            case "110101":
+            case "110201":
+                enableLandPropertySelection(true);
+                enableVehicleSelection(false);
+                tfVehicle.setText("");
+                break;
+            case "110104":
+                enableVehicleSelection(true);
+                enableLandPropertySelection(false);
+                tfLandProperty.setText("");
+                break;
+            default:
+                enableVehicleSelection(false);
+                tfVehicle.setText("");
+                enableLandPropertySelection(false);
+                tfLandProperty.setText("");
+                break;
         }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AgreementRegister().setVisible(true);
-            }
-        });
-    }
+    }//GEN-LAST:event_cmbConceptActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDateOfCreation;
     private javax.swing.JButton btnDateOfExpiration;
-    private javax.swing.JButton btnEraseProperty;
+    private javax.swing.JButton btnEraseLandProperty;
     private javax.swing.JButton btnEraseTaxPayer;
     private javax.swing.JButton btnEraseVehicle;
+    private javax.swing.JButton btnNewLandProperty;
     private javax.swing.JButton btnNewTaxpayer;
     private javax.swing.JButton btnNewVehicle;
     private javax.swing.JButton btnSaveAgreement;
-    private javax.swing.JButton btnSetProperty;
+    private javax.swing.JButton btnSetLandProperty;
     private javax.swing.JButton btnSetTaxpayer;
     private javax.swing.JButton btnSetVehicle;
-    private javax.swing.JComboBox<String> cmbSetConcept;
+    private javax.swing.JComboBox<String> cmbConcept;
     private javax.swing.JComboBox<String> cmbSetCuots;
     private datechooser.beans.DateChooserDialog dateChooserDialog1;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -664,7 +751,7 @@ public class AgreementRegister extends javax.swing.JFrame {
     private javax.swing.JTextField tfDateOfCreation;
     private javax.swing.JTextField tfDateOfExpiration;
     private javax.swing.JTextArea tfDescription;
-    private javax.swing.JTextField tfProperty;
+    private javax.swing.JTextField tfLandProperty;
     private javax.swing.JTextField tfTaxPayer;
     private javax.swing.JTextField tfVehicle;
     // End of variables declaration//GEN-END:variables

@@ -1,21 +1,24 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Feb 7, 2019 9:37:41 AM by Hibernate Tools 4.3.1 -->
+<!-- Generated Feb 16, 2019 12:20:16 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="Model.DTO.Property" table="property" catalog="proyecto_sisconv" optimistic-lock="version">
+    <class name="Model.DTO.LandProperty" table="land_property" catalog="proyecto_sisconv" optimistic-lock="version">
         <id name="idProperty" type="java.lang.Long">
             <column name="id_property" />
             <generator class="identity" />
         </id>
-        <property name="appleNumber" type="int">
-            <column name="appleNumber" not-null="true" />
+        <property name="apple" type="string">
+            <column name="apple" length="10" not-null="true" />
         </property>
-        <property name="lotNumber" type="int">
-            <column name="lotNumber" not-null="true" />
+        <property name="batch" type="string">
+            <column name="batch" length="10" not-null="true" />
         </property>
         <property name="adjudicationDecree" type="string">
             <column name="adjudicationDecree" length="20" unique="true" />
+        </property>
+        <property name="wasteland" type="java.lang.Byte">
+            <column name="wasteland" />
         </property>
         <set name="agreements" table="agreement" inverse="true" lazy="true" fetch="select">
             <key>

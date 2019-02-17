@@ -1,5 +1,5 @@
 package Model.DTO;
-// Generated Feb 7, 2019 9:37:40 AM by Hibernate Tools 4.3.1
+// Generated Feb 16, 2019 12:20:15 PM by Hibernate Tools 4.3.1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,9 +10,9 @@ import java.util.Set;
 public class Taxpayer implements java.io.Serializable {
 
     private long idDocNumber;
-    private String name;
-    private String lastName;
-    private String lastNameMother;
+    private String names;
+    private String lastname;
+    private String lastnameMother;
     private String docType;
     private String address;
     private String phoneNumber;
@@ -31,16 +31,16 @@ public class Taxpayer implements java.io.Serializable {
      * Added by me.
      *
      * @param idDocNumber
-     * @param name
-     * @param lastName
+     * @param names
+     * @param lastname
      * @param docType
      * @param address
      * @param phoneNumber
      */
-    public Taxpayer(long idDocNumber, String name, String lastName, String docType, String address, String phoneNumber) {
+    public Taxpayer(long idDocNumber, String names, String lastname, String docType, String address, String phoneNumber) {
         this.idDocNumber = idDocNumber;
-        this.name = name;
-        this.lastName = lastName;
+        this.names = names;
+        this.lastname = lastname;
         this.docType = docType;
         this.address = address;
         this.phoneNumber = phoneNumber;
@@ -49,11 +49,18 @@ public class Taxpayer implements java.io.Serializable {
     public Taxpayer() {
     }
 
-    public Taxpayer(long idDocNumber, String name, String lastName, String lastNameMother, String docType, String address, String phoneNumber, Set agreements) {
+    public Taxpayer(long idDocNumber, String names, String lastname, String docType) {
         this.idDocNumber = idDocNumber;
-        this.name = name;
-        this.lastName = lastName;
-        this.lastNameMother = lastNameMother;
+        this.names = names;
+        this.lastname = lastname;
+        this.docType = docType;
+    }
+
+    public Taxpayer(long idDocNumber, String names, String lastname, String lastnameMother, String docType, String address, String phoneNumber, Set agreements) {
+        this.idDocNumber = idDocNumber;
+        this.names = names;
+        this.lastname = lastname;
+        this.lastnameMother = lastnameMother;
         this.docType = docType;
         this.address = address;
         this.phoneNumber = phoneNumber;
@@ -68,28 +75,28 @@ public class Taxpayer implements java.io.Serializable {
         this.idDocNumber = idDocNumber;
     }
 
-    public String getName() {
-        return this.name;
+    public String getNames() {
+        return this.names;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNames(String names) {
+        this.names = names;
     }
 
-    public String getLastName() {
-        return this.lastName;
+    public String getLastname() {
+        return this.lastname;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
-    public String getLastNameMother() {
-        return this.lastNameMother;
+    public String getLastnameMother() {
+        return this.lastnameMother;
     }
 
-    public void setLastNameMother(String lastNameMother) {
-        this.lastNameMother = lastNameMother;
+    public void setLastnameMother(String lastnameMother) {
+        this.lastnameMother = lastnameMother;
     }
 
     public String getDocType() {

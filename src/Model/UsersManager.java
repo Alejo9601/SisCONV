@@ -13,10 +13,16 @@ import org.hibernate.Transaction;
  * @author Alejandro Juarez
  */
 public class UsersManager {
-
+    
+    User loggedUser;
+    
     public static enum user_param {
-        NAMES, LASTNAME, NICKNAME, PASSWORD, ID_USER
+        NAMES, LASTNAME, NICKNAME, PASSWORD, ADMINISTRATOR, ID_USER
     };
+    
+    public User getLoggedUser() {
+        return loggedUser;
+    }
 
     /**
      *
@@ -26,7 +32,7 @@ public class UsersManager {
      */
     public boolean validateSession(char[] password, String nickName) {
         User user = consult(nickName);
-        if (user == null) { //If there's an user with the specified nickname.
+        if (user == null) { //If there isn't an user with the specified nickname.
             return false;
         }
         char[] passwordDB = user.getPassword().toCharArray();
@@ -36,6 +42,7 @@ public class UsersManager {
                     return false;
                 }
             }
+            this.loggedUser = user;
             return true;
         }
         return false;
@@ -102,8 +109,12 @@ public class UsersManager {
         User user = new User(userMap.get(user_param.NAMES),
                 userMap.get(user_param.LASTNAME),
                 userMap.get(user_param.NICKNAME),
-                userMap.get(user_param.PASSWORD));
+                userMap.get(user_param.PASSWORD),
+                Byte.valueOf(userMap.get(user_param.ADMINISTRATOR)));
+        user.setActiveSession((byte) 0);
         return user;
     }
-
+    
+    
+    
 }

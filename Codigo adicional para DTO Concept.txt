@@ -1,12 +1,13 @@
-/**
+ /**
      * Added by me.
-     * @param conceptCode 
+     *
+     * @param conceptCode
      */
     public Concept(Integer conceptCode) {
         this.idConceptCode = conceptCode;
     }
 
-  /**
+    /**
      * Added by me.
      *
      * @param idConceptCode
@@ -17,4 +18,13 @@
         this.idConceptCode = idConceptCode;
         this.conceptName = conceptName;
         this.description = description;
+    }
+
+    /**
+     * Adde by me.
+     *
+     * @return
+     */
+    public int getConceptID() {
+        return this.idConceptCode;
     }
