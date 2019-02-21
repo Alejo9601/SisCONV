@@ -1,9 +1,13 @@
 package Controller;
 
+import Initializer.SystemConfiguration;
 import Model.UsersManager;
 import View.MainView;
+import View.ServerConfiguration;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -12,10 +16,25 @@ import java.awt.event.ActionListener;
 public class MainControl implements ActionListener {
 
     MainView mainV;
+    ServerConfiguration serverCV;
 
     public MainControl() {
         this.mainV = new MainView();
         this.mainV.setController(this);
+    }
+
+    /**
+     *
+     * @param parent
+     */
+    public void showServerConfigurationView(JFrame parent) {
+        if (parent == null) {
+            serverCV = new ServerConfiguration(null, true);
+            serverCV.setController(this);
+            serverCV.showAtfirstSystemBeggining();
+        } else {
+
+        }
     }
 
     /**
@@ -48,6 +67,31 @@ public class MainControl implements ActionListener {
             case "UPDATE_USER_PASSWORD":
                 uc = new UserControl();
                 uc.showPasswordChangeView(mainV);
+                break;
+            case "SAVE_SERVER_CONFIG":
+                if (SystemConfiguration.setServerConfiguration(
+                        serverCV.getTfUrlServer(),
+                        serverCV.getTfUsername(),
+                        serverCV.getTfPassword())) {
+                    if (SystemConfiguration.testServerConnection()) {
+                        JOptionPane.showMessageDialog(
+                                serverCV,
+                                "Informacion",
+                                "La conexion esta establecida",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        SystemConfiguration.incrementSystemBegginings();
+                        serverCV.dispose();
+                        UserControl uControl = new UserControl();
+                        uControl.showLoginView();
+                    } else {
+                        JOptionPane.showMessageDialog(
+                                serverCV,
+                                "Advertencia",
+                                "La conexion esta establecida",
+                                JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+
                 break;
         }
     }

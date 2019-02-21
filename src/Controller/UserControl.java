@@ -127,7 +127,7 @@ public class UserControl implements ActionListener {
     public void actionPerformed(ActionEvent event) {
         switch (event.getActionCommand()) {
             case "LOGIN":
-                if (um.validateSession(loginV.getTfPassword(), loginV.getTfNickName()) == true) {
+                if (um.validateSession(loginV.getTfPassword(), loginV.getTfNickName())) {
                     MainControl pControl = new MainControl();
                     pControl.showPrincipalView();
                     loginV.dispose();
@@ -143,13 +143,14 @@ public class UserControl implements ActionListener {
                 System.exit(0);
                 break;
             case "SAVE_USER":
-                if (um.newUser(getUserInfo()) == true) {
+                if (um.newUser(getUserInfo())) {
                     JOptionPane.showMessageDialog(
                             userRV,
                             "Se ha registrado con exito",
                             "Informacion",
                             JOptionPane.INFORMATION_MESSAGE);
                     userRV.dispose();
+                    fillListView();
                 } else {
                     JOptionPane.showMessageDialog(
                             userRV,
@@ -158,14 +159,37 @@ public class UserControl implements ActionListener {
                             JOptionPane.WARNING_MESSAGE);
                 }
                 break;
+            case "DELETE_USER":
+                if (JOptionPane.showConfirmDialog(
+                        usersLV,
+                        "¿Esta seguro que desea eliminar el usuario?, "
+                        + "los cambios surtiran efectos la proxima vez que este intente iniciar sesion",
+                        "Advertencia",
+                        JOptionPane.YES_NO_OPTION) == 0) {
+                    if (um.deleteUser(Integer.parseInt(usersLV.getSelectedUserID()))) {
+                        JOptionPane.showMessageDialog(
+                                userRV,
+                                "Se ha eliminado con exito",
+                                "Informacion",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        fillListView();
+                    } else {
+                        JOptionPane.showMessageDialog(
+                                userRV,
+                                "No se ha podido eliminar el usuario",
+                                "Avertencia",
+                                JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+                break;
             case "USER_REGISTRATION":
                 showRegistrationView(loginV);
                 break;
             case "UPDATE_USER_PASSWORD":
-                if (passCV.verifyInformation() == true) {//if fields are completed
+                if (passCV.verifyInformation()) {//if fields are completed
                     if ((um.isLoggedUserPassword(passCV.getTfActualPassword()))) {//If actual pass is valid
                         if ((Arrays.equals(passCV.getTfNewPassword1(), passCV.getTfNewPassword2()))) {//If both new password are equals
-                            if (um.modifyUserPassword(passCV.getTfNewPassword1()) == true) {//We call updateUserPassword
+                            if (um.modifyUserPassword(passCV.getTfNewPassword1())) {//We call updateUserPassword
                                 JOptionPane.showMessageDialog(
                                         userRV,
                                         "Se ha registrado con exito",
@@ -204,7 +228,6 @@ public class UserControl implements ActionListener {
     public void showLoginView() {
         loginV.setLocationRelativeTo(null);
         loginV.setVisible(true);
-        um.stablishConnectionToServer(); //Stablishing first connection to server
     }
 
 }

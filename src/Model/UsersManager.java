@@ -28,12 +28,7 @@ public class UsersManager {
     private UsersManager() {
 
     }
-
-    public void stablishConnectionToServer() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.close();
-    }
-
+    
     /**
      *
      * @return
@@ -53,7 +48,7 @@ public class UsersManager {
     public EnumMap<user_param, String> getLoggedUser() {
         return userOnEnumMap(loggedUser);
     }
-    
+
     /**
      * Returns the boolean if logged user is administrator
      *
@@ -81,6 +76,31 @@ public class UsersManager {
         return false;
     }
 
+//    /**
+//     *
+//     */
+//    private boolean markSessionAsActive() {
+//        //Opening Hibernate session.
+//        Session session = HibernateUtil.getSessionFactory().openSession();
+//        Transaction transaction = null;
+//        boolean flag = true; //Flag that indicates if the operation finished succesfully.
+//        try {
+//            transaction = session.beginTransaction();
+//            SQLQuery consult = session.createSQLQuery(
+//                    "UPDATE user SET activeSession = " + (byte) 1 + " WHERE user.idUser = " + loggedUser.getIdUser());
+//            consult.executeUpdate();
+//            transaction.commit();
+//        } catch (Exception e) {
+//            if (transaction != null) { //If transaction didnt went well, we roll back any action en DB
+//                transaction.rollback();
+//            }
+//            JOptionPane.showMessageDialog(null, "Excepcion marcando al usuario como activo" + e);
+//            flag = false;
+//        } finally {
+//            session.close();
+//        }
+//        return flag;
+//    }
     /**
      *
      * @param password
@@ -200,6 +220,33 @@ public class UsersManager {
                     null, "Excepcion al tratar de modificar la contraseña del usuario",
                     "Advertencia",
                     JOptionPane.WARNING_MESSAGE);
+        } finally {
+            session.close();
+        }
+        return flag;
+    }
+
+    /**
+     *
+     * @param userID
+     * @return
+     */
+    public boolean deleteUser(int userID) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = null;
+        boolean flag = true; //Flag that indicates if the operation finished succesfully.
+        try {
+            transaction = session.beginTransaction();
+            SQLQuery consult = session.createSQLQuery(
+                    "DELETE FROM user WHERE user.id_user = " + userID);
+            consult.executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) { //If transaction didnt went well, we roll back any action en DB
+                transaction.rollback();
+            }
+            JOptionPane.showMessageDialog(null, "Excepcion tratando de eliminar el usuario" + e);
+            flag = false;
         } finally {
             session.close();
         }

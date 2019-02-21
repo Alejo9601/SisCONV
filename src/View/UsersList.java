@@ -27,7 +27,16 @@ public class UsersList extends javax.swing.JFrame {
         btnRegisterUser.addActionListener(control);
         btnRegisterUser.setActionCommand("USER_REGISTRATION");
         btnDeleteUser.addActionListener(control);
-        btnDeleteUser.setActionCommand("USER_DELETE");
+        btnDeleteUser.setActionCommand("DELETE_USER");
+    }
+
+    /**
+     * Gets the selected user ID
+     *
+     * @return
+     */
+    public String getSelectedUserID() {
+        return (String) tblUsers.getValueAt(tblUsers.getSelectedRow(), 0);
     }
 
     /**
