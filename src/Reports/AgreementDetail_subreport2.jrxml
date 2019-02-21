@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AgreementDetail_subreport2" language="groovy" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="bb5679c4-1773-40d8-9035-682f0aa5dff7">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="AgreementNumber" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT id_vehicle, domain, model, manufacturer, type  FROM vehicle INNER JOIN agreement ON agreement.vehicle_id_vehicle = vehicle.id_vehicle WHERE id_agreementNumber = $P{AgreementNumber}]]>
+	</queryString>
+	<field name="id_vehicle" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="domain" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="model" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="manufacturer" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="1" width="73" height="20" uuid="7e68b0ed-cc58-40ad-8b67-c3db175f5655"/>
+				<textElement>
+					<font fontName="Verdana" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vehiculo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="82" y="1" width="673" height="20" uuid="176a2146-c5c5-45f1-950d-a1bb6e3ecb08"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Verdana" size="12" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{domain}.concat(", Modelo: " + $F{model} + ", Fabricante: " + $F{manufacturer} + ", Tipo: " + $F{type})]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+</jasperReport>

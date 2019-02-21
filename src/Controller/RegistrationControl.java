@@ -3,7 +3,7 @@ package Controller;
 import Model.AgreementsManager;
 import Model.ParametersManager;
 import Model.PropertyManager;
-import Model.TaxpayerManager;
+import Model.TaxpayersManager;
 import View.AgreementRegistration;
 import View.ConceptRegistration;
 import View.LandPropertyRegistration;
@@ -90,9 +90,8 @@ public class RegistrationControl implements ActionListener, KeyListener {
         agreementMap.put(
                 AgreementsManager.agreement_param.EXPIRATION_DATE,
                 agreementsRV.getTfDateOfExpiration());
-        agreementMap.put(
-                AgreementsManager.agreement_param.CUOTS_NUMBER,
-                agreementsRV.getCmbCuotsNumber());
+        agreementMap.put(AgreementsManager.agreement_param.FEES_NUMBER,
+                agreementsRV.getCmbFeesNumber());
         agreementMap.put(
                 AgreementsManager.agreement_param.DESCRIPTION,
                 agreementsRV.getTfDescription());
@@ -118,26 +117,20 @@ public class RegistrationControl implements ActionListener, KeyListener {
      *
      * @return
      */
-    private EnumMap<TaxpayerManager.taxpayer_param, String> getTaxpayerInfo() {
-        EnumMap<TaxpayerManager.taxpayer_param, String> taxpayerMap
-                = new EnumMap<>(TaxpayerManager.taxpayer_param.class);
-        taxpayerMap.put(
-                TaxpayerManager.taxpayer_param.NAMES,
+    private EnumMap<TaxpayersManager.taxpayer_param, String> getTaxpayerInfo() {
+        EnumMap<TaxpayersManager.taxpayer_param, String> taxpayerMap
+                = new EnumMap<>(TaxpayersManager.taxpayer_param.class);
+        taxpayerMap.put(TaxpayersManager.taxpayer_param.NAMES,
                 taxpayerRV.getTfTaxpayerNames());
-        taxpayerMap.put(
-                TaxpayerManager.taxpayer_param.LASTNAME,
+        taxpayerMap.put(TaxpayersManager.taxpayer_param.LASTNAME,
                 taxpayerRV.getTfLastname());
-        taxpayerMap.put(
-                TaxpayerManager.taxpayer_param.DOC_NUMBER,
+        taxpayerMap.put(TaxpayersManager.taxpayer_param.DOC_NUMBER,
                 taxpayerRV.getTfDocNumber());
-        taxpayerMap.put(
-                TaxpayerManager.taxpayer_param.DOC_TYPE,
+        taxpayerMap.put(TaxpayersManager.taxpayer_param.DOC_TYPE,
                 taxpayerRV.getCmbDocType());
-        taxpayerMap.put(
-                TaxpayerManager.taxpayer_param.ADDRESS,
+        taxpayerMap.put(TaxpayersManager.taxpayer_param.ADDRESS,
                 taxpayerRV.getTfAddress());
-        taxpayerMap.put(
-                TaxpayerManager.taxpayer_param.PHONE_NUMBER,
+        taxpayerMap.put(TaxpayersManager.taxpayer_param.PHONE_NUMBER,
                 taxpayerRV.getTfPhoneNumber());
         return taxpayerMap;
     }
@@ -237,8 +230,8 @@ public class RegistrationControl implements ActionListener, KeyListener {
      * Fills taxpayer selection table.
      */
     private void fillTaxPayerSelectionList() {
-        TaxpayerManager tm = new TaxpayerManager();
-        List<EnumMap<TaxpayerManager.taxpayer_param, String>> taxpayerEL = tm.consultAll();
+        TaxpayersManager tm = new TaxpayersManager();
+        List<EnumMap<TaxpayersManager.taxpayer_param, String>> taxpayerEL = tm.consultAll();
         //Table model creation
         DefaultTableModel tableModel = new DefaultTableModel(
                 null, new String[]{
@@ -251,11 +244,11 @@ public class RegistrationControl implements ActionListener, KeyListener {
             }
         };
         //For each EnumMap on landPropEL
-        for (EnumMap<TaxpayerManager.taxpayer_param, String> tp : taxpayerEL) {
+        for (EnumMap<TaxpayersManager.taxpayer_param, String> tp : taxpayerEL) {
             Object nuevo[] = new Object[]{
-                tp.get(TaxpayerManager.taxpayer_param.DOC_NUMBER),
-                tp.get(TaxpayerManager.taxpayer_param.NAMES),
-                tp.get(TaxpayerManager.taxpayer_param.LASTNAME)};
+                tp.get(TaxpayersManager.taxpayer_param.DOC_NUMBER),
+                tp.get(TaxpayersManager.taxpayer_param.NAMES),
+                tp.get(TaxpayersManager.taxpayer_param.LASTNAME)};
             tableModel.addRow(nuevo);
         }
         taxpayerSV.setTableModel(tableModel); //Setting model to the view.
@@ -270,7 +263,7 @@ public class RegistrationControl implements ActionListener, KeyListener {
         //Table model creation
         DefaultTableModel tableModel = new DefaultTableModel(
                 null, new String[]{
-                    "Id_Vehiculo",
+                    "Identificador",
                     "Dominio",
                     "Modelo",
                     "Fabricante",
@@ -415,12 +408,88 @@ public class RegistrationControl implements ActionListener, KeyListener {
         landPropertyRV.setVisible(true);
     }
 
+    /**
+     *
+     * @param agreementNumber
+     */
+    public void showAgreementModificationView(Long agreementNumber) {
+        AgreementsManager am = new AgreementsManager();
+        TaxpayersManager tm = new TaxpayersManager();
+        ParametersManager pm = new ParametersManager();
+        PropertyManager lpm = new PropertyManager();
+        //Consulting the agreement.
+        EnumMap<AgreementsManager.agreement_param, String> agreementMap
+                = am.consultAgreement(agreementNumber);
+        agreementsRV.setTfAgreementNumber(
+                agreementMap.get(AgreementsManager.agreement_param.AGREEMENT_NUMBER));
+        agreementsRV.setTfAmountOfDebt(
+                "$ " + agreementMap.get(AgreementsManager.agreement_param.AMOUNT_OF_DEBT));
+        agreementsRV.setTfCreationDate(
+                agreementMap.get(AgreementsManager.agreement_param.CREATION_DATE));
+        agreementsRV.setTfExpirationDate(
+                agreementMap.get(AgreementsManager.agreement_param.EXPIRATION_DATE));
+        agreementsRV.setFeesNumber(
+                agreementMap.get(AgreementsManager.agreement_param.FEES_NUMBER));
+        agreementsRV.setTfDescription(
+                agreementMap.get(AgreementsManager.agreement_param.DESCRIPTION));
+        //Consulting the taxpayer.
+        EnumMap<TaxpayersManager.taxpayer_param, String> taxpayerMap
+                = tm.consult(Long.parseLong(agreementMap.get(AgreementsManager.agreement_param.TAXPAYER)));
+        agreementsRV.setTfTaxPayer(
+                taxpayerMap.get(TaxpayersManager.taxpayer_param.DOC_NUMBER)
+                + " : " + taxpayerMap.get(TaxpayersManager.taxpayer_param.NAMES)
+                + " : " + taxpayerMap.get(TaxpayersManager.taxpayer_param.LASTNAME));
+        //Filling concepts combo box, with all concepts on DB.
+        List<EnumMap<ParametersManager.concept_param, String>> conceptsEL = pm.consultAll();
+        for (EnumMap<ParametersManager.concept_param, String> ct : conceptsEL) {
+            this.agreementsRV.setCmbConcept(ct.get(ParametersManager.concept_param.CONCEPT_CODE)
+                    + " : " + ct.get(ParametersManager.concept_param.CONCEPT_NAME));
+        }
+        //Setting selected concept on combo box
+        EnumMap<ParametersManager.concept_param, String> conceptMap
+                = pm.consult(Integer.parseInt(agreementMap.get(AgreementsManager.agreement_param.CONCEPT)));
+        agreementsRV.cmbConceptSetSelectedItem(conceptMap.get(ParametersManager.concept_param.CONCEPT_CODE)
+                + " : " + conceptMap.get(ParametersManager.concept_param.CONCEPT_NAME));
+        //If the concept is related to vehicle or land / property
+        switch (conceptMap.get(ParametersManager.concept_param.CONCEPT_CODE)) {
+            case "1201":
+            case "110101":
+            case "110201":
+                EnumMap<PropertyManager.landProperty_param, String> landPropMap
+                        = lpm.consultLandProperty(Long.parseLong(agreementMap.get(AgreementsManager.agreement_param.LAND_PROPERTY)));
+                agreementsRV.setTfLandProperty(landPropMap.get(
+                        PropertyManager.landProperty_param.ID_LANDPROPERTY)
+                        + " : " + landPropMap.get(PropertyManager.landProperty_param.APPLE)
+                        + " : " + landPropMap.get(PropertyManager.landProperty_param.BATCH)
+                        + " : " + landPropMap.get(PropertyManager.landProperty_param.DECREE));
+                break;
+            case "110104":
+                EnumMap<PropertyManager.vehicle_param, String> vehicleMap
+                        = lpm.consultVehicle(Long.parseLong(agreementMap.get(AgreementsManager.agreement_param.VEHICLE)));
+                agreementsRV.setTfVehicle(vehicleMap.get(PropertyManager.vehicle_param.ID_VEHICLE)
+                        + " : " + vehicleMap.get(PropertyManager.vehicle_param.DOMAIN)
+                        + " : " + vehicleMap.get(PropertyManager.vehicle_param.MODEL)
+                        + " : " + vehicleMap.get(PropertyManager.vehicle_param.MANUFACTURER)
+                        + " : " + vehicleMap.get(PropertyManager.vehicle_param.TYPE));
+                break;
+        }
+        //Consulting payments for this agreement, if there is at least one... we show the view as partial modification.
+        List<EnumMap<AgreementsManager.payment_param, String>> paymentsEL = am.consultPaymentsForAgreement(agreementNumber);
+        if (!paymentsEL.isEmpty()) {
+            agreementsRV.setLocationRelativeTo(null);
+            agreementsRV.showAsPartialModificationView();
+        } else {
+            agreementsRV.setLocationRelativeTo(null);
+            agreementsRV.showAsCompleteModificationView();
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent ae) {
-        AgreementsManager am = new AgreementsManager();
-        TaxpayerManager tm = new TaxpayerManager();
-        ParametersManager pm = new ParametersManager();
-        PropertyManager plm = new PropertyManager();
+        AgreementsManager am;
+        TaxpayersManager tm;
+        ParametersManager pm;
+        PropertyManager plm;
         switch (ae.getActionCommand()) {
             case "SELECT_TAXPAYER":
                 showTaxpayerSelectionView();
@@ -453,8 +522,9 @@ public class RegistrationControl implements ActionListener, KeyListener {
                 showLandPropertyRegistrationView();
                 break;
             case "SAVE_AGREEMENT":
-                if (agreementsRV.verifyInformation() == true) {
-                    if (am.newAgreement(getAgreementInfo()) == true) {
+                am = new AgreementsManager();
+                if (agreementsRV.verifyInformation()) {
+                    if (am.newAgreement(getAgreementInfo())) {
                         JOptionPane.showMessageDialog(agreementsRV,
                                 "Se ha registrado con exito",
                                 "Informacion",
@@ -468,9 +538,27 @@ public class RegistrationControl implements ActionListener, KeyListener {
                     }
                 }
                 break;
+            case "UPDATE_AGREEMENT":
+                am = new AgreementsManager();
+                if (agreementsRV.verifyInformation()) {
+                    if (am.updateAgreement(getAgreementInfo())) {
+                        JOptionPane.showMessageDialog(agreementsRV,
+                                "Se ha actualizado con exito",
+                                "Informacion",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        showAgreementRegistrationView(false);
+                    } else {
+                        JOptionPane.showMessageDialog(agreementsRV,
+                                "No se ha podido actualizar el convenio",
+                                "Advertencia",
+                                JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+                break;
             case "SAVE_TAXPAYER":
-                if (taxpayerRV.verifyInformation() == true) {
-                    if (tm.newTaxpayer(getTaxpayerInfo()) == true) {
+                tm = new TaxpayersManager();
+                if (taxpayerRV.verifyInformation()) {
+                    if (tm.newTaxpayer(getTaxpayerInfo())) {
                         JOptionPane.showMessageDialog(taxpayerRV,
                                 "Se ha registrado con exito",
                                 "Informacion",
@@ -488,8 +576,9 @@ public class RegistrationControl implements ActionListener, KeyListener {
                 }
                 break;
             case "SAVE_CONCEPT":
-                if (conceptRV.verifyInformation() == true) {
-                    if (pm.newConcept(getConceptInfo()) == true) {
+                pm = new ParametersManager();
+                if (conceptRV.verifyInformation()) {
+                    if (pm.newConcept(getConceptInfo())) {
                         JOptionPane.showMessageDialog(conceptRV,
                                 "Se ha registrado con exito",
                                 "Informacion",
@@ -504,23 +593,73 @@ public class RegistrationControl implements ActionListener, KeyListener {
                 }
                 break;
             case "SAVE_PAYMENT":
-                if (paymentRV.verifyInformation() == true) {
-                    if (am.newPayment(getPaymentInfo()) == true) {
+                am = new AgreementsManager();
+                if (paymentRV.verifyInformation()) {
+                    /**
+                     * We must compare if receipt exists... and if exists
+                     * then... if its on same agreement, and for the same fee.
+                     */
+                    EnumMap<AgreementsManager.payment_param, String> pay = getPaymentInfo();
+                    if (am.receiptExists(Long.parseLong(pay.get(AgreementsManager.payment_param.RECEIPT_NUMBER)))) {
+                        //If payment with specified receipt exists on agreement
+                        if (am.receiptExistsForAgreement(
+                                Long.parseLong(pay.get(AgreementsManager.payment_param.RECEIPT_NUMBER)),
+                                Long.parseLong(pay.get(AgreementsManager.payment_param.AGREEMENT_NUMBER)))) {
+                            //If payment exists for agreement
+                            if (am.paymentExistsForAgreement(pay)) {
+                                JOptionPane.showMessageDialog(paymentRV,
+                                        "Un pago por la misma cuota ya se encuentra registrado",
+                                        "Advertencia",
+                                        JOptionPane.WARNING_MESSAGE);
+                                break;
+                            } else {
+                                if (am.newPayment(getPaymentInfo())) {
+                                    JOptionPane.showMessageDialog(paymentRV,
+                                            "Se ha registrado con exito",
+                                            "Informacion",
+                                            JOptionPane.INFORMATION_MESSAGE);
+                                    paymentRV.dispose();
+                                    break;
+                                } else {
+                                    JOptionPane.showMessageDialog(paymentRV,
+                                            "No se ha podido registrar",
+                                            "Advertencia",
+                                            JOptionPane.WARNING_MESSAGE);
+                                    break;
+                                }
+                            }
+                        }
                         JOptionPane.showMessageDialog(paymentRV,
-                                "Se ha registrado con exito",
-                                "Informacion",
-                                JOptionPane.INFORMATION_MESSAGE);
-                        paymentRV.dispose();
-                    } else {
-                        JOptionPane.showMessageDialog(paymentRV,
-                                "No se ha podido registrar",
+                                "El recibo ya se encuentra registrado para otro convenio",
                                 "Advertencia",
                                 JOptionPane.WARNING_MESSAGE);
+                        break;
+                    }
+                    if (am.paymentExistsForAgreement(pay)) {
+                        JOptionPane.showMessageDialog(paymentRV,
+                                "Un pago por la misma cuota ya se encuentra registrado",
+                                "Advertencia",
+                                JOptionPane.WARNING_MESSAGE);
+                        break;
+                    } else {
+                        if (am.newPayment(getPaymentInfo())) {
+                            JOptionPane.showMessageDialog(paymentRV,
+                                    "Se ha registrado con exito",
+                                    "Informacion",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            paymentRV.dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(paymentRV,
+                                    "No se ha podido registrar",
+                                    "Advertencia",
+                                    JOptionPane.WARNING_MESSAGE);
+                        }
                     }
                 }
                 break;
             case "SAVE_VEHICLE":
-                if (vehicleRV.verifyInformation() == true) {
+                plm = new PropertyManager();
+                if (vehicleRV.verifyInformation()) {
                     if (plm.newVehicle(getVehicleInfo())) {
                         JOptionPane.showMessageDialog(vehicleRV,
                                 "Se ha registrado con exito",
@@ -536,8 +675,9 @@ public class RegistrationControl implements ActionListener, KeyListener {
                 }
                 break;
             case "SAVE_LANDPROPERTY":
-                if (landPropertyRV.verifyInformation() == true) {
-                    if (plm.newLandProperty(getLandPropertyInfo()) == true) {
+                plm = new PropertyManager();
+                if (landPropertyRV.verifyInformation()) {
+                    if (plm.newLandProperty(getLandPropertyInfo())) {
                         JOptionPane.showMessageDialog(landPropertyRV,
                                 "Se ha registrado con exito",
                                 "Informacion",

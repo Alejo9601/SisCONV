@@ -1,7 +1,6 @@
 package Model;
 
 import Model.DTO.Concept;
-import Model.DTO.HibernateUtil;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;

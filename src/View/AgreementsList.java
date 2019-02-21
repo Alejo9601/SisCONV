@@ -6,7 +6,6 @@ import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 /**
@@ -45,6 +44,8 @@ public class AgreementsList extends javax.swing.JFrame {
     public void setController(DetailControl control) {
         tblAgreements.addMouseListener(control);
         tfSearch.addKeyListener(control);
+        btnMakeReport.addActionListener(control);
+        btnMakeReport.setActionCommand("MAKE_AGREEMENTS_PADRON_REPORT");
     }
 
     /**
@@ -92,7 +93,7 @@ public class AgreementsList extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        btnMakeReport = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblAgreements = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
@@ -107,9 +108,9 @@ public class AgreementsList extends javax.swing.JFrame {
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/PDF.png"))); // NOI18N
-        jButton1.setText("Generar reporte");
+        btnMakeReport.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnMakeReport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/PDF.png"))); // NOI18N
+        btnMakeReport.setText("Generar reporte");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -117,13 +118,13 @@ public class AgreementsList extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(0, 1081, Short.MAX_VALUE)
-                .addComponent(jButton1))
+                .addComponent(btnMakeReport))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(14, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(btnMakeReport)
                 .addGap(14, 14, 14))
         );
 
@@ -215,9 +216,9 @@ public class AgreementsList extends javax.swing.JFrame {
     }//GEN-LAST:event_chkTaxPayerDocActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnMakeReport;
     private javax.swing.JCheckBox chkAgreementNumber;
     private javax.swing.JCheckBox chkTaxPayerDoc;
-    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

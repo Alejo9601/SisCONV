@@ -1,6 +1,5 @@
 package Model;
 
-import Model.DTO.HibernateUtil;
 import Model.DTO.Taxpayer;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +13,7 @@ import org.hibernate.Transaction;
  *
  * @author Alejandro Juarez
  */
-public class TaxpayerManager {
+public class TaxpayersManager {
 
     public static enum taxpayer_param {
         NAMES, LASTNAME, DOC_NUMBER, DOC_TYPE, ADDRESS, PHONE_NUMBER,

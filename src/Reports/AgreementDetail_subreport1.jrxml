@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AgreementDetail_subreport1" language="groovy" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f0498201-be67-44e9-87ef-e4ec4b2f9951">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="AgreementNumber" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT * FROM payment INNER JOIN receipt ON  payment.receipt_id_receiptNumber = receipt.id_receiptNumber WHERE payment.agreement_id_agreementNumber = $P{AgreementNumber}]]>
+	</queryString>
+	<field name="id_paymentNumber" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="agreement_id_agreementNumber" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="receipt_id_receiptNumber" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="paidFee" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id_receiptNumber" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="amount" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="96" y="2" width="70" height="20" uuid="8357192e-6db1-4c2c-a63b-0ed853ba8832"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Cuota abonada]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="177" y="2" width="86" height="20" uuid="cf9fbbc4-74a7-49a2-93eb-e238f9420a4d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Numero de Recibo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="275" y="2" width="70" height="20" uuid="b5f4f10b-e789-42c5-af5e-f24623e98199"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Monto abonado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="2" width="71" height="20" uuid="0be6d036-1993-4dd5-a938-079c4a6a808a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Fecha del Pago]]></text>
+			</staticText>
+			<line>
+				<reportElement x="171" y="0" width="1" height="23" uuid="5b6c10e7-5324-49ef-924e-160dd2198506"/>
+			</line>
+			<line>
+				<reportElement x="268" y="0" width="1" height="23" uuid="1c29edbf-9cd1-42dd-b7fd-88819739c64f"/>
+			</line>
+			<line>
+				<reportElement x="351" y="0" width="1" height="23" uuid="0da45321-f333-43a6-9377-6ebc3d5d0aac"/>
+			</line>
+			<line>
+				<reportElement x="435" y="0" width="1" height="25" uuid="1b4bb984-139f-4325-b1a5-c5fc16d50da5"/>
+			</line>
+			<line>
+				<reportElement x="94" y="23" width="341" height="1" uuid="3da7b065-1270-4924-ad37-c8cd854f71bf"/>
+			</line>
+			<line>
+				<reportElement x="94" y="0" width="341" height="1" uuid="8c890888-ecc4-448b-9884-68280eb2097c"/>
+			</line>
+			<line>
+				<reportElement x="94" y="0" width="1" height="25" uuid="b2b45fa8-06e6-4a21-a91f-415d917afb17"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="96" y="2" width="70" height="20" uuid="5d2fd4ec-2a81-4e7c-8d65-b87b3961ee85"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{paidFee}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="177" y="2" width="86" height="20" uuid="9febb6c6-3d3c-478c-864e-62e0ea3bcb23"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{id_receiptNumber}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="275" y="2" width="70" height="20" uuid="550ca5fb-dab8-4f06-9483-3d9996a44f42"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MMM-yyyy">
+				<reportElement x="358" y="2" width="71" height="20" uuid="5ae31270-7ac7-4f22-84c8-2e114c4c094f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="171" y="-1" width="1" height="24" uuid="a8404776-c9d4-4745-a2a2-d92d67e894c8"/>
+			</line>
+			<line>
+				<reportElement x="268" y="-1" width="1" height="25" uuid="25a2fcb6-e811-4beb-9102-c2e88306ecd9"/>
+			</line>
+			<line>
+				<reportElement x="351" y="-1" width="1" height="25" uuid="ad9be558-4b25-4395-a422-aaaf63a08581"/>
+			</line>
+			<line>
+				<reportElement x="435" y="0" width="1" height="24" uuid="9a8e851e-325b-4eda-9236-8f87032b5d3d"/>
+			</line>
+			<line>
+				<reportElement x="94" y="23" width="341" height="1" uuid="b0c22c27-a557-439f-b3e7-98adeffcf284"/>
+			</line>
+			<line>
+				<reportElement x="94" y="0" width="1" height="24" uuid="bd909b8a-332e-4f56-bbb3-58f0c982fcea"/>
+			</line>
+		</band>
+	</detail>
+</jasperReport>

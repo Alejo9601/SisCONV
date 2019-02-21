@@ -3,7 +3,8 @@ package Controller;
 import Model.AgreementsManager;
 import Model.ParametersManager;
 import Model.PropertyManager;
-import Model.TaxpayerManager;
+import Model.TaxpayersManager;
+import Model.UsersManager;
 import View.AgreementDetails;
 import View.AgreementsList;
 import View.ConceptsList;
@@ -32,12 +33,10 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
      * Constructor
      */
     public DetailControl() {
-        this.agreementDV = new AgreementDetails(true);
         this.agreementsLV = new AgreementsList();
         this.conceptsLV = new ConceptsList();
         this.agreementsLV.setController(this);
         this.conceptsLV.setController(this);
-        this.agreementDV.setController(this);
     }
 
     /**
@@ -45,7 +44,7 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
      */
     private void fillAgreementsPadron() {
         AgreementsManager am = new AgreementsManager();
-        TaxpayerManager tm = new TaxpayerManager();
+        TaxpayersManager tm = new TaxpayersManager();
         ParametersManager pm = new ParametersManager();
         //Consulting Agreements information.
         List<EnumMap<AgreementsManager.agreement_param, String>> agreementsEL = am.consultAllAgreements();
@@ -67,7 +66,7 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
         //For each EnumMap on paymentsEL
         for (EnumMap<AgreementsManager.agreement_param, String> a : agreementsEL) {
             //Consulting the respecting taxpayer for the agreement.
-            EnumMap<TaxpayerManager.taxpayer_param, String> tpMap
+            EnumMap<TaxpayersManager.taxpayer_param, String> tpMap
                     = tm.consult(Long.parseLong(a.get(AgreementsManager.agreement_param.TAXPAYER)));
             //Consulting the respecting landPropMap for the agreement.
             EnumMap<ParametersManager.concept_param, String> ctMap
@@ -89,12 +88,12 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
             }
             //Array of objects representing a row.
             Object nuevo[] = new Object[]{
-                tpMap.get(TaxpayerManager.taxpayer_param.NAMES)
-                + " " + tpMap.get(TaxpayerManager.taxpayer_param.LASTNAME),
-                tpMap.get(TaxpayerManager.taxpayer_param.DOC_NUMBER),
+                tpMap.get(TaxpayersManager.taxpayer_param.NAMES)
+                + " " + tpMap.get(TaxpayersManager.taxpayer_param.LASTNAME),
+                tpMap.get(TaxpayersManager.taxpayer_param.DOC_NUMBER),
                 a.get(AgreementsManager.agreement_param.AGREEMENT_NUMBER),
                 a.get(AgreementsManager.agreement_param.AMOUNT_OF_DEBT),
-                a.get(AgreementsManager.agreement_param.CUOTS_NUMBER),
+                a.get(AgreementsManager.agreement_param.FEES_NUMBER),
                 ctMap.get(ParametersManager.concept_param.CONCEPT_NAME),
                 status};
             tableModel.addRow(nuevo); //Adding new row at the table model.
@@ -113,6 +112,7 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
         //Table model that is going to be filled with information of the agreements.
         DefaultTableModel tableModel
                 = new DefaultTableModel(null, new String[]{
+            "Identificador",
             "Cuota",
             "Nro. recibo",
             "Monto",
@@ -126,6 +126,7 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
         for (EnumMap<AgreementsManager.payment_param, String> p : paymentsEL) {
             //Array of objects representing a row.
             Object nuevo[] = new Object[]{
+                p.get(AgreementsManager.payment_param.PAYMENT_ID),
                 p.get(AgreementsManager.payment_param.FEE),
                 p.get(AgreementsManager.payment_param.RECEIPT_NUMBER),
                 p.get(AgreementsManager.payment_param.AMOUNT),
@@ -189,38 +190,44 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
      */
     public void showAgreementDetailsView(Long agreementNumber) {
         AgreementsManager am = new AgreementsManager();
-        TaxpayerManager tm = new TaxpayerManager();
+        TaxpayersManager tm = new TaxpayersManager();
         ParametersManager pm = new ParametersManager();
         PropertyManager lpm = new PropertyManager();
+
+        //Preparing view
+        agreementDV = new AgreementDetails();
+        agreementDV.setController(this);
+
         //Consulting the agreement.
         EnumMap<AgreementsManager.agreement_param, String> agreementMap
                 = am.consultAgreement(agreementNumber);
         agreementDV.setTfagreementNumber(
                 agreementMap.get(AgreementsManager.agreement_param.AGREEMENT_NUMBER));
-        agreementDV.setTfAmountOfDebt("$ "
-                + agreementMap.get(AgreementsManager.agreement_param.AMOUNT_OF_DEBT));
+        agreementDV.setTfAmountOfDebt(
+                "$ " + agreementMap.get(AgreementsManager.agreement_param.AMOUNT_OF_DEBT));
         agreementDV.setTfCreationDate(
                 agreementMap.get(AgreementsManager.agreement_param.CREATION_DATE));
         agreementDV.setTfExpirationDate(
                 agreementMap.get(AgreementsManager.agreement_param.EXPIRATION_DATE));
         agreementDV.setTfCuotsNumber(
-                agreementMap.get(AgreementsManager.agreement_param.CUOTS_NUMBER));
+                agreementMap.get(AgreementsManager.agreement_param.FEES_NUMBER));
         agreementDV.setTfDescription(
                 agreementMap.get(AgreementsManager.agreement_param.DESCRIPTION));
         //Consulting the taxpayer.
-        EnumMap<TaxpayerManager.taxpayer_param, String> taxpayerMap
-                = tm.consult(Long.parseLong(agreementMap.get(AgreementsManager.agreement_param.TAXPAYER)));
+        EnumMap<TaxpayersManager.taxpayer_param, String> taxpayerMap
+                = tm.consult(Long.parseLong(
+                        agreementMap.get(AgreementsManager.agreement_param.TAXPAYER)));
         agreementDV.setTfTaxpayerName(
-                taxpayerMap.get(TaxpayerManager.taxpayer_param.NAMES));
+                taxpayerMap.get(TaxpayersManager.taxpayer_param.NAMES));
         agreementDV.setTfTaxpayerLastname(
-                taxpayerMap.get(TaxpayerManager.taxpayer_param.LASTNAME));
+                taxpayerMap.get(TaxpayersManager.taxpayer_param.LASTNAME));
         agreementDV.setTfTaxpayerDocNumber(
-                taxpayerMap.get(TaxpayerManager.taxpayer_param.DOC_NUMBER));
+                taxpayerMap.get(TaxpayersManager.taxpayer_param.DOC_NUMBER));
         agreementDV.setTfTaxpayerAddress(
-                taxpayerMap.get(TaxpayerManager.taxpayer_param.ADDRESS));
+                taxpayerMap.get(TaxpayersManager.taxpayer_param.ADDRESS));
         agreementDV.setTfTaxpayerPhone(
-                taxpayerMap.get(TaxpayerManager.taxpayer_param.PHONE_NUMBER));
-        //Consulting the landPropMap.
+                taxpayerMap.get(TaxpayersManager.taxpayer_param.PHONE_NUMBER));
+        //Consulting the concept.
         EnumMap<ParametersManager.concept_param, String> conceptMap
                 = pm.consult(Integer.parseInt(agreementMap.get(AgreementsManager.agreement_param.CONCEPT)));
         agreementDV.setTfConcept(conceptMap.get(ParametersManager.concept_param.CONCEPT_CODE) + " : "
@@ -256,17 +263,30 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
         /**
          * Checking agreement status...
          */
+        agreementDV.setLocationRelativeTo(null);
+        UsersManager um = UsersManager.getUsersManager();
+        if (um.checkUserPermitions() == true) {//If user is administrator
+            agreementDV.enableAdminFunctions();
+        }
         if (agreementMap.get(
                 AgreementsManager.agreement_param.STATUS).equals(
                         AgreementsManager.agreement_status.WITHOUT_EFFECT.toString())) {
             agreementDV.visibleAsWithoutEffect();
         } else {
-            fillAgreementPaymentsList();
+            agreementDV.setVisible(true);
             agreementDV.setLocationRelativeTo(null);
+            fillAgreementPaymentsList();
             agreementDV.setVisible(true);
         }
+
     }
 
+    /**
+     * Overrides actionPerformed so it can process all actions coming from
+     * views.
+     *
+     * @param ae
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         RegistrationControl rc;
@@ -279,7 +299,7 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
             case "LEAVE_WITHOUT_EFFECT":
                 if (JOptionPane.showConfirmDialog(
                         agreementDV,
-                        "¿Esta seguro que desea dejar sin efecto el convenio?",
+                        "Si deja sin  efecto el convenio, no podra realizar operaciones sobre el mismo ¿Desea continuar?",
                         "Advertencia!",
                         JOptionPane.YES_NO_OPTION) == 0) {
                     am = new AgreementsManager(); //New agreements manager
@@ -296,9 +316,54 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
                         agreementDV.getTfFee());
                 fillAgreementPaymentsList();//Refiiling payments table.
                 break;
+            case "MAKE_AGREEMENTS_PADRON_REPORT":
+                am = new AgreementsManager();
+                am.agreementsReport();
+                break;
+            case "MODIFY_AGREEMENT":
+                if (JOptionPane.showConfirmDialog(
+                        agreementDV,
+                        "Esta ventana se cerrará ¿Desea continuar?",
+                        "Informacion!",
+                        JOptionPane.YES_NO_OPTION) == 0) {
+                    rc = new RegistrationControl();
+                    rc.showAgreementModificationView(
+                            Long.parseLong(agreementDV.getTfAgreementNumber()));
+                    agreementDV.dispose();
+                }
+                break;
+            case "DELETE_PAYMENT":
+                if (JOptionPane.showConfirmDialog(
+                        agreementDV,
+                        "¿Esta seguro de que desea eliminar el pago?",
+                        "Advertencia!",
+                        JOptionPane.YES_NO_OPTION) == 0) {
+                    am = new AgreementsManager();
+                    if (am.deletePayment(
+                            Long.parseLong(agreementDV.getSelectedPaymentID()),
+                            Long.parseLong(agreementDV.getSelectedReceiptNumber())) == true) {
+                        JOptionPane.showMessageDialog(
+                                agreementDV,
+                                "La eliminacion fue correcta",
+                                "Informacion!",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        fillAgreementPaymentsList();
+                    } else {
+                        JOptionPane.showMessageDialog(
+                                agreementDV,
+                                "La eliminacion no se pudo realizar",
+                                "Advertencia!",
+                                JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+                break;
         }
     }
 
+    /**
+     *
+     * @param me
+     */
     @Override
     public void mousePressed(MouseEvent me) {
         if (me.getClickCount() == 2) {
@@ -306,6 +371,10 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
         }
     }
 
+    /**
+     *
+     * @param ke
+     */
     @Override
     public void keyReleased(KeyEvent ke) {
         if (ke.getSource().equals(agreementsLV.getTfSearch())) {

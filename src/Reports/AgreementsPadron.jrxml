@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="61849f35-9510-49dd-ab6d-08ad06c0e58f">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT names, lastname, id_docNumber, id_agreementNumber, amountOfDebt, feesNumber, status, conceptName FROM concept INNER JOIN (agreement INNER JOIN taxpayer ON agreement.taxpayer_id_docNumber = taxpayer.id_docNumber) ON agreement.concept_id_concept = concept.id_conceptCode]]>
+	</queryString>
+	<field name="names" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lastname" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id_docNumber" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id_agreementNumber" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="amountOfDebt" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="feesNumber" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="status" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="conceptName" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="73" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="802" height="73" uuid="105a0972-7704-4b25-a006-9afa2f2118fa"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" size="20"/>
+				</textElement>
+				<text><![CDATA[Padron General de Convenios]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="24" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="22" width="802" height="2" uuid="e4be1040-a69c-4ad4-9c7a-63b23a384ccf"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="0" width="316" height="20" uuid="18b6e34c-dc51-4ed6-bf46-cf18ec945cdd"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[	TITULAR DEL CONVENIO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="316" y="0" width="1" height="23" uuid="bc8cd626-c882-4103-a5c4-63fa71ff1088"/>
+			</line>
+			<staticText>
+				<reportElement x="317" y="0" width="100" height="20" uuid="4ca0cd16-4c70-4392-b53a-819903b43a84"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NRO. CONVENIO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="417" y="0" width="1" height="23" uuid="3efeaf13-db18-4556-b03e-b3a5bed59124"/>
+			</line>
+			<staticText>
+				<reportElement x="418" y="0" width="100" height="20" uuid="6261847d-6c0e-4c81-8fc0-dacbdd07c85d"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[MONTO DE DEUDA]]></text>
+			</staticText>
+			<line>
+				<reportElement x="518" y="0" width="1" height="23" uuid="214b59ce-e693-4e7d-b1c2-4726fb35db9a"/>
+			</line>
+			<staticText>
+				<reportElement x="519" y="0" width="49" height="20" uuid="bde9b9a5-9827-4075-a9ac-c50cc49cd31c"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CUOTAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="689" y="0" width="113" height="20" uuid="0f89c382-dd25-4711-89d4-1adbfa3a45fb"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ESTADO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="568" y="0" width="1" height="23" uuid="b6c03014-2c86-473f-826c-6d265b7af7ca"/>
+			</line>
+			<staticText>
+				<reportElement x="569" y="0" width="119" height="20" uuid="98c3c650-6925-470e-b1fc-2a8c8dec7860"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONCEPTO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="688" y="0" width="1" height="23" uuid="4845135f-dab9-41db-b7bf-f866dece18fd"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="28" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="4" width="135" height="20" uuid="bf006f67-2ec1-4ab2-8e3d-341a2d3a48fb"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{names}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="135" y="4" width="97" height="20" uuid="bb018fe7-9454-4989-9c89-173895a38fa0"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{lastname}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement x="232" y="4" width="84" height="20" uuid="5b01fdbb-b5a0-481e-8a6d-74a5cd7fc88b"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{id_docNumber}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="316" y="-1" width="1" height="28" uuid="d6f3c115-ec40-4c31-9fd0-6c520c655d63"/>
+			</line>
+			<textField>
+				<reportElement x="317" y="4" width="100" height="20" uuid="6f547b0c-89d6-4460-944a-167e909ebef4"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{id_agreementNumber}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="26" width="802" height="1" uuid="f2f06d59-beed-463f-bc81-71db501cbd7b"/>
+			</line>
+			<line>
+				<reportElement x="417" y="-1" width="1" height="28" uuid="f7606feb-7da0-46a8-9c5d-13860ecb2215"/>
+			</line>
+			<textField pattern="#,##0.00">
+				<reportElement x="418" y="4" width="100" height="20" uuid="626a891e-9df2-4021-8bdc-2957d7af0abf"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{amountOfDebt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="519" y="4" width="49" height="20" uuid="5a293db0-3f6a-478e-bdea-87003c75ded2"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{feesNumber}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="689" y="4" width="113" height="20" uuid="63f6f762-c0f8-4bfc-91f9-5b94b5dae75d"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="568" y="-1" width="1" height="28" uuid="282ce91a-8ef4-43d8-873e-89f895508d1c"/>
+			</line>
+			<line>
+				<reportElement x="518" y="-1" width="1" height="28" uuid="1b68f756-48fc-4280-9b4d-5f0883e87164"/>
+			</line>
+			<line>
+				<reportElement x="688" y="0" width="1" height="27" uuid="e95b9be7-3de9-49ee-a8d8-f6c55651bbf5"/>
+			</line>
+			<textField>
+				<reportElement x="569" y="4" width="119" height="20" uuid="d90f2dd3-410a-48a7-932e-343e33d0cefd"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{conceptName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="0" y="0" width="100" height="20" uuid="c42f8686-d3e7-4333-bf5b-d186763ad393"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="702" y="0" width="100" height="20" uuid="cb435c65-c8c3-40f2-a835-81a02e02af30"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="20" splitType="Stretch"/>
+	</summary>
+</jasperReport>

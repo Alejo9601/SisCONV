@@ -7,12 +7,13 @@ package View;
 
 import Controller.RegistrationControl;
 import datechooser.beans.DateChooserDialog;
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import javax.swing.JOptionPane;
 
 /**
  *
- * @author usuario
+ * @author Alejandro Juarez
  */
 public class PaymentRegistration extends javax.swing.JDialog {
 
@@ -25,6 +26,20 @@ public class PaymentRegistration extends javax.swing.JDialog {
     public PaymentRegistration(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+    }
+
+    /**
+     *
+     * @param expression
+     * @return
+     */
+    private boolean isNumeric(String expression) {
+        try {
+            Double.valueOf(expression);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     /**
@@ -44,7 +59,7 @@ public class PaymentRegistration extends javax.swing.JDialog {
      */
     public void setCmbFee(String feesNumber) {
         int fn = Integer.parseInt(feesNumber);
-        for(int i = 0; i < fn; i++){
+        for (int i = 0; i < fn; i++) {
             cmbFee.addItem(Integer.toString(i + 1));
         }
     }
@@ -62,7 +77,7 @@ public class PaymentRegistration extends javax.swing.JDialog {
      * @return
      */
     public String getTfAmount() {
-        return this.tfAmount.getText();
+        return this.tfAmount.getText().split(" ")[1];
     }
 
     /**
@@ -96,14 +111,29 @@ public class PaymentRegistration extends javax.swing.JDialog {
     public String getCmbFee() {
         return this.cmbFee.getSelectedItem().toString();
     }
-    
+
     public boolean verifyInformation() {
         if (tfReceiptNumber.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "El nro de recibo es obligatorio", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    this,
+                    "El nro de recibo es obligatorio",
+                    "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
             return false;
         }
         if (tfAmount.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "EL monto del pago es obligatorio", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    this,
+                    "El monto del pago es obligatorio",
+                    "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        } else if (!isNumeric(tfAmount.getText().split(" ")[1])) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Por favor ingrese un monto valido",
+                    "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
             return false;
         }
         if (tfPaymentDate.getText().equals("")) {
@@ -200,6 +230,11 @@ public class PaymentRegistration extends javax.swing.JDialog {
 
         tfAmount.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tfAmount.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfAmount.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfAmountKeyTyped(evt);
+            }
+        });
 
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Monto :");
@@ -207,6 +242,7 @@ public class PaymentRegistration extends javax.swing.JDialog {
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Fecha de Pago :");
 
+        tfPaymentDate.setEditable(false);
         tfPaymentDate.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tfPaymentDate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
@@ -317,6 +353,21 @@ public class PaymentRegistration extends javax.swing.JDialog {
         this.tfPaymentDate.setText(calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1)
                 + "-" + calendar.get(Calendar.DAY_OF_MONTH));
     }//GEN-LAST:event_btnDateActionPerformed
+
+    private void tfAmountKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfAmountKeyTyped
+//        DecimalFormat df = new DecimalFormat("#######.##");
+        String posibleNumber = tfAmount.getText();
+        if ((!posibleNumber.equals("")) && (!posibleNumber.contains("$"))) {//Gets inside just one time
+            tfAmount.setText("$ " + tfAmount.getText());
+        } else if (tfAmount.getText().equals("$ ")) { //If only exists this symbol
+            tfAmount.setText("");
+        }
+//        } else if (posibleNumber.contains("$") && isNumeric(posibleNumber.split(" ")[1])) { //If contains $ and something else
+//            posibleNumber = df.format(Double.parseDouble(posibleNumber.split(" ")[1]));
+//            tfAmount.setText("$ " + posibleNumber);
+//        }
+//        posibleNumber = df.format(Double.parseDouble(posibleNumber));
+    }//GEN-LAST:event_tfAmountKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

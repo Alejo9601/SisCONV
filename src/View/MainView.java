@@ -17,6 +17,14 @@ public class MainView extends javax.swing.JFrame {
     public MainView() {
         initComponents();
     }
+    
+    /**
+     * 
+     */
+    public void enableAdminFunctions() {
+        menuAdministrator.setEnabled(true);
+        btnSystemParameters.setEnabled(true);
+    }
 
     /**
      * Will specify the controller of the view.
@@ -24,29 +32,18 @@ public class MainView extends javax.swing.JFrame {
      * @param control
      */
     public void setController(MainControl control) {
-
         btnCreateAgreement.addActionListener(control);
         btnCreateAgreement.setActionCommand("REGISTER_AGREEMENT");
         btnAgreementsList.addActionListener(control);
         btnAgreementsList.setActionCommand("AGREEMENTS_LIST");
         miConceptList.addActionListener(control);
         miConceptList.setActionCommand("CONCEPTS_LIST");
-        btnUserRegistration.addActionListener(control);
-        btnUserRegistration.setActionCommand("USER_REGISTRATION");
-
+        btnUsuariosDelSistema.addActionListener(control);
+        btnUsuariosDelSistema.setActionCommand("USERS_LIST");
+        btnChangeUserPassword.addActionListener(control);
+        btnChangeUserPassword.setActionCommand("UPDATE_USER_PASSWORD");
     }
 
-//    /**
-//     * Will show the agreement list or not, depending en the parameter.
-//     * @param indicator
-//     */
-//    public void showAgreementList(boolean indicator) {
-//    
-//        AgreementsList aView = new AgreementsList();
-//        aView.setVisible(true);
-//        setLocationRelativeTo(null);
-//    
-//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -70,13 +67,12 @@ public class MainView extends javax.swing.JFrame {
         panelImage2 = new org.edisoncor.gui.panel.PanelImage();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenu4 = new javax.swing.JMenu();
+        btnSystemParameters = new javax.swing.JMenu();
         miConceptList = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu5 = new javax.swing.JMenu();
-        btnUserRegistration = new javax.swing.JMenuItem();
+        menuAdministrator = new javax.swing.JMenu();
+        btnUsuariosDelSistema = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        btnChangeUserPassword = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SisCONV - SISTEMA DE GESTION DE CONVENIOS");
@@ -118,6 +114,7 @@ public class MainView extends javax.swing.JFrame {
         btnTaxPayerList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ListOfTaxpayer.png"))); // NOI18N
         btnTaxPayerList.setText("  Padron de Contribuyentes");
         btnTaxPayerList.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 153), 23));
+        btnTaxPayerList.setEnabled(false);
         btnTaxPayerList.setFocusPainted(false);
         btnTaxPayerList.setFocusable(false);
         btnTaxPayerList.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -181,6 +178,7 @@ public class MainView extends javax.swing.JFrame {
         btnPaymentsOfToday.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/if_Purse_669953.png"))); // NOI18N
         btnPaymentsOfToday.setText("  Historial de Pagos ");
         btnPaymentsOfToday.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 153), 23));
+        btnPaymentsOfToday.setEnabled(false);
         btnPaymentsOfToday.setFocusable(false);
         btnPaymentsOfToday.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnPaymentsOfToday.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -270,39 +268,36 @@ public class MainView extends javax.swing.JFrame {
         jMenu1.setText(" Ajustes");
         jMenu1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        jMenu4.setText("Parametros del Sistema");
-        jMenu4.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        btnSystemParameters.setText("Parametros del Sistema");
+        btnSystemParameters.setEnabled(false);
+        btnSystemParameters.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
 
         miConceptList.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         miConceptList.setText("Conceptos");
-        jMenu4.add(miConceptList);
+        btnSystemParameters.add(miConceptList);
 
-        jMenu1.add(jMenu4);
+        jMenu1.add(btnSystemParameters);
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Administrator.png"))); // NOI18N
-        jMenu2.setText(" Administrador ");
-        jMenu2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        menuAdministrator.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Administrator.png"))); // NOI18N
+        menuAdministrator.setText(" Administrador ");
+        menuAdministrator.setEnabled(false);
+        menuAdministrator.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        jMenu5.setText("Usuarios");
-        jMenu5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnUsuariosDelSistema.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnUsuariosDelSistema.setText("Usuarios del sistema ");
+        menuAdministrator.add(btnUsuariosDelSistema);
 
-        btnUserRegistration.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnUserRegistration.setText("Registrar");
-        jMenu5.add(btnUserRegistration);
-
-        jMenu2.add(jMenu5);
-
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(menuAdministrator);
 
         jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Profile.png"))); // NOI18N
         jMenu3.setText(" Mi Perfil ");
         jMenu3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        jMenuItem1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        jMenuItem1.setText("Cambiar contraseña");
-        jMenu3.add(jMenuItem1);
+        btnChangeUserPassword.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        btnChangeUserPassword.setText("Cambiar contraseña");
+        jMenu3.add(btnChangeUserPassword);
 
         jMenuBar1.add(jMenu3);
 
@@ -379,23 +374,22 @@ public class MainView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgreementsList;
+    private javax.swing.JMenuItem btnChangeUserPassword;
     private javax.swing.JButton btnCreateAgreement;
     private javax.swing.JButton btnPaymentsOfToday;
+    private javax.swing.JMenu btnSystemParameters;
     private javax.swing.JButton btnTaxPayerList;
-    private javax.swing.JMenuItem btnUserRegistration;
+    private javax.swing.JMenuItem btnUsuariosDelSistema;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
+    private javax.swing.JMenu menuAdministrator;
     private javax.swing.JMenuItem miConceptList;
     private org.edisoncor.gui.panel.PanelImage panelImage1;
     private org.edisoncor.gui.panel.PanelImage panelImage2;

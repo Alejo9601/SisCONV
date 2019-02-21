@@ -1,6 +1,5 @@
 package Model;
 
-import Model.DTO.HibernateUtil;
 import Model.DTO.LandProperty;
 import Model.DTO.Vehicle;
 import java.util.ArrayList;
@@ -220,7 +219,7 @@ public class PropertyManager {
         LandProperty landProperty = null;
         try {
             SQLQuery consulta = session.createSQLQuery(
-                    "SELECT * FROM land_property WHERE land_property.id_landProperty = " + idLandProp);
+                    "SELECT * FROM land_property WHERE land_property.id_property = " + idLandProp);
             consulta.addEntity(LandProperty.class);
             landProperty = (LandProperty) consulta.uniqueResult();
         } catch (Exception e) {

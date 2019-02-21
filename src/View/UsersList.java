@@ -1,7 +1,6 @@
-
 package View;
 
-import Controller.DetailControl;
+import Controller.UserControl;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -10,12 +9,12 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Alejandro Juarez
  */
-public class ConceptsList extends javax.swing.JFrame {
+public class UsersList extends javax.swing.JFrame {
 
     /**
-     * Creates new form ConceptsDetails
+     * Creates new form
      */
-    public ConceptsList() {
+    public UsersList() {
         initComponents();
     }
 
@@ -24,9 +23,11 @@ public class ConceptsList extends javax.swing.JFrame {
      *
      * @param control
      */
-    public void setController(DetailControl control) {
-        btnRegisterConcept.addActionListener(control);
-        btnRegisterConcept.setActionCommand("CONCEPT_REGISTRATION");
+    public void setController(UserControl control) {
+        btnRegisterUser.addActionListener(control);
+        btnRegisterUser.setActionCommand("USER_REGISTRATION");
+        btnDeleteUser.addActionListener(control);
+        btnDeleteUser.setActionCommand("USER_DELETE");
     }
 
     /**
@@ -38,13 +39,13 @@ public class ConceptsList extends javax.swing.JFrame {
         //Indicamos la alineacion de las columnas
         DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
         tcr.setHorizontalAlignment(SwingConstants.CENTER); //CENTER o LEFT
-        tblConceptsDetail.setModel(model);  //Setting model
-        tblConceptsDetail.setRowHeight(25); //Setting rows height
-        tblConceptsDetail.setFont(new java.awt.Font("Tahoma", 0, 18)); //Changing font
-        tblConceptsDetail.getTableHeader().setReorderingAllowed(false); //Disabling reordering columns
+        tblUsers.setModel(model);  //Setting model
+        tblUsers.setRowHeight(25); //Setting rows height
+        tblUsers.setFont(new java.awt.Font("Tahoma", 0, 18)); //Changing font
+        tblUsers.getTableHeader().setReorderingAllowed(false); //Disabling reordering columns
         //Indico la columna que quiero alinear siendo 1 el numero de columna
-        for (int i = 0; i < tblConceptsDetail.getColumnCount(); i++) {
-            tblConceptsDetail.getColumnModel().getColumn(i).setCellRenderer(tcr);
+        for (int i = 0; i < tblUsers.getColumnCount(); i++) {
+            tblUsers.getColumnModel().getColumn(i).setCellRenderer(tcr);
         }
     }
 
@@ -59,12 +60,11 @@ public class ConceptsList extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        btnRegisterConcept = new javax.swing.JButton();
-        btnModifyConcept = new javax.swing.JButton();
-        btnDeleteConcept = new javax.swing.JButton();
+        btnRegisterUser = new javax.swing.JButton();
+        btnDeleteUser = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tblConceptsDetail = new javax.swing.JTable();
+        tblUsers = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("DETALLE DE CONCEPTOS");
@@ -75,21 +75,12 @@ public class ConceptsList extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        btnRegisterConcept.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnRegisterConcept.setText("Registrar");
-        btnRegisterConcept.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegisterConceptActionPerformed(evt);
-            }
-        });
+        btnRegisterUser.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnRegisterUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/New.png"))); // NOI18N
 
-        btnModifyConcept.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnModifyConcept.setText("Modificar");
-        btnModifyConcept.setEnabled(false);
-
-        btnDeleteConcept.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnDeleteConcept.setText("Eliminar");
-        btnDeleteConcept.setEnabled(false);
+        btnDeleteUser.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnDeleteUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Delete.png"))); // NOI18N
+        btnDeleteUser.setEnabled(false);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -97,28 +88,25 @@ public class ConceptsList extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnRegisterConcept, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnModifyConcept, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
-                    .addComponent(btnDeleteConcept, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnDeleteUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRegisterUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(199, Short.MAX_VALUE)
-                .addComponent(btnRegisterConcept)
-                .addGap(18, 18, 18)
-                .addComponent(btnModifyConcept)
-                .addGap(18, 18, 18)
-                .addComponent(btnDeleteConcept)
-                .addGap(188, 188, 188))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(220, 220, 220)
+                .addComponent(btnRegisterUser)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnDeleteUser)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        tblConceptsDetail.setModel(new javax.swing.table.DefaultTableModel(
+        tblUsers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -129,7 +117,12 @@ public class ConceptsList extends javax.swing.JFrame {
 
             }
         ));
-        jScrollPane3.setViewportView(tblConceptsDetail);
+        tblUsers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblUsersMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tblUsers);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -137,14 +130,14 @@ public class ConceptsList extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 560, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 796, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 513, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -155,19 +148,17 @@ public class ConceptsList extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(4, 4, 4)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(4, 4, 4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(4, 4, 4)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(4, 4, 4))
         );
 
@@ -185,19 +176,21 @@ public class ConceptsList extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnRegisterConceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterConceptActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRegisterConceptActionPerformed
+    private void tblUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUsersMouseClicked
+        if (tblUsers.getSelectedRow() != -1) {
+            btnDeleteUser.setEnabled(true);
+        }
+    }//GEN-LAST:event_tblUsersMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnDeleteConcept;
-    private javax.swing.JButton btnModifyConcept;
-    private javax.swing.JButton btnRegisterConcept;
+    private javax.swing.JButton btnDeleteUser;
+    private javax.swing.JButton btnRegisterUser;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable tblConceptsDetail;
+    private javax.swing.JTable tblUsers;
     // End of variables declaration//GEN-END:variables
+
 }

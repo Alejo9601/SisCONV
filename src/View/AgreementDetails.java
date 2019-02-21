@@ -14,13 +14,18 @@ public class AgreementDetails extends javax.swing.JFrame {
     /**
      * Creates new form Agreement
      *
-     * @param isAdministrator
      */
-    public AgreementDetails(Boolean isAdministrator) {
+    public AgreementDetails() {
         initComponents();
-        if (isAdministrator == true) {
-            enableAdminFunctions();
-        }
+    }
+
+    /**
+     * Will enable admin functions.
+     */
+    public final void enableAdminFunctions() {
+        btnModify.setEnabled(true);
+        btnLeaveWithoutEffect.setEnabled(true);
+        btnDeletePayment.setEnabled(true);
     }
 
     /**
@@ -39,27 +44,40 @@ public class AgreementDetails extends javax.swing.JFrame {
         for (int i = 0; i < tblPayments.getColumnCount(); i++) {
             tblPayments.getColumnModel().getColumn(i).setCellRenderer(tcr);
         }
+        //Making first column not visible for users.
+        tblPayments.getColumn(tblPayments.getColumnName(0)).setWidth(0);
+        tblPayments.getColumn(tblPayments.getColumnName(0)).setMinWidth(0);
+        tblPayments.getColumn(tblPayments.getColumnName(0)).setMaxWidth(0);
+    }
+
+    /**
+     * Will return the selected receipt number on table.
+     *
+     * @return
+     */
+    public String getSelectedReceiptNumber() {
+        return tblPayments.getValueAt(tblPayments.getSelectedRow(), 2).toString();
+    }
+
+    /**
+     * Will return the selected receipt number on table.
+     *
+     * @return
+     */
+    public String getSelectedPaymentID() {
+        return tblPayments.getValueAt(tblPayments.getSelectedRow(), 0).toString();
     }
 
     /**
      * Will show this view disabling all the functions.
      */
     public void visibleAsWithoutEffect() {
-        btnErasePayment.setEnabled(false);
+        btnDeletePayment.setEnabled(false);
         btnLeaveWithoutEffect.setEnabled(false);
         btnModify.setEnabled(false);
         btnNewPayment.setEnabled(false);
         btnGenerateReport.setEnabled(false);
         this.setVisible(true);
-    }
-
-    /**
-     * Will enable admin functions.
-     */
-    public final void enableAdminFunctions() {
-        btnModify.setEnabled(true);
-        btnLeaveWithoutEffect.setEnabled(true);
-        btnErasePayment.setEnabled(true);
     }
 
     /**
@@ -72,6 +90,10 @@ public class AgreementDetails extends javax.swing.JFrame {
         btnLeaveWithoutEffect.setActionCommand("LEAVE_WITHOUT_EFFECT");
         btnNewPayment.addActionListener(control);
         btnNewPayment.setActionCommand("PAYMENT_REGISTRATION");
+        btnModify.addActionListener(control);
+        btnModify.setActionCommand("MODIFY_AGREEMENT");
+        btnDeletePayment.addActionListener(control);
+        btnDeletePayment.setActionCommand("DELETE_PAYMENT");
     }
 
     /**
@@ -152,7 +174,7 @@ public class AgreementDetails extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPayments = new javax.swing.JTable();
         btnNewPayment = new javax.swing.JButton();
-        btnErasePayment = new javax.swing.JButton();
+        btnDeletePayment = new javax.swing.JButton();
 
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "TITULAR DEL CONVENIO", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("sansserif", 0, 14), new java.awt.Color(0, 0, 0))); // NOI18N
@@ -555,15 +577,20 @@ public class AgreementDetails extends javax.swing.JFrame {
             }
         ));
         tblPayments.getTableHeader().setReorderingAllowed(false);
+        tblPayments.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblPaymentsMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblPayments);
 
         btnNewPayment.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnNewPayment.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/New.png"))); // NOI18N
 
-        btnErasePayment.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        btnErasePayment.setForeground(new java.awt.Color(255, 51, 51));
-        btnErasePayment.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Delete.png"))); // NOI18N
-        btnErasePayment.setEnabled(false);
+        btnDeletePayment.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        btnDeletePayment.setForeground(new java.awt.Color(255, 51, 51));
+        btnDeletePayment.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Delete.png"))); // NOI18N
+        btnDeletePayment.setEnabled(false);
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -575,7 +602,7 @@ public class AgreementDetails extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnNewPayment, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnErasePayment, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(btnDeletePayment, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap(10, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
@@ -587,7 +614,7 @@ public class AgreementDetails extends javax.swing.JFrame {
                 .addGap(58, 58, 58)
                 .addComponent(btnNewPayment)
                 .addGap(18, 18, 18)
-                .addComponent(btnErasePayment)
+                .addComponent(btnDeletePayment)
                 .addContainerGap(111, Short.MAX_VALUE))
         );
 
@@ -686,6 +713,10 @@ public class AgreementDetails extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tblPaymentsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPaymentsMouseClicked
+        btnDeletePayment.setEnabled(true);
+    }//GEN-LAST:event_tblPaymentsMouseClicked
 
     /**
      * Sets the agreement number.
@@ -848,7 +879,7 @@ public class AgreementDetails extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnErasePayment;
+    private javax.swing.JButton btnDeletePayment;
     private javax.swing.JButton btnGenerateReport;
     private javax.swing.JButton btnLeaveWithoutEffect;
     private javax.swing.JButton btnModify;

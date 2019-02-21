@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.UsersManager;
 import View.MainView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,23 +25,29 @@ public class MainControl implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent event) {
-        RegistrationControl rc = new RegistrationControl();
-        DetailControl dc = new DetailControl();
-        UserControl uc = new UserControl();
+        RegistrationControl rc;
+        DetailControl dc;
+        UserControl uc;
         switch (event.getActionCommand()) {
             case "REGISTER_AGREEMENT":
+                rc = new RegistrationControl();
                 rc.showAgreementRegistrationView(true);
                 break;
             case "AGREEMENTS_LIST":
+                dc = new DetailControl();
                 dc.ShowAgreementListView();
                 break;
-            case "PAYMENTS_LIST":
-                break;
             case "CONCEPTS_LIST":
+                dc = new DetailControl();
                 dc.showConceptsListView();
                 break;
-            case "USER_REGISTRATION":
-                uc.showRegistrationView(mainV);
+            case "USERS_LIST":
+                uc = new UserControl();
+                uc.showListView();
+                break;
+            case "UPDATE_USER_PASSWORD":
+                uc = new UserControl();
+                uc.showPasswordChangeView(mainV);
                 break;
         }
     }
@@ -49,6 +56,10 @@ public class MainControl implements ActionListener {
      * Will show the MainView.
      */
     void showPrincipalView() {
+        UsersManager um = UsersManager.getUsersManager();
+        if (um.checkUserPermitions() == true) {
+            mainV.enableAdminFunctions();
+        }
         mainV.setVisible(true);
         mainV.setLocationRelativeTo(null);
     }

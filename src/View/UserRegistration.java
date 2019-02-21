@@ -1,7 +1,6 @@
 package View;
 
 import Controller.UserControl;
-import java.util.Arrays;
 import javax.swing.JOptionPane;
 
 /**
@@ -39,19 +38,35 @@ public class UserRegistration extends javax.swing.JDialog {
     public boolean verifyInformation() {
 
         if (tfNames.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "El nombre del usuario es obligatorio", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    this, 
+                    "El nombre del usuario es obligatorio", 
+                    "Advertencia", 
+                    JOptionPane.WARNING_MESSAGE);
             return false;
         }
         if (tfLastname.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "EL apellido del usuario es obligatorio", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    this, 
+                    "EL apellido del usuario es obligatorio", 
+                    "Advertencia", 
+                    JOptionPane.WARNING_MESSAGE);
             return false;
         }
         if (tfNickName.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "El nick del usuario es obligatorio", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    this,
+                    "El nick del usuario es obligatorio", 
+                    "Advertencia", 
+                    JOptionPane.WARNING_MESSAGE);
             return false;
         }
         if (tfPassword.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "La contraseña es obligatoria", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    this, 
+                    "La contraseña es obligatoria", 
+                    "Advertencia", 
+                    JOptionPane.WARNING_MESSAGE);
             return false;
         }
         return true;
@@ -127,7 +142,8 @@ public class UserRegistration extends javax.swing.JDialog {
         setBackground(new java.awt.Color(153, 153, 153));
         setUndecorated(true);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        jPanel1.setBackground(new java.awt.Color(0, 102, 153));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 153), 3));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         btnSaveTaxpayer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N

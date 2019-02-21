@@ -26,6 +26,7 @@ public class Agreement implements java.io.Serializable {
     /**
      * Added by me.
      *
+     * @param idAgreementNumber
      * @param amountOfDebt
      * @param feesNumber
      * @param creationDate
@@ -33,7 +34,8 @@ public class Agreement implements java.io.Serializable {
      * @param description
      * @param status
      */
-    public Agreement(double amountOfDebt, int feesNumber, Date creationDate, Date expirationDate, String description, String status) {
+    public Agreement(Long idAgreementNumber, double amountOfDebt, int feesNumber, Date creationDate, Date expirationDate, String description, String status) {
+        this.idAgreementNumber = idAgreementNumber;
         this.amountOfDebt = amountOfDebt;
         this.feesNumber = feesNumber;
         this.creationDate = creationDate;
@@ -81,6 +83,15 @@ public class Agreement implements java.io.Serializable {
     /**
      * Added by me.
      *
+     * @param landPropertyIdentifier
+     */
+    public void setLandProperty(Long landPropertyIdentifier) {
+        this.landProperty = new LandProperty(landPropertyIdentifier);
+    }
+
+    /**
+     * Added by me.
+     *
      * @return
      */
     public Long getTaxpayerID() {
@@ -95,7 +106,7 @@ public class Agreement implements java.io.Serializable {
     public int getConceptID() {
         return this.concept.getIdConceptCode();
     }
-    
+
     /**
      * Added by me.
      *
@@ -104,7 +115,7 @@ public class Agreement implements java.io.Serializable {
     public Long getVehicleID() {
         return this.vehicle.getIdVehicle();
     }
-    
+
     /**
      * Added by me.
      *
@@ -113,7 +124,7 @@ public class Agreement implements java.io.Serializable {
     public Long getLandPropertyID() {
         return this.landProperty.getIdProperty();
     }
-   
+
     public Agreement() {
     }
 
