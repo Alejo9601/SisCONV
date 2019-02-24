@@ -96,6 +96,28 @@ public class PropertyManager {
     }
 
     /**
+     * Gets the landProperty for the specified id.
+     *
+     * @param domain
+     * @return
+     */
+    public EnumMap<vehicle_param, String> consultVehicle(String domain) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Vehicle vehicle = null;
+        try {
+            SQLQuery consulta = session.createSQLQuery(
+                    "SELECT * FROM vehicle WHERE vehicle.domain = '" + domain + "'");
+            consulta.addEntity(Vehicle.class);
+            vehicle = (Vehicle) consulta.uniqueResult();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Excepcion consultando el vehiculo" + e);
+        } finally {
+            session.close();
+        }
+        return vehicleOnEnumMap(vehicle);
+    }
+
+    /**
      * Will extract landProp info from EnumMap.
      *
      * @param vehicleMap
@@ -240,7 +262,6 @@ public class PropertyManager {
         LandProperty landProp = new LandProperty(
                 landPropMap.get(landProperty_param.APPLE),
                 landPropMap.get(landProperty_param.BATCH),
-                landPropMap.get(landProperty_param.ADDRESS),
                 landPropMap.get(landProperty_param.DECREE));
         return landProp;
     }

@@ -1,0 +1,8 @@
+  /**
+     * Added by me.
+     *
+     * @param landPropertyIdentifier
+     */
+    public LandProperty(Long landPropertyIdentifier) {
+        this.idProperty = landPropertyIdentifier;
+    }

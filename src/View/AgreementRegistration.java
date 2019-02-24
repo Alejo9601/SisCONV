@@ -2,6 +2,8 @@ package View;
 
 import Controller.RegistrationControl;
 import datechooser.beans.DateChooserDialog;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import javax.swing.JOptionPane;
 
@@ -34,10 +36,9 @@ public class AgreementRegistration extends javax.swing.JFrame {
     public void showAsPartialModificationView() {
         btnSaveAgreement.setActionCommand("UPDATE_AGREEMENT");
         tfAmountOfDebt.setEnabled(false);
-        tfDateOfCreation.setEnabled(false);
+        tfCreationDate.setEnabled(false);
         btnDateOfCreation.setEnabled(false);
-        tfDateOfExpiration.setEnabled(false);
-        btnDateOfExpiration.setEnabled(false);
+        tfExpirationDate.setEnabled(false);
         cmbSetFees.setEnabled(false);
         cmbConcept.setEnabled(false);
 
@@ -50,10 +51,9 @@ public class AgreementRegistration extends javax.swing.JFrame {
     public void showAsCompleteModificationView() {
         btnSaveAgreement.setActionCommand("UPDATE_AGREEMENT");
         tfAmountOfDebt.setEnabled(true);
-        tfDateOfCreation.setEnabled(true);
+        tfCreationDate.setEnabled(true);
         btnDateOfCreation.setEnabled(true);
-        tfDateOfExpiration.setEnabled(true);
-        btnDateOfExpiration.setEnabled(true);
+        tfExpirationDate.setEnabled(true);
         cmbSetFees.setEnabled(true);
         cmbConcept.setEnabled(true);
 
@@ -172,7 +172,7 @@ public class AgreementRegistration extends javax.swing.JFrame {
      * @param dateOfCreation
      */
     public void setTfCreationDate(String dateOfCreation) {
-        tfDateOfCreation.setText(dateOfCreation);
+        tfCreationDate.setText(dateOfCreation);
     }
 
     /**
@@ -180,7 +180,7 @@ public class AgreementRegistration extends javax.swing.JFrame {
      * @param dateOfExpiration
      */
     public void setTfExpirationDate(String dateOfExpiration) {
-        tfDateOfExpiration.setText(dateOfExpiration);
+        tfExpirationDate.setText(dateOfExpiration);
     }
 
     /**
@@ -208,6 +208,9 @@ public class AgreementRegistration extends javax.swing.JFrame {
      * @return
      */
     public boolean verifyInformation() {
+        /**
+         * Validating required Jtextfields
+         */
         if (tfAmountOfDebt.getText().equals("")) {
             JOptionPane.showMessageDialog(
                     this,
@@ -223,7 +226,7 @@ public class AgreementRegistration extends javax.swing.JFrame {
                     JOptionPane.WARNING_MESSAGE);
             return false;
         }
-        if (tfDateOfCreation.getText().equals("")) {
+        if (tfCreationDate.getText().equals("")) {
             JOptionPane.showMessageDialog(
                     this,
                     "La fecha de efectuacion del convenio es obligatoria",
@@ -231,10 +234,17 @@ public class AgreementRegistration extends javax.swing.JFrame {
                     JOptionPane.WARNING_MESSAGE);
             return false;
         }
-        if (tfDateOfExpiration.getText().equals("")) {
+        if (tfExpirationDate.getText().equals("")) {
             JOptionPane.showMessageDialog(
                     this,
                     "La fecha de vencimiento del convenio es obligatoria",
+                    "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        } else if (Date.valueOf(tfCreationDate.getText()).after(Date.valueOf(tfExpirationDate.getText()))) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "La fecha de vencimiento no puede ser anterior a la fecha de efectuacion del convenio",
                     "Advertencia",
                     JOptionPane.WARNING_MESSAGE);
             return false;
@@ -247,6 +257,9 @@ public class AgreementRegistration extends javax.swing.JFrame {
                     JOptionPane.WARNING_MESSAGE);
             return false;
         }
+        /**
+         * Validating concepts
+         */
         switch (cmbConcept.getSelectedItem().toString().split(" : ")[0]) {
             case "1201":
             case "110101":
@@ -298,7 +311,7 @@ public class AgreementRegistration extends javax.swing.JFrame {
      * @return
      */
     public String getTfDateOfCreation() {
-        return tfDateOfCreation.getText();
+        return tfCreationDate.getText();
     }
 
     /**
@@ -307,7 +320,7 @@ public class AgreementRegistration extends javax.swing.JFrame {
      * @return
      */
     public String getTfDateOfExpiration() {
-        return tfDateOfExpiration.getText();
+        return tfExpirationDate.getText();
     }
 
     /**
@@ -382,7 +395,7 @@ public class AgreementRegistration extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        tfDateOfExpiration = new javax.swing.JTextField();
+        tfExpirationDate = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
@@ -402,8 +415,7 @@ public class AgreementRegistration extends javax.swing.JFrame {
         btnEraseVehicle = new javax.swing.JButton();
         btnEraseLandProperty = new javax.swing.JButton();
         btnDateOfCreation = new javax.swing.JButton();
-        btnDateOfExpiration = new javax.swing.JButton();
-        tfDateOfCreation = new javax.swing.JTextField();
+        tfCreationDate = new javax.swing.JTextField();
         btnNewTaxpayer = new javax.swing.JButton();
         btnNewVehicle = new javax.swing.JButton();
         btnNewLandProperty = new javax.swing.JButton();
@@ -463,10 +475,10 @@ public class AgreementRegistration extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(0, 0, 0));
         jLabel8.setText("Fecha Vencimiento :");
 
-        tfDateOfExpiration.setEditable(false);
-        tfDateOfExpiration.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        tfDateOfExpiration.setForeground(new java.awt.Color(0, 0, 0));
-        tfDateOfExpiration.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfExpirationDate.setEditable(false);
+        tfExpirationDate.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        tfExpirationDate.setForeground(new java.awt.Color(0, 0, 0));
+        tfExpirationDate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 0, 0));
@@ -486,6 +498,9 @@ public class AgreementRegistration extends javax.swing.JFrame {
         tfAmountOfDebt.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 tfAmountOfDebtKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfAmountOfDebtKeyTyped(evt);
             }
         });
 
@@ -526,6 +541,11 @@ public class AgreementRegistration extends javax.swing.JFrame {
         cmbSetFees.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         cmbSetFees.setForeground(new java.awt.Color(0, 0, 0));
         cmbSetFees.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30" }));
+        cmbSetFees.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbSetFeesActionPerformed(evt);
+            }
+        });
 
         btnSetVehicle.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnSetVehicle.setText("...");
@@ -563,18 +583,10 @@ public class AgreementRegistration extends javax.swing.JFrame {
             }
         });
 
-        btnDateOfExpiration.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnDateOfExpiration.setText("...");
-        btnDateOfExpiration.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDateOfExpirationActionPerformed(evt);
-            }
-        });
-
-        tfDateOfCreation.setEditable(false);
-        tfDateOfCreation.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        tfDateOfCreation.setForeground(new java.awt.Color(0, 0, 0));
-        tfDateOfCreation.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfCreationDate.setEditable(false);
+        tfCreationDate.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        tfCreationDate.setForeground(new java.awt.Color(0, 0, 0));
+        tfCreationDate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         btnNewTaxpayer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnNewTaxpayer.setText("Nuevo");
@@ -618,15 +630,13 @@ public class AgreementRegistration extends javax.swing.JFrame {
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(jLabel10)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(tfDateOfCreation, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(tfCreationDate, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnDateOfCreation))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(tfDateOfExpiration, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnDateOfExpiration)))
+                                .addComponent(tfExpirationDate, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel9)
@@ -687,12 +697,11 @@ public class AgreementRegistration extends javax.swing.JFrame {
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel10)
                             .addComponent(btnDateOfCreation)
-                            .addComponent(tfDateOfCreation, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tfCreationDate, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tfDateOfExpiration, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8)
-                            .addComponent(btnDateOfExpiration)))
+                            .addComponent(tfExpirationDate, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
@@ -757,9 +766,10 @@ public class AgreementRegistration extends javax.swing.JFrame {
     private void tfAmountOfDebtKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfAmountOfDebtKeyReleased
         if ((!tfAmountOfDebt.getText().equals("")) && (!tfAmountOfDebt.getText().contains("$"))) {
             tfAmountOfDebt.setText("$ " + tfAmountOfDebt.getText());
-        } else if(tfAmountOfDebt.getText().equals("$ ")) {
+        } else if (tfAmountOfDebt.getText().equals("$ ")) {
             tfAmountOfDebt.setText("");
         }
+
     }//GEN-LAST:event_tfAmountOfDebtKeyReleased
 
     /**
@@ -773,16 +783,23 @@ public class AgreementRegistration extends javax.swing.JFrame {
     private void btnDateOfCreationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDateOfCreationActionPerformed
         showDateChooser();
         Calendar calendar = this.dateChooserDialog1.getSelectedDate();
-        this.tfDateOfCreation.setText(calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1)
+        this.tfCreationDate.setText(calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1)
                 + "-" + calendar.get(Calendar.DAY_OF_MONTH));
+        setExpirationDate();
     }//GEN-LAST:event_btnDateOfCreationActionPerformed
 
-    private void btnDateOfExpirationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDateOfExpirationActionPerformed
-        showDateChooser();
-        Calendar calendar = this.dateChooserDialog1.getSelectedDate();
-        this.tfDateOfExpiration.setText(calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1)
-                + "-" + calendar.get(Calendar.DAY_OF_MONTH));
-    }//GEN-LAST:event_btnDateOfExpirationActionPerformed
+    /**
+     *
+     */
+    private void setExpirationDate() {
+        String year = tfCreationDate.getText().split("-")[0];
+        int month = Integer.parseInt(tfCreationDate.getText().split("-")[1]);
+        String day = tfCreationDate.getText().split("-")[2];
+        for (int i = 0; i < Integer.parseInt(cmbSetFees.getSelectedItem().toString()); i++) {
+            month++;
+        }
+        tfExpirationDate.setText(year + "-" + month + "-" + day);
+    }
 
     private void btnEraseVehicleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEraseVehicleActionPerformed
         this.tfVehicle.setText("");
@@ -815,9 +832,21 @@ public class AgreementRegistration extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cmbConceptActionPerformed
 
+    private void tfAmountOfDebtKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfAmountOfDebtKeyTyped
+
+        if (tfAmountOfDebt.getText().length() == 12) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_tfAmountOfDebtKeyTyped
+
+    private void cmbSetFeesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSetFeesActionPerformed
+        if (!"".equals(tfCreationDate.getText())) {
+            setExpirationDate();
+        }
+    }//GEN-LAST:event_cmbSetFeesActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDateOfCreation;
-    private javax.swing.JButton btnDateOfExpiration;
     private javax.swing.JButton btnEraseLandProperty;
     private javax.swing.JButton btnEraseTaxPayer;
     private javax.swing.JButton btnEraseVehicle;
@@ -847,9 +876,9 @@ public class AgreementRegistration extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField tfAgreementNumber;
     private javax.swing.JTextField tfAmountOfDebt;
-    private javax.swing.JTextField tfDateOfCreation;
-    private javax.swing.JTextField tfDateOfExpiration;
+    private javax.swing.JTextField tfCreationDate;
     private javax.swing.JTextArea tfDescription;
+    private javax.swing.JTextField tfExpirationDate;
     private javax.swing.JTextField tfLandProperty;
     private javax.swing.JTextField tfTaxPayer;
     private javax.swing.JTextField tfVehicle;

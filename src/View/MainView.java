@@ -17,9 +17,9 @@ public class MainView extends javax.swing.JFrame {
     public MainView() {
         initComponents();
     }
-    
+
     /**
-     * 
+     *
      */
     public void enableAdminFunctions() {
         menuAdministrator.setEnabled(true);
@@ -42,6 +42,8 @@ public class MainView extends javax.swing.JFrame {
         btnUsuariosDelSistema.setActionCommand("USERS_LIST");
         btnChangeUserPassword.addActionListener(control);
         btnChangeUserPassword.setActionCommand("UPDATE_USER_PASSWORD");
+        btnActionCommiteds.addActionListener(control);
+        btnActionCommiteds.setActionCommand("ACTION_COMMITTEDS_LIST");
     }
 
     /**
@@ -71,6 +73,7 @@ public class MainView extends javax.swing.JFrame {
         miConceptList = new javax.swing.JMenuItem();
         menuAdministrator = new javax.swing.JMenu();
         btnUsuariosDelSistema = new javax.swing.JMenuItem();
+        btnActionCommiteds = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         btnChangeUserPassword = new javax.swing.JMenuItem();
 
@@ -289,6 +292,10 @@ public class MainView extends javax.swing.JFrame {
         btnUsuariosDelSistema.setText("Usuarios del sistema ");
         menuAdministrator.add(btnUsuariosDelSistema);
 
+        btnActionCommiteds.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnActionCommiteds.setText("Registro de movimientos de usuario");
+        menuAdministrator.add(btnActionCommiteds);
+
         jMenuBar1.add(menuAdministrator);
 
         jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Profile.png"))); // NOI18N
@@ -373,6 +380,7 @@ public class MainView extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem btnActionCommiteds;
     private javax.swing.JButton btnAgreementsList;
     private javax.swing.JMenuItem btnChangeUserPassword;
     private javax.swing.JButton btnCreateAgreement;

@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import javax.swing.JOptionPane;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.jdom2.JDOMException;
 
@@ -20,9 +19,6 @@ import org.jdom2.JDOMException;
 public class SystemConfiguration {
 
     private static final String SYSTEM_BEGGININGS_COUNT = "system_beggining_count";
-    private static final String SERVER_URL = "server_url";
-    private static final String SERVER_USERNAME = "server_username";
-    private static final String SERVER_USERPASSWORD = "server_userpassword";
 
     public static boolean loadSystemProperties() {
         File propertiesFile = getPropertiesFile();
@@ -111,6 +107,7 @@ public class SystemConfiguration {
         try {
             HibernateUtil.configureConnect(serverURL, username, password);
         } catch (JDOMException | IOException ex) {
+            JOptionPane.showMessageDialog(null, ex);
             flag = false;
         }
         return flag;
@@ -125,7 +122,8 @@ public class SystemConfiguration {
         boolean flag = true;
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
-        } catch (HibernateException e) {
+            return flag;
+        } catch (ExceptionInInitializerError e) {
             flag = false;
         }
         return flag;

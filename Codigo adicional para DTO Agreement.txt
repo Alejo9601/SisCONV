@@ -1,6 +1,7 @@
-   /**
+ /**
      * Added by me.
      *
+     * @param idAgreementNumber
      * @param amountOfDebt
      * @param feesNumber
      * @param creationDate
@@ -8,7 +9,8 @@
      * @param description
      * @param status
      */
-    public Agreement(double amountOfDebt, int feesNumber, Date creationDate, Date expirationDate, String description, String status) {
+    public Agreement(Long idAgreementNumber, double amountOfDebt, int feesNumber, Date creationDate, Date expirationDate, String description, String status) {
+        this.idAgreementNumber = idAgreementNumber;
         this.amountOfDebt = amountOfDebt;
         this.feesNumber = feesNumber;
         this.creationDate = creationDate;
@@ -44,14 +46,23 @@
         this.taxpayer = new Taxpayer(taxPayerDocNumeber);
     }
 
-//    /**
-//     * Added by me.
-//     *
-//     * @param domain
-//     */
-//    public void setVehicle(String domain) {
-//        this.vehicle = new Vehicle(domain);
-//    }
+    /**
+     * Added by me.
+     *
+     * @param vehicleIdentifier
+     */
+    public void setVehicle(Long vehicleIdentifier) {
+        this.vehicle = new Vehicle(vehicleIdentifier);
+    }
+
+    /**
+     * Added by me.
+     *
+     * @param landPropertyIdentifier
+     */
+    public void setLandProperty(Long landPropertyIdentifier) {
+        this.landProperty = new LandProperty(landPropertyIdentifier);
+    }
 
     /**
      * Added by me.
@@ -69,4 +80,22 @@
      */
     public int getConceptID() {
         return this.concept.getIdConceptCode();
+    }
+
+    /**
+     * Added by me.
+     *
+     * @return
+     */
+    public Long getVehicleID() {
+        return this.vehicle.getIdVehicle();
+    }
+
+    /**
+     * Added by me.
+     *
+     * @return
+     */
+    public Long getLandPropertyID() {
+        return this.landProperty.getIdProperty();
     }

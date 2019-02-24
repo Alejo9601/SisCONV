@@ -38,6 +38,7 @@ public class ParametersManager {
             if (transaction != null) {
                 transaction.rollback();
             }
+            JOptionPane.showMessageDialog(null, "Excepcion registrando el concepto" + e);
             flag = false;
         } finally {
             session.close();
@@ -59,7 +60,7 @@ public class ParametersManager {
             consult.addEntity(Concept.class);
             conceptL = consult.list();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Excepcion consultando a los contribuyentes" + e);
+            JOptionPane.showMessageDialog(null, "Excepcion consultando los conceptos" + e);
         } finally {
             session.close();
         }
@@ -90,7 +91,28 @@ public class ParametersManager {
             consult.addEntity(Concept.class);
             concept = (Concept) consult.uniqueResult();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Excepcion consultando a los contribuyentes" + e);
+            JOptionPane.showMessageDialog(null, "Excepcion consultando el concepto" + e);
+        } finally {
+            session.close();
+        }
+        return conceptOnEnumMap(concept);
+    }
+
+    /**
+     * Gets a concept from DB.
+     *
+     * @param conceptName
+     * @return
+     */
+    public EnumMap<concept_param, String> consult(String conceptName) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Concept concept = null;
+        try {
+            SQLQuery consult = session.createSQLQuery("SELECT * FROM concept WHERE concept.id_concepName = '" + conceptName + "'");
+            consult.addEntity(Concept.class);
+            concept = (Concept) consult.uniqueResult();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Excepcion consultando el concepto" + e);
         } finally {
             session.close();
         }
@@ -119,8 +141,8 @@ public class ParametersManager {
         if (cn != null) {
             EnumMap<concept_param, String> conceptMap = new EnumMap<>(concept_param.class);
             conceptMap.put(concept_param.CONCEPT_NAME, cn.getConceptName());
-            conceptMap.put(concept_param.CONCEPT_CODE, Integer.toString(cn.getIdConceptCode()));
-            conceptMap.put(concept_param.DESCRIPTION, cn.getDescription());
+            conceptMap.put(concept_param.CONCEPT_CODE, Long.toString(cn.getIdConceptCode()));
+            conceptMap.put(concept_param.DESCRIPTION, cn.getConceptDescription());
             return conceptMap;
         }
         return null;

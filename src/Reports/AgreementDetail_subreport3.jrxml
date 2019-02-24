@@ -7,7 +7,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT id_property, batch, apple, adjudicationDecree FROM land_property INNER JOIN agreement ON agreement.property_id_property = land_property.id_property WHERE id_agreementNumber = $P{AgreementNumber}]]>
+		<![CDATA[SELECT id_property, batch, apple, adjudicationDecree FROM land_property INNER JOIN agreement ON agreement.land_property_id_property = land_property.id_property WHERE id_agreementNumber = $P{AgreementNumber}]]>
 	</queryString>
 	<field name="id_property" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>

@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Feb 16, 2019 12:20:16 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated Feb 22, 2019 2:08:51 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="Model.DTO.LandProperty" table="land_property" catalog="proyecto_sisconv" optimistic-lock="version">
+    <class name="Model.DTO.LandProperty" table="land_property" catalog="sisconv28" optimistic-lock="version">
         <id name="idProperty" type="java.lang.Long">
             <column name="id_property" />
             <generator class="identity" />
@@ -20,9 +20,12 @@
         <property name="wasteland" type="java.lang.Byte">
             <column name="wasteland" />
         </property>
+        <property name="address" type="string">
+            <column name="address" length="50" />
+        </property>
         <set name="agreements" table="agreement" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="property_id_property" />
+                <column name="land_property_id_property" />
             </key>
             <one-to-many class="Model.DTO.Agreement" />
         </set>

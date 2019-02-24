@@ -1,5 +1,5 @@
 package Model.DTO;
-// Generated Feb 16, 2019 12:20:15 PM by Hibernate Tools 4.3.1
+// Generated Feb 22, 2019 2:08:50 PM by Hibernate Tools 4.3.1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,9 +16,6 @@ public class Vehicle implements java.io.Serializable {
     private String model;
     private Set agreements = new HashSet(0);
 
-    public Vehicle() {
-    }
-
     /**
      * Added by me.
      *
@@ -26,6 +23,9 @@ public class Vehicle implements java.io.Serializable {
      */
     public Vehicle(Long idVehicle) {
         this.idVehicle = idVehicle;
+    }
+
+    public Vehicle() {
     }
 
     public Vehicle(String domain, String type, String manufacturer, String model) {

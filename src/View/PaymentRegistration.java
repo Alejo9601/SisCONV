@@ -231,8 +231,8 @@ public class PaymentRegistration extends javax.swing.JDialog {
         tfAmount.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tfAmount.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         tfAmount.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                tfAmountKeyTyped(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfAmountKeyReleased(evt);
             }
         });
 
@@ -354,20 +354,13 @@ public class PaymentRegistration extends javax.swing.JDialog {
                 + "-" + calendar.get(Calendar.DAY_OF_MONTH));
     }//GEN-LAST:event_btnDateActionPerformed
 
-    private void tfAmountKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfAmountKeyTyped
-//        DecimalFormat df = new DecimalFormat("#######.##");
-        String posibleNumber = tfAmount.getText();
-        if ((!posibleNumber.equals("")) && (!posibleNumber.contains("$"))) {//Gets inside just one time
+    private void tfAmountKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfAmountKeyReleased
+        if ((!tfAmount.getText().equals("")) && (!tfAmount.getText().contains("$"))) {
             tfAmount.setText("$ " + tfAmount.getText());
-        } else if (tfAmount.getText().equals("$ ")) { //If only exists this symbol
+        } else if (tfAmount.getText().equals("$ ")) {
             tfAmount.setText("");
         }
-//        } else if (posibleNumber.contains("$") && isNumeric(posibleNumber.split(" ")[1])) { //If contains $ and something else
-//            posibleNumber = df.format(Double.parseDouble(posibleNumber.split(" ")[1]));
-//            tfAmount.setText("$ " + posibleNumber);
-//        }
-//        posibleNumber = df.format(Double.parseDouble(posibleNumber));
-    }//GEN-LAST:event_tfAmountKeyTyped
+    }//GEN-LAST:event_tfAmountKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

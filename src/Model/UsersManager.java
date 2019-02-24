@@ -1,7 +1,9 @@
 package Model;
 
+import Model.DTO.ActionCommitted;
 import Model.DTO.User;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.EnumMap;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -22,13 +24,35 @@ public class UsersManager {
         NAMES, LASTNAME, NICKNAME, PASSWORD, ADMINISTRATOR, ID_USER
     };
 
+    public static enum actionCommitted {
+        ID_MOVEMENT, DATE, MOVEMENT, USER_NAME, DESCRIPTION
+    }
+
+    public static enum user_actions {
+        AGREEMENT_REGISTRATION("REGISTRÓ CONVENIO"),
+        PAYMENT_REGISTRATION("REGISTRÓ PAGO"),
+        LEAVE_AGREEMENT_WITHOUT_EFFECT("DEJÓ SIN EFECTO"),
+        DELETE_PAYMENT("ELIMINÓ UN PAGO"),
+        MODIFY_AGREEMENT("MODIFICÓ CONVENIO");
+
+        private final String value;
+
+        user_actions(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
+
     /**
      * Private constructor
      */
     private UsersManager() {
 
     }
-    
+
     /**
      *
      * @return
@@ -86,9 +110,9 @@ public class UsersManager {
 //        boolean flag = true; //Flag that indicates if the operation finished succesfully.
 //        try {
 //            transaction = session.beginTransaction();
-//            SQLQuery consult = session.createSQLQuery(
+//            SQLQuery consultUser = session.createSQLQuery(
 //                    "UPDATE user SET activeSession = " + (byte) 1 + " WHERE user.idUser = " + loggedUser.getIdUser());
-//            consult.executeUpdate();
+//            consultUser.executeUpdate();
 //            transaction.commit();
 //        } catch (Exception e) {
 //            if (transaction != null) { //If transaction didnt went well, we roll back any action en DB
@@ -101,6 +125,84 @@ public class UsersManager {
 //        }
 //        return flag;
 //    }
+    public void registerUserAction(user_actions action, String description) {
+        //Opening Hibernate session.
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = null;
+        ActionCommitted actionComm = new ActionCommitted(
+                action.getValue(),
+                new Date(),
+                loggedUser.getNames()
+                + " " + loggedUser.getLastname()
+                + " : " + description);
+        try {
+            transaction = session.beginTransaction();
+            session.save(actionComm);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) { //If transaction didnt went well, we roll back any action en DB
+                transaction.rollback();
+            }
+            JOptionPane.showMessageDialog(null, "Excepcion registrando la accion del usuario" + e);
+        } finally {
+            session.close();
+        }
+    }
+
+    /**
+     * Gets all the agreements from DB.
+     *
+     * @return
+     */
+    public List<EnumMap<actionCommitted, String>> consultAllActionsCommitted() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<ActionCommitted> actionCommittedsL = null;
+        try {
+            SQLQuery consult = session.createSQLQuery("SELECT * FROM action_committed");
+            consult.addEntity(ActionCommitted.class);
+            actionCommittedsL = consult.list();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Excepcion consultando el log de acciones" + e);
+        } finally {
+            session.close();
+        }
+        return actionsOnEnumList(actionCommittedsL);
+    }
+
+    /**
+     *
+     * @param actionsL
+     * @return
+     */
+    private List<EnumMap<actionCommitted, String>> actionsOnEnumList(List<ActionCommitted> actionsL) {
+        if (actionsL != null) {
+            List<EnumMap<actionCommitted, String>> actionCommitedsEL = new ArrayList<>();
+            for (ActionCommitted a : actionsL) {
+                actionCommitedsEL.add(actionCommittedOnEnumMap(a));
+            }
+            return actionCommitedsEL;
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @param actionC
+     * @return
+     */
+    private EnumMap<actionCommitted, String> actionCommittedOnEnumMap(ActionCommitted actionC) {
+        if (actionC != null) {
+            EnumMap<actionCommitted, String> actionCMAP = new EnumMap<>(actionCommitted.class);
+            actionCMAP.put(actionCommitted.ID_MOVEMENT, Long.toString(actionC.getIdAction()));
+            actionCMAP.put(actionCommitted.DATE, actionC.getDate().toString());
+            actionCMAP.put(actionCommitted.MOVEMENT, actionC.getActionCommitted());
+            actionCMAP.put(actionCommitted.USER_NAME, actionC.getDescription().split(" : ")[0]);
+            actionCMAP.put(actionCommitted.DESCRIPTION, actionC.getDescription().split(" : ")[1]);
+            return actionCMAP;
+        }
+        return null;
+    }
+
     /**
      *
      * @param password
@@ -108,7 +210,7 @@ public class UsersManager {
      * @return
      */
     public boolean validateSession(char[] password, String nickName) {
-        User user = consult(nickName);
+        User user = consultUser(nickName);
         if (user == null) { //If there isn't an user with the specified nickname.
             return false;
         }
@@ -123,49 +225,6 @@ public class UsersManager {
             return true;
         }
         return false;
-    }
-
-    /**
-     * Will consult an user from DB.
-     *
-     * @param nickname
-     * @return
-     */
-    private User consult(String nickname) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        User user = null;
-        try {
-            SQLQuery consult = session.createSQLQuery("SELECT * FROM user WHERE user.nickname = '" + nickname + "'");
-            consult.addEntity(User.class);
-            if (consult.uniqueResult() != null) {
-                user = (User) consult.uniqueResult();
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Excepcion consultando al usuario" + e);
-        } finally {
-            session.close();
-        }
-        return user;
-    }
-
-    /**
-     * Gets all the agreements from DB.
-     *
-     * @return
-     */
-    public List<EnumMap<user_param, String>> consultAll() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        List<User> agreementL = null;
-        try {
-            SQLQuery consult = session.createSQLQuery("SELECT * FROM user");
-            consult.addEntity(User.class);
-            agreementL = consult.list();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Excepcion consultando a los usuarios" + e);
-        } finally {
-            session.close();
-        }
-        return usersOnEnumList(agreementL);
     }
 
     /**
@@ -194,6 +253,49 @@ public class UsersManager {
             session.close();
         }
         return flag;
+    }
+
+    /**
+     * Will consultUser an user from DB.
+     *
+     * @param nickname
+     * @return
+     */
+    private User consultUser(String nickname) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        User user = null;
+        try {
+            SQLQuery consult = session.createSQLQuery("SELECT * FROM user WHERE user.nickname = '" + nickname + "'");
+            consult.addEntity(User.class);
+            if (consult.uniqueResult() != null) {
+                user = (User) consult.uniqueResult();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Excepcion consultando al usuario" + e);
+        } finally {
+            session.close();
+        }
+        return user;
+    }
+
+    /**
+     * Gets all the agreements from DB.
+     *
+     * @return
+     */
+    public List<EnumMap<user_param, String>> consultAllUsers() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<User> agreementL = null;
+        try {
+            SQLQuery consult = session.createSQLQuery("SELECT * FROM user");
+            consult.addEntity(User.class);
+            agreementL = consult.list();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Excepcion consultando a los usuarios" + e);
+        } finally {
+            session.close();
+        }
+        return usersOnEnumList(agreementL);
     }
 
     public boolean modifyUserPassword(char[] password) {

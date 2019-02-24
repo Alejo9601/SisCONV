@@ -92,9 +92,13 @@ public class RegistrationControl implements ActionListener, KeyListener {
                 agreementsRV.getTfDateOfExpiration());
         agreementMap.put(AgreementsManager.agreement_param.FEES_NUMBER,
                 agreementsRV.getCmbFeesNumber());
-        agreementMap.put(
-                AgreementsManager.agreement_param.DESCRIPTION,
-                agreementsRV.getTfDescription());
+
+        if (agreementsRV.getTfDescription().equals("")) {
+            agreementMap.put(
+                    AgreementsManager.agreement_param.DESCRIPTION,
+                    "No hay descripcion");
+        }
+
         agreementMap.put(AgreementsManager.agreement_param.TAXPAYER,
                 agreementsRV.getTfTaxPayer());
         agreementMap.put(AgreementsManager.agreement_param.CONCEPT,
@@ -296,8 +300,7 @@ public class RegistrationControl implements ActionListener, KeyListener {
         DefaultTableModel tableModel = new DefaultTableModel(
                 null, new String[]{
                     "Identificador",
-                    "Manzana",
-                    "Lote",
+                    "Manzana y Lote",
                     "Decreto"}) {
             @Override
             public boolean isCellEditable(int row, int col) {
@@ -308,8 +311,7 @@ public class RegistrationControl implements ActionListener, KeyListener {
         for (EnumMap<PropertyManager.landProperty_param, String> lp : landPropEL) {
             Object nuevo[] = new Object[]{
                 lp.get(PropertyManager.landProperty_param.ID_LANDPROPERTY),
-                lp.get(PropertyManager.landProperty_param.APPLE),
-                lp.get(PropertyManager.landProperty_param.BATCH),
+                "M" + lp.get(PropertyManager.landProperty_param.APPLE) + "-L" + lp.get(PropertyManager.landProperty_param.BATCH),
                 lp.get(PropertyManager.landProperty_param.DECREE)};
             tableModel.addRow(nuevo);
         }
@@ -557,40 +559,54 @@ public class RegistrationControl implements ActionListener, KeyListener {
                 break;
             case "SAVE_TAXPAYER":
                 tm = new TaxpayersManager();
-                if (taxpayerRV.verifyInformation()) {
-                    if (tm.newTaxpayer(getTaxpayerInfo())) {
-                        JOptionPane.showMessageDialog(taxpayerRV,
-                                "Se ha registrado con exito",
-                                "Informacion",
-                                JOptionPane.INFORMATION_MESSAGE);
-                        agreementsRV.setTfTaxPayer(taxpayerRV.getTfDocNumber()
-                                + " : " + taxpayerRV.getTfTaxpayerNames()
-                                + " : " + taxpayerRV.getTfLastname());
-                        taxpayerRV.dispose();
-                    } else {
-                        JOptionPane.showMessageDialog(taxpayerRV,
-                                "No se ha podido registrar el convenio",
-                                "Advertencia",
-                                JOptionPane.WARNING_MESSAGE);
+                if (tm.consult(Long.parseLong(taxpayerRV.getTfDocNumber())) == null) {
+                    if (taxpayerRV.verifyInformation()) {
+                        if (tm.newTaxpayer(getTaxpayerInfo())) {
+                            JOptionPane.showMessageDialog(taxpayerRV,
+                                    "Se ha registrado con exito",
+                                    "Informacion",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            agreementsRV.setTfTaxPayer(taxpayerRV.getTfDocNumber()
+                                    + " : " + taxpayerRV.getTfTaxpayerNames()
+                                    + " : " + taxpayerRV.getTfLastname());
+                            taxpayerRV.dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(taxpayerRV,
+                                    "No se ha podido registrar el contribuyente",
+                                    "Advertencia",
+                                    JOptionPane.WARNING_MESSAGE);
+                        }
                     }
                 }
+                JOptionPane.showMessageDialog(taxpayerRV,
+                        "El nro. de documento del contribuyente ya existe",
+                        "Advertencia",
+                        JOptionPane.WARNING_MESSAGE);
                 break;
             case "SAVE_CONCEPT":
                 pm = new ParametersManager();
-                if (conceptRV.verifyInformation()) {
-                    if (pm.newConcept(getConceptInfo())) {
-                        JOptionPane.showMessageDialog(conceptRV,
-                                "Se ha registrado con exito",
-                                "Informacion",
-                                JOptionPane.INFORMATION_MESSAGE);
-                        conceptRV.dispose();
-                    } else {
-                        JOptionPane.showMessageDialog(conceptRV,
-                                "No se ha podido registrar",
-                                "Advertencia",
-                                JOptionPane.WARNING_MESSAGE);
+                if (pm.consult(Integer.parseInt(conceptRV.getTfCode())) == null) {
+                    if (pm.consult(conceptRV.getTfName()) == null) {
+                        if (conceptRV.verifyInformation()) {
+                            if (pm.newConcept(getConceptInfo())) {
+                                JOptionPane.showMessageDialog(conceptRV,
+                                        "Se ha registrado con exito",
+                                        "Informacion",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                                conceptRV.dispose();
+                            } else {
+                                JOptionPane.showMessageDialog(conceptRV,
+                                        "No se ha podido registrar",
+                                        "Advertencia",
+                                        JOptionPane.WARNING_MESSAGE);
+                            }
+                        }
                     }
                 }
+                JOptionPane.showMessageDialog(conceptRV,
+                        "El codigo o nombre del concepto ya existe",
+                        "Advertencia",
+                        JOptionPane.WARNING_MESSAGE);
                 break;
             case "SAVE_PAYMENT":
                 am = new AgreementsManager();
@@ -659,18 +675,20 @@ public class RegistrationControl implements ActionListener, KeyListener {
                 break;
             case "SAVE_VEHICLE":
                 plm = new PropertyManager();
-                if (vehicleRV.verifyInformation()) {
-                    if (plm.newVehicle(getVehicleInfo())) {
-                        JOptionPane.showMessageDialog(vehicleRV,
-                                "Se ha registrado con exito",
-                                "Informacion",
-                                JOptionPane.INFORMATION_MESSAGE);
-                        vehicleRV.dispose();
-                    } else {
-                        JOptionPane.showMessageDialog(vehicleRV,
-                                "No se ha podido registrar",
-                                "Advertencia",
-                                JOptionPane.WARNING_MESSAGE);
+                if (plm.consultVehicle(vehicleRV.getDomain()) == null) {
+                    if (vehicleRV.verifyInformation()) {
+                        if (plm.newVehicle(getVehicleInfo())) {
+                            JOptionPane.showMessageDialog(vehicleRV,
+                                    "Se ha registrado con exito",
+                                    "Informacion",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            vehicleRV.dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(vehicleRV,
+                                    "No se ha podido registrar",
+                                    "Advertencia",
+                                    JOptionPane.WARNING_MESSAGE);
+                        }
                     }
                 }
                 break;
@@ -716,6 +734,12 @@ public class RegistrationControl implements ActionListener, KeyListener {
             if (ke.getSource() == vehicleSV.getTfSearch()) {
                 fillVehicleSelectionList();
                 vehicleSV.filterVehicles();
+            }
+        }
+        if (landPropertySV != null) {
+            if (ke.getSource() == landPropertySV.getTfSearch()) {
+                fillLandPropertySelectionList();
+                landPropertySV.filterLandProperties();
             }
         }
     }

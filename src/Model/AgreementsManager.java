@@ -2,7 +2,9 @@ package Model;
 
 import Model.DTO.Agreement;
 import Model.DTO.*;
+import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.Date;
@@ -10,10 +12,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -21,8 +22,10 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
+import org.hibernate.HibernateException;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
+import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 
 /**
@@ -30,6 +33,8 @@ import org.hibernate.Transaction;
  * @author Alejandro Juarez
  */
 public class AgreementsManager {
+
+    UsersManager um = UsersManager.getUsersManager();
 
     public static enum agreement_param {
         AGREEMENT_NUMBER, FEES_NUMBER, CONCEPT, AMOUNT_OF_DEBT, CREATION_DATE, EXPIRATION_DATE, DESCRIPTION, TAXPAYER,
@@ -41,7 +46,19 @@ public class AgreementsManager {
     }
 
     public static enum agreement_status {
-        CANCELED, VALID, WITHOUT_EFFECT
+        CANCELLED("CANCELADO"),
+        VALID("VIGENTE"),
+        WITHOUT_EFFECT("SIN EFECTO");
+
+        private final String value;
+
+        agreement_status(String status) {
+            this.value = status;
+        }
+
+        public String getValue() {
+            return value;
+        }
     };
 
     /**
@@ -54,7 +71,7 @@ public class AgreementsManager {
         //Unpacking all the data.
         Agreement agreement = unpackAgreementMap(agreementMap);
         //The agreement initially is valid.
-        agreement.setStatus(agreement_status.VALID.toString());
+        agreement.setStatus(agreement_status.VALID.getValue());
         //Opening Hibernate session.
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = null;
@@ -63,6 +80,10 @@ public class AgreementsManager {
             transaction = session.beginTransaction();
             session.save(agreement);
             transaction.commit();
+            //Registering movement
+            um.registerUserAction(
+                    UsersManager.user_actions.AGREEMENT_REGISTRATION,
+                    "Convenio nro. " + agreementMap.get(agreement_param.AGREEMENT_NUMBER));
         } catch (Exception e) {
             if (transaction != null) { //If transaction didnt went well, we roll back any action en DB
                 transaction.rollback();
@@ -82,7 +103,7 @@ public class AgreementsManager {
      * @return
      */
     public EnumMap<agreement_param, String> consultAgreement(Long agreementNumber) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         Agreement agreement = null;
         try {
             SQLQuery consulta = session.createSQLQuery(
@@ -103,7 +124,7 @@ public class AgreementsManager {
      * @return
      */
     public List<EnumMap<agreement_param, String>> consultAllAgreements() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         List<Agreement> agreementL = null;
         try {
             SQLQuery consult = session.createSQLQuery("SELECT * FROM agreement ORDER BY id_agreementNumber DESC");
@@ -124,11 +145,11 @@ public class AgreementsManager {
      * @param agreementMap
      */
     public boolean updateAgreement(EnumMap<agreement_param, String> agreementMap) {
+        //Will help to discover the data that has been changed
+        Agreement aux = unpackAgreementMap(consultAgreement(Long.parseLong(agreementMap.get(agreement_param.AGREEMENT_NUMBER))));
         //Unpacking all the data.
         Agreement agreement = unpackAgreementMap(agreementMap);
-        //Consulting the status of the agreement, so it can be setted later.
-        EnumMap<agreement_param, String> aux = consultAgreement(agreement.getIdAgreementNumber());
-        agreement.setStatus(aux.get(agreement_param.STATUS));
+        agreement.setStatus(aux.getStatus());
         //Opening Hibernate session.
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = null;
@@ -137,6 +158,10 @@ public class AgreementsManager {
             transaction = session.beginTransaction();
             session.update(agreement);
             transaction.commit();
+            //Registering movement
+            um.registerUserAction(
+                    UsersManager.user_actions.MODIFY_AGREEMENT,
+                    "Convenio nro. " + agreementMap.get(agreement_param.AGREEMENT_NUMBER));
         } catch (Exception e) {
             if (transaction != null) { //If transaction didnt went well, we roll back any action en DB
                 transaction.rollback();
@@ -179,19 +204,24 @@ public class AgreementsManager {
      * Will leave an agreement without effect.
      *
      * @param agreementNumber
+     * @param status
      * @return
      */
-    public boolean leaveWithoutEffect(Long agreementNumber) {
+    public boolean changeAgreementStatus(Long agreementNumber, agreement_status status) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = null;
         boolean flag = true;
         try {
             transaction = session.beginTransaction();
-            SQLQuery consult = session.createSQLQuery("UPDATE agreement SET status ='"
-                    + agreement_status.WITHOUT_EFFECT.toString()
-                    + "'WHERE agreement.id_agreementNumber = " + agreementNumber);
+            SQLQuery consult = session.createSQLQuery("UPDATE agreement SET status = '"
+                    + status.getValue()
+                    + "' WHERE agreement.id_agreementNumber = " + agreementNumber);
             consult.executeUpdate();
             transaction.commit();
+            if (status.getValue().equals(agreement_status.WITHOUT_EFFECT.value)) {
+                um.registerUserAction(UsersManager.user_actions.LEAVE_AGREEMENT_WITHOUT_EFFECT,
+                        "Convenio nro. " + agreementNumber);
+            }
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
@@ -260,7 +290,8 @@ public class AgreementsManager {
      */
     public EnumMap<agreement_param, String> agreementOnEnumMap(Agreement a) {
         if (a != null) {
-            EnumMap<agreement_param, String> agreementMap = new EnumMap<>(agreement_param.class);
+            EnumMap<agreement_param, String> agreementMap = new EnumMap<>(agreement_param.class
+            );
             agreementMap.put(agreement_param.AGREEMENT_NUMBER, a.getIdAgreementNumber().toString());
             agreementMap.put(agreement_param.AMOUNT_OF_DEBT, Double.toString(a.getAmountOfDebt()));
             agreementMap.put(agreement_param.CREATION_DATE, a.getCreationDate().toString());
@@ -269,7 +300,7 @@ public class AgreementsManager {
             agreementMap.put(agreement_param.DESCRIPTION, a.getDescription());
             agreementMap.put(agreement_param.STATUS, a.getStatus());
             agreementMap.put(agreement_param.TAXPAYER, Long.toString(a.getTaxpayerID()));
-            agreementMap.put(agreement_param.CONCEPT, Integer.toString(a.getConceptID()));
+            agreementMap.put(agreement_param.CONCEPT, Long.toString(a.getConceptID()));
             if (a.getVehicle() != null || a.getLandProperty() != null) {
                 if (a.getVehicle() != null) {
                     agreementMap.put(agreement_param.VEHICLE, Long.toString(a.getVehicleID()));
@@ -293,12 +324,12 @@ public class AgreementsManager {
         //Opening Hibernate session.
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = null;
-        boolean flag = true; //Flag that indicates if the operation finished succesfully.
+        boolean flag = true;
         try {
             transaction = session.beginTransaction();
             session.save(receipt);
             transaction.commit();
-        } catch (Exception e) {
+        } catch (HibernateException e) {
             if (transaction != null) { //If transaction didnt went well, we roll back any action en DB
                 transaction.rollback();
             }
@@ -365,23 +396,27 @@ public class AgreementsManager {
      * @return
      */
     public boolean newPayment(EnumMap<payment_param, String> payMap) {
-        //Consulting for the receipt
         Receipt receipt = consultReceipt(Long.parseLong(payMap.get(payment_param.RECEIPT_NUMBER)));
-        //If receipt does not exists
-        if (receipt == null) {
-            newReceipt(payMap);//Registering new receipt
-        }
-        //Unpacking all the payment data.
         Payment pay = unpackPaymentMap(payMap);
+        if (receipt == null) {
+            if (!newReceipt(payMap)) {
+                return false;
+            }
+        }
         //Opening Hibernate session.
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         Transaction transaction = null;
         boolean flag = true; //Flag that indicates if the operation finished succesfully.
         try {
             transaction = session.beginTransaction();
-            session.save(pay);
+            session.insert(pay);
             transaction.commit();
-        } catch (Exception e) {
+            //Registering movement
+            um.registerUserAction(
+                    UsersManager.user_actions.PAYMENT_REGISTRATION,
+                    "Recibo nro. " + pay.getReceipt().getIdReceiptNumber()
+                    + " Sobre Convenio nro. " + pay.getAgreement().getIdAgreementNumber());
+        } catch (HibernateException e) {
             if (transaction != null) { //If transaction didnt went well, we roll back any action en DB
                 transaction.rollback();
             }
@@ -389,6 +424,10 @@ public class AgreementsManager {
             flag = false;
         } finally {
             session.close();
+        }
+        //We verify if this payment is last payment
+        if (flag == true && LastPayment(pay.getAgreement().getIdAgreementNumber())) {
+            changeAgreementStatus(pay.getAgreement().getIdAgreementNumber(), agreement_status.CANCELLED);
         }
         return flag;
     }
@@ -433,7 +472,9 @@ public class AgreementsManager {
         try {
             SQLQuery consult = session.createSQLQuery(
                     "SELECT * FROM payment WHERE payment.agreement_id_agreementNumber = " + agreementNumber + " ORDER BY paidFee ASC");
-            consult.addEntity(Payment.class);
+            consult
+                    .addEntity(Payment.class
+                    );
             paymentL = consult.list();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Excepcion consultando los pagos del convenio" + e);
@@ -471,6 +512,11 @@ public class AgreementsManager {
                         "DELETE FROM payment WHERE payment.id_paymentNumber = " + paymentID);
                 consult.executeUpdate();
                 transaction.commit();
+                //Registering movement
+                um.registerUserAction(
+                        UsersManager.user_actions.PAYMENT_REGISTRATION,
+                        "Recibo nro. " + receiptNumber
+                        + " Del Convenio nro. " + paymentsL.get(0).getAgreement().getIdAgreementNumber());
             } catch (Exception e) {
                 if (transaction != null) { //If transaction didnt went well, we roll back any action en DB
                     transaction.rollback();
@@ -480,13 +526,38 @@ public class AgreementsManager {
             } finally {
                 session.close();
             }
+            //We must change agreement status
+            if (flag == true) {
+                changeAgreementStatus(paymentsL.get(0).getAgreement().getIdAgreementNumber(), agreement_status.VALID);
+            }
             return flag;
         }
         /**
-         * Reached this point means the payment is the only one for the
-         * specified receipt number so we can delete the receipt.
+         * Reached this point means this specific payment is related to specific
+         * receipt so we can delete it
          */
-        return deleteReceipt(receiptNumber);
+        if (deleteReceipt(receiptNumber)) {
+            changeAgreementStatus(paymentsL.get(0).getAgreement().getIdAgreementNumber(), agreement_status.VALID);
+            //Registering movement
+            um.registerUserAction(
+                    UsersManager.user_actions.PAYMENT_REGISTRATION,
+                    "Recibo nro. " + receiptNumber
+                    + " Del Convenio nro. " + paymentsL.get(0).getAgreement().getIdAgreementNumber());
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     *
+     * @param payment
+     * @param agreementNumber
+     * @return
+     */
+    private boolean LastPayment(Long agreementNumber) {
+        Agreement agreement = unpackAgreementMap(consultAgreement(agreementNumber));
+        List<Payment> paymentL = unpackPaymentsEnumList(consultPaymentsForAgreement(agreementNumber));
+        return agreement.getFeesNumber() == paymentL.size();
     }
 
     /**
@@ -509,6 +580,11 @@ public class AgreementsManager {
         return false;
     }
 
+    /**
+     *
+     * @param paymentMap
+     * @return
+     */
     public boolean paymentExistsForAgreement(EnumMap<payment_param, String> paymentMap) {
         List<EnumMap<payment_param, String>> paymentsEl = consultPaymentsForAgreement(Long.parseLong(paymentMap.get(payment_param.AGREEMENT_NUMBER)));
         for (EnumMap<payment_param, String> p : paymentsEl) {
@@ -546,6 +622,20 @@ public class AgreementsManager {
     }
 
     /**
+     *
+     * @param paymentsEL
+     * @return
+     */
+    private List<Payment> unpackPaymentsEnumList(List<EnumMap<payment_param, String>> paymentsEL) {
+        List<Payment> paymentL = new ArrayList<>();
+        for (EnumMap<payment_param, String> p : paymentsEL) {
+            Payment payment = unpackPaymentMap(p);
+            paymentL.add(payment);
+        }
+        return paymentL;
+    }
+
+    /**
      * Will fill an EnumMap with information about the payment.
      *
      * @param payment
@@ -554,8 +644,10 @@ public class AgreementsManager {
     private EnumMap<payment_param, String> paymentOnEnumMap(Payment payment) {
         if (payment == null) {
             return null;
+
         }
-        EnumMap<payment_param, String> paymentMap = new EnumMap<>(payment_param.class);
+        EnumMap<payment_param, String> paymentMap = new EnumMap<>(payment_param.class
+        );
         paymentMap.put(payment_param.PAYMENT_ID, Long.toString(payment.getIdPaymentNumber()));
         paymentMap.put(payment_param.AGREEMENT_NUMBER, Long.toString(payment.getAgreement().getIdAgreementNumber()));
         paymentMap.put(payment_param.RECEIPT_NUMBER, Long.toString(payment.getReceipt().getIdReceiptNumber()));
@@ -585,27 +677,79 @@ public class AgreementsManager {
      * Generates a new report with all agreements general info.
      */
     public void agreementsReport() {
+        String userName = System.getProperty("user.name");
+        String directoryOfSavements = "C:\\Users\\" + userName + "\\Documents\\SisCONV";
         Connection con = null;
-        File file = new File("src\\Reports\\AgreementsPadron.jasper");
-        File filePDF = new File("src\\Reports\\AgreementsPadron.pdf");
+//        File file = new File("src\\Reports\\AgreementsPadron.jasper");
+        File filePDF = new File(directoryOfSavements + "\\AgreementsPadron.pdf");
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto_sisconv", "root", "holasoyalej");
-            JasperReport reporte = (JasperReport) JRLoader.loadObject(file);
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sisconv28", "root", "holasoyalej");
+            JasperReport reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reports/AgreementsPadron.jasper"));
             JasperPrint jPrint = JasperFillManager.fillReport(reporte, null, con);
             JasperExportManager.exportReportToPdfFile(jPrint, filePDF.getAbsolutePath());
-        } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
-            JOptionPane.showMessageDialog(null, "Excepcion consultando haciendo el reporte del padron general" + e);
-        } catch (JRException ex) {
-            Logger.getLogger(AgreementsManager.class.getName()).log(Level.SEVERE, null, ex);
+
+            try {
+                File path = new File(filePDF.getAbsolutePath());
+                Desktop.getDesktop().open(path);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Excepcion tratando de visualizar el PDF generado en..."
+                        + filePDF.getAbsolutePath());
+            }
+
+        } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException | JRException e) {
+            JOptionPane.showMessageDialog(null, "Excepcion realzando el reporte del padron general" + e);
         } finally {
             if (con != null) {
                 try {
                     con.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(AgreementsManager.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Excepcion cerrando la conexion del reporte" + ex);
                 }
             }
         }
     }
+
+    public void agreementDetails(Long agreementNumber) {
+        String userName = System.getProperty("user.name");
+        String directoryOfSavements = "C:\\Users\\" + userName + "\\Documents\\SisCONV";
+        Connection con = null;
+//        File file = new File("src\\Reports\\AgreementDetail.jasper");
+        File filePDF = new File(directoryOfSavements + "\\AgreementDetails.pdf");
+        try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sisconv28", "root", "holasoyalej");
+            JasperReport reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reports/AgreementDetail.jasper"));
+            HashMap parameters = new HashMap();
+
+            parameters.put("AgreementNumber", agreementNumber);
+
+            JasperPrint jPrint = JasperFillManager.fillReport(reporte, parameters, con);
+            JasperExportManager.exportReportToPdfFile(jPrint, filePDF.getAbsolutePath());
+
+            try {
+                File path = new File(filePDF.getAbsolutePath());
+                Desktop.getDesktop().open(path);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Excepcion tratando de visualizar el PDF generado en..."
+                        + filePDF.getAbsolutePath());
+            }
+
+        } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException | JRException e) {
+            JOptionPane.showMessageDialog(null, "Excepcion realizando el reporte para el convenio" + e);
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Excepcion cerrando la conexion del reporte" + ex);
+                }
+            }
+        }
+    }
+
 }

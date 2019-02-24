@@ -38,15 +38,26 @@ public class VehicleRegistration extends javax.swing.JDialog {
     public boolean verifyInformation() {
 
         if (tfDomain.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "El dominio del vehiculo es obligatorio", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    this,
+                    "El dominio del vehiculo es obligatorio", "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
             return false;
         }
         if (tfModel.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "EL modelo del vehiculo es obligatorio", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    this,
+                    "EL modelo del vehiculo es obligatorio",
+                    "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
             return false;
         }
         if (tfManufacturer.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "El fabricante del vehiculo es obligatorio", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    this,
+                    "El fabricante del vehiculo es obligatorio",
+                    "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
             return false;
         }
 
@@ -59,7 +70,7 @@ public class VehicleRegistration extends javax.swing.JDialog {
      * @return
      */
     public String getDomain() {
-        return tfDomain.getText();
+        return tfDomain.getText().toUpperCase();
     }
 
     /**
@@ -67,7 +78,7 @@ public class VehicleRegistration extends javax.swing.JDialog {
      * @return
      */
     public String getModel() {
-        return tfModel.getText();
+        return tfModel.getText().toUpperCase();
     }
 
     /**
@@ -75,7 +86,7 @@ public class VehicleRegistration extends javax.swing.JDialog {
      * @return
      */
     public String getManufacturer() {
-        return tfManufacturer.getText();
+        return tfManufacturer.getText().toUpperCase();
     }
 
     /**
@@ -83,7 +94,7 @@ public class VehicleRegistration extends javax.swing.JDialog {
      * @return
      */
     public String getCmbType() {
-        return cmbType.getSelectedItem().toString();
+        return cmbType.getSelectedItem().toString().toUpperCase();
     }
 
     /**
@@ -155,6 +166,11 @@ public class VehicleRegistration extends javax.swing.JDialog {
 
         tfDomain.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tfDomain.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfDomain.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfDomainKeyTyped(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
@@ -166,6 +182,11 @@ public class VehicleRegistration extends javax.swing.JDialog {
 
         tfModel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tfModel.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfModel.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfModelKeyTyped(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
@@ -173,6 +194,11 @@ public class VehicleRegistration extends javax.swing.JDialog {
 
         tfManufacturer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tfManufacturer.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfManufacturer.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfManufacturerKeyTyped(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 0, 0));
@@ -232,7 +258,7 @@ public class VehicleRegistration extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 615, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -254,47 +280,35 @@ public class VehicleRegistration extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
-     * @param args the command line arguments
+     *
+     * @param evt
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VehicleRegistration.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VehicleRegistration.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VehicleRegistration.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VehicleRegistration.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void tfDomainKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfDomainKeyTyped
+        if (tfDomain.getText().length() == 8) {
+            evt.consume();
         }
-        //</editor-fold>
-        //</editor-fold>
+    }//GEN-LAST:event_tfDomainKeyTyped
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                VehicleRegistration dialog = new VehicleRegistration(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+    /**
+     *
+     * @param evt
+     */
+    private void tfModelKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfModelKeyTyped
+        if (tfModel.getText().length() == 50) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_tfModelKeyTyped
+
+    /**
+     *
+     * @param evt
+     */
+    private void tfManufacturerKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfManufacturerKeyTyped
+        if (tfManufacturer.getText().length() == 17) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_tfManufacturerKeyTyped
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;

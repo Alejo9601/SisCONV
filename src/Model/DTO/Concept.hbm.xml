@@ -1,22 +1,22 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Feb 16, 2019 12:20:16 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated Feb 22, 2019 2:08:51 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="Model.DTO.Concept" table="concept" catalog="proyecto_sisconv" optimistic-lock="version">
-        <id name="idConceptCode" type="int">
+    <class name="Model.DTO.Concept" table="concept" catalog="sisconv28" optimistic-lock="version">
+        <id name="idConceptCode" type="long">
             <column name="id_conceptCode" />
             <generator class="assigned" />
         </id>
         <property name="conceptName" type="string">
             <column name="conceptName" length="100" not-null="true" unique="true" />
         </property>
-        <property name="description" type="string">
-            <column name="description" length="200" />
+        <property name="conceptDescription" type="string">
+            <column name="conceptDescription" length="200" />
         </property>
         <set name="agreements" table="agreement" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="concept_id_concept" not-null="true" />
+                <column name="concept_id_conceptCode" not-null="true" />
             </key>
             <one-to-many class="Model.DTO.Agreement" />
         </set>

@@ -207,6 +207,11 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
 
         tfNames.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tfNames.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfNames.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfNamesKeyTyped(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
@@ -218,6 +223,11 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
 
         tfLastname.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tfLastname.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfLastname.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfLastnameKeyTyped(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
@@ -225,6 +235,11 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
 
         tfDocNum.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tfDocNum.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfDocNum.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfDocNumKeyTyped(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 0, 0));
@@ -232,6 +247,11 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
 
         tfAddress.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tfAddress.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfAddress.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfAddressKeyTyped(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 0, 0));
@@ -239,6 +259,11 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
 
         tfPhoneNum.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tfPhoneNum.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfPhoneNum.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfPhoneNumKeyTyped(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(0, 0, 0));
@@ -314,7 +339,7 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 611, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -335,6 +360,52 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
+
+    /**
+     *
+     * @param evt
+     */
+    private void tfNamesKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfNamesKeyTyped
+        if (tfNames.getText().length() == 35) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_tfNamesKeyTyped
+
+    /**
+     *
+     * @param evt
+     */
+    private void tfLastnameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfLastnameKeyTyped
+        if (tfLastname.getText().length() == 25) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_tfLastnameKeyTyped
+
+    /**
+     *
+     * @param evt
+     */
+    private void tfDocNumKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfDocNumKeyTyped
+        if (tfDocNum.getText().length() == 8) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_tfDocNumKeyTyped
+
+    /**
+     *
+     * @param evt
+     */
+    private void tfAddressKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfAddressKeyTyped
+        if (tfAddress.getText().length() == 50) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_tfAddressKeyTyped
+
+    private void tfPhoneNumKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfPhoneNumKeyTyped
+        if (tfPhoneNum.getText().length() == 12) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_tfPhoneNumKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

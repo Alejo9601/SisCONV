@@ -56,13 +56,17 @@ public class MainControl implements ActionListener {
                 dc = new DetailControl();
                 dc.ShowAgreementListView();
                 break;
+            case "ACTION_COMMITTEDS_LIST":
+                uc = new UserControl();
+                uc.showActionCommitedsView();
+                break;
             case "CONCEPTS_LIST":
                 dc = new DetailControl();
                 dc.showConceptsListView();
                 break;
             case "USERS_LIST":
                 uc = new UserControl();
-                uc.showListView();
+                uc.showUserListView();
                 break;
             case "UPDATE_USER_PASSWORD":
                 uc = new UserControl();
@@ -79,15 +83,17 @@ public class MainControl implements ActionListener {
                                 "Informacion",
                                 "La conexion esta establecida",
                                 JOptionPane.INFORMATION_MESSAGE);
-                        SystemConfiguration.incrementSystemBegginings();
-                        serverCV.dispose();
-                        UserControl uControl = new UserControl();
-                        uControl.showLoginView();
+                        //If the parent isnt null, we are in application mainV
+                        if (serverCV.getParent() != mainV) {
+                            UserControl uControl = new UserControl();
+                            uControl.showLoginView();
+                        }
+                        serverCV.dispose(); //Disposing server vie configuration view
                     } else {
                         JOptionPane.showMessageDialog(
                                 serverCV,
                                 "Advertencia",
-                                "La conexion esta establecida",
+                                "La conexion no pudo ser establecida",
                                 JOptionPane.WARNING_MESSAGE);
                     }
                 }

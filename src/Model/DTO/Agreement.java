@@ -1,5 +1,5 @@
 package Model.DTO;
-// Generated Feb 16, 2019 12:20:15 PM by Hibernate Tools 4.3.1
+// Generated Feb 22, 2019 2:08:50 PM by Hibernate Tools 4.3.1
 
 import java.util.Date;
 import java.util.HashSet;
@@ -103,7 +103,7 @@ public class Agreement implements java.io.Serializable {
      *
      * @return
      */
-    public int getConceptID() {
+    public long getConceptID() {
         return this.concept.getIdConceptCode();
     }
 

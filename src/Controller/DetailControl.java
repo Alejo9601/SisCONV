@@ -71,21 +71,6 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
             //Consulting the respecting landPropMap for the agreement.
             EnumMap<ParametersManager.concept_param, String> ctMap
                     = pm.consult(Integer.parseInt(a.get(AgreementsManager.agreement_param.CONCEPT)));
-            //Status of agreement
-            String status = "";
-            if (a.get(
-                    AgreementsManager.agreement_param.STATUS).equals(
-                            AgreementsManager.agreement_status.WITHOUT_EFFECT.toString())) {
-                status = "SIN EFECTO";
-            } else if (a.get(
-                    AgreementsManager.agreement_param.STATUS).equals(
-                            AgreementsManager.agreement_status.VALID.toString())) {
-                status = "VIGENTE";
-            } else if (a.get(
-                    AgreementsManager.agreement_param.STATUS).equals(
-                            AgreementsManager.agreement_status.CANCELED.toString())) {
-                status = "CANCELADO";
-            }
             //Array of objects representing a row.
             Object nuevo[] = new Object[]{
                 tpMap.get(TaxpayersManager.taxpayer_param.NAMES)
@@ -95,10 +80,102 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
                 a.get(AgreementsManager.agreement_param.AMOUNT_OF_DEBT),
                 a.get(AgreementsManager.agreement_param.FEES_NUMBER),
                 ctMap.get(ParametersManager.concept_param.CONCEPT_NAME),
-                status};
+                a.get(AgreementsManager.agreement_param.STATUS)};
             tableModel.addRow(nuevo); //Adding new row at the table model.
         }
         agreementsLV.setTableModel(tableModel); //Setting table model to the view.
+    }
+
+    /**
+     * Will show the view that contains the complete information of an
+     * agreement.
+     *
+     * @param agreementNumber
+     */
+    private void fillAgreementDetailsView(Long agreementNumber) {
+        AgreementsManager am = new AgreementsManager();
+        TaxpayersManager tm = new TaxpayersManager();
+        ParametersManager pm = new ParametersManager();
+        PropertyManager lpm = new PropertyManager();
+        //Consulting the agreement.
+        EnumMap<AgreementsManager.agreement_param, String> agreementMap
+                = am.consultAgreement(agreementNumber);
+        agreementDV.setTfagreementNumber(
+                agreementMap.get(AgreementsManager.agreement_param.AGREEMENT_NUMBER));
+        agreementDV.setTfAmountOfDebt(
+                "$ " + agreementMap.get(AgreementsManager.agreement_param.AMOUNT_OF_DEBT));
+        agreementDV.setTfCreationDate(
+                agreementMap.get(AgreementsManager.agreement_param.CREATION_DATE));
+        agreementDV.setTfExpirationDate(
+                agreementMap.get(AgreementsManager.agreement_param.EXPIRATION_DATE));
+        agreementDV.setTfCuotsNumber(
+                agreementMap.get(AgreementsManager.agreement_param.FEES_NUMBER));
+        agreementDV.setTfDescription(
+                agreementMap.get(AgreementsManager.agreement_param.DESCRIPTION));
+        //Consulting the taxpayer.
+        EnumMap<TaxpayersManager.taxpayer_param, String> taxpayerMap
+                = tm.consult(Long.parseLong(
+                        agreementMap.get(AgreementsManager.agreement_param.TAXPAYER)));
+        agreementDV.setTfTaxpayerName(
+                taxpayerMap.get(TaxpayersManager.taxpayer_param.NAMES));
+        agreementDV.setTfTaxpayerLastname(
+                taxpayerMap.get(TaxpayersManager.taxpayer_param.LASTNAME));
+        agreementDV.setTfTaxpayerDocNumber(
+                taxpayerMap.get(TaxpayersManager.taxpayer_param.DOC_NUMBER));
+        agreementDV.setTfTaxpayerAddress(
+                taxpayerMap.get(TaxpayersManager.taxpayer_param.ADDRESS));
+        agreementDV.setTfTaxpayerPhone(
+                taxpayerMap.get(TaxpayersManager.taxpayer_param.PHONE_NUMBER));
+        //Consulting the concept.
+        EnumMap<ParametersManager.concept_param, String> conceptMap
+                = pm.consult(Integer.parseInt(agreementMap.get(AgreementsManager.agreement_param.CONCEPT)));
+        agreementDV.setTfConcept(conceptMap.get(ParametersManager.concept_param.CONCEPT_CODE) + " : "
+                + conceptMap.get(ParametersManager.concept_param.CONCEPT_NAME));
+        //If the concept is related to vehicle or land / property
+        switch (conceptMap.get(ParametersManager.concept_param.CONCEPT_CODE)) {
+            case "1201":
+            case "110101":
+            case "110201":
+                EnumMap<PropertyManager.landProperty_param, String> landPropMap
+                        = lpm.consultLandProperty(Long.parseLong(agreementMap.get(AgreementsManager.agreement_param.LAND_PROPERTY)));
+                agreementDV.setTfLandPropDecree(
+                        landPropMap.get(PropertyManager.landProperty_param.DECREE));
+                agreementDV.setTfLandPropAppleBatch(
+                        landPropMap.get(PropertyManager.landProperty_param.APPLE)
+                        + "/" + landPropMap.get(PropertyManager.landProperty_param.BATCH));
+                agreementDV.setTfLandPropAddress(
+                        landPropMap.get(PropertyManager.landProperty_param.ADDRESS));
+                break;
+            case "110104":
+                EnumMap<PropertyManager.vehicle_param, String> vehicleMap
+                        = lpm.consultVehicle(Long.parseLong(agreementMap.get(AgreementsManager.agreement_param.VEHICLE)));
+                agreementDV.setTfVehicleManufacturer(
+                        vehicleMap.get(PropertyManager.vehicle_param.MANUFACTURER));
+                agreementDV.setTfVehicleType(
+                        vehicleMap.get(PropertyManager.vehicle_param.TYPE));
+                agreementDV.setTfVehicleDomain(
+                        vehicleMap.get(PropertyManager.vehicle_param.DOMAIN));
+                agreementDV.setTfVehicleModel(
+                        vehicleMap.get(PropertyManager.vehicle_param.MODEL));
+                break;
+        }
+        /**
+         * Checking agreement status...
+         */
+        UsersManager um = UsersManager.getUsersManager();
+        fillAgreementPaymentsList();
+        if (um.checkUserPermitions() == true) {//If user is administrator
+            agreementDV.enableAdminFunctions();
+        }
+        if (agreementMap.get(AgreementsManager.agreement_param.STATUS).equals(AgreementsManager.agreement_status.WITHOUT_EFFECT.getValue())) {
+            agreementDV.setWithoutEffect(true);
+        } else {
+            if (agreementMap.get(AgreementsManager.agreement_param.STATUS).equals(AgreementsManager.agreement_status.CANCELLED.getValue())) {
+                agreementDV.setCancelled(true);
+            } else {
+                agreementDV.setCancelled(false);
+            }
+        }
     }
 
     /**
@@ -182,103 +259,13 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
         conceptsLV.setLocationRelativeTo(null); //Centering the view.
     }
 
-    /**
-     * Will show the view that contains the complete information of an
-     * agreement.
-     *
-     * @param agreementNumber
-     */
     public void showAgreementDetailsView(Long agreementNumber) {
-        AgreementsManager am = new AgreementsManager();
-        TaxpayersManager tm = new TaxpayersManager();
-        ParametersManager pm = new ParametersManager();
-        PropertyManager lpm = new PropertyManager();
-
         //Preparing view
         agreementDV = new AgreementDetails();
         agreementDV.setController(this);
-
-        //Consulting the agreement.
-        EnumMap<AgreementsManager.agreement_param, String> agreementMap
-                = am.consultAgreement(agreementNumber);
-        agreementDV.setTfagreementNumber(
-                agreementMap.get(AgreementsManager.agreement_param.AGREEMENT_NUMBER));
-        agreementDV.setTfAmountOfDebt(
-                "$ " + agreementMap.get(AgreementsManager.agreement_param.AMOUNT_OF_DEBT));
-        agreementDV.setTfCreationDate(
-                agreementMap.get(AgreementsManager.agreement_param.CREATION_DATE));
-        agreementDV.setTfExpirationDate(
-                agreementMap.get(AgreementsManager.agreement_param.EXPIRATION_DATE));
-        agreementDV.setTfCuotsNumber(
-                agreementMap.get(AgreementsManager.agreement_param.FEES_NUMBER));
-        agreementDV.setTfDescription(
-                agreementMap.get(AgreementsManager.agreement_param.DESCRIPTION));
-        //Consulting the taxpayer.
-        EnumMap<TaxpayersManager.taxpayer_param, String> taxpayerMap
-                = tm.consult(Long.parseLong(
-                        agreementMap.get(AgreementsManager.agreement_param.TAXPAYER)));
-        agreementDV.setTfTaxpayerName(
-                taxpayerMap.get(TaxpayersManager.taxpayer_param.NAMES));
-        agreementDV.setTfTaxpayerLastname(
-                taxpayerMap.get(TaxpayersManager.taxpayer_param.LASTNAME));
-        agreementDV.setTfTaxpayerDocNumber(
-                taxpayerMap.get(TaxpayersManager.taxpayer_param.DOC_NUMBER));
-        agreementDV.setTfTaxpayerAddress(
-                taxpayerMap.get(TaxpayersManager.taxpayer_param.ADDRESS));
-        agreementDV.setTfTaxpayerPhone(
-                taxpayerMap.get(TaxpayersManager.taxpayer_param.PHONE_NUMBER));
-        //Consulting the concept.
-        EnumMap<ParametersManager.concept_param, String> conceptMap
-                = pm.consult(Integer.parseInt(agreementMap.get(AgreementsManager.agreement_param.CONCEPT)));
-        agreementDV.setTfConcept(conceptMap.get(ParametersManager.concept_param.CONCEPT_CODE) + " : "
-                + conceptMap.get(ParametersManager.concept_param.CONCEPT_NAME));
-        //If the concept is related to vehicle or land / property
-        switch (conceptMap.get(ParametersManager.concept_param.CONCEPT_CODE)) {
-            case "1201":
-            case "110101":
-            case "110201":
-                EnumMap<PropertyManager.landProperty_param, String> landPropMap
-                        = lpm.consultLandProperty(Long.parseLong(agreementMap.get(AgreementsManager.agreement_param.LAND_PROPERTY)));
-                agreementDV.setTfLandPropDecree(
-                        landPropMap.get(PropertyManager.landProperty_param.DECREE));
-                agreementDV.setTfLandPropAppleBatch(
-                        landPropMap.get(PropertyManager.landProperty_param.APPLE)
-                        + "/" + landPropMap.get(PropertyManager.landProperty_param.BATCH));
-                agreementDV.setTfLandPropAddress(
-                        landPropMap.get(PropertyManager.landProperty_param.ADDRESS));
-                break;
-            case "110104":
-                EnumMap<PropertyManager.vehicle_param, String> vehicleMap
-                        = lpm.consultVehicle(Long.parseLong(agreementMap.get(AgreementsManager.agreement_param.VEHICLE)));
-                agreementDV.setTfVehicleManufacturer(
-                        vehicleMap.get(PropertyManager.vehicle_param.MANUFACTURER));
-                agreementDV.setTfVehicleType(
-                        vehicleMap.get(PropertyManager.vehicle_param.TYPE));
-                agreementDV.setTfVehicleDomain(
-                        vehicleMap.get(PropertyManager.vehicle_param.DOMAIN));
-                agreementDV.setTfVehicleModel(
-                        vehicleMap.get(PropertyManager.vehicle_param.MODEL));
-                break;
-        }
-        /**
-         * Checking agreement status...
-         */
+        fillAgreementDetailsView(agreementNumber);
         agreementDV.setLocationRelativeTo(null);
-        UsersManager um = UsersManager.getUsersManager();
-        if (um.checkUserPermitions() == true) {//If user is administrator
-            agreementDV.enableAdminFunctions();
-        }
-        if (agreementMap.get(
-                AgreementsManager.agreement_param.STATUS).equals(
-                        AgreementsManager.agreement_status.WITHOUT_EFFECT.toString())) {
-            agreementDV.visibleAsWithoutEffect();
-        } else {
-            agreementDV.setVisible(true);
-            agreementDV.setLocationRelativeTo(null);
-            fillAgreementPaymentsList();
-            agreementDV.setVisible(true);
-        }
-
+        agreementDV.setVisible(true);
     }
 
     /**
@@ -303,7 +290,7 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
                         "Advertencia!",
                         JOptionPane.YES_NO_OPTION) == 0) {
                     am = new AgreementsManager(); //New agreements manager
-                    am.leaveWithoutEffect(Long.parseLong(agreementDV.getTfAgreementNumber()));
+                    am.changeAgreementStatus(Long.parseLong(agreementDV.getTfAgreementNumber()), AgreementsManager.agreement_status.WITHOUT_EFFECT);
                     fillAgreementsPadron(); //Refilling table model again to refresh changes. 
                     agreementDV.dispose();
                 }
@@ -314,11 +301,15 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
                         agreementDV,
                         agreementDV.getTfAgreementNumber(),
                         agreementDV.getTfFee());
-                fillAgreementPaymentsList();//Refiiling payments table.
+                fillAgreementDetailsView(Long.parseLong(agreementDV.getTfAgreementNumber()));
                 break;
             case "MAKE_AGREEMENTS_PADRON_REPORT":
                 am = new AgreementsManager();
                 am.agreementsReport();
+                break;
+            case "MAKE_AGREEMENT_DETAILS_REPORT":
+                am = new AgreementsManager();
+                am.agreementDetails(Long.parseLong(agreementDV.getTfAgreementNumber()));
                 break;
             case "MODIFY_AGREEMENT":
                 if (JOptionPane.showConfirmDialog(
@@ -347,7 +338,8 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
                                 "La eliminacion fue correcta",
                                 "Informacion!",
                                 JOptionPane.INFORMATION_MESSAGE);
-                        fillAgreementPaymentsList();
+                        fillAgreementDetailsView(Long.parseLong(agreementDV.getTfAgreementNumber()));
+                        fillAgreementsPadron();
                     } else {
                         JOptionPane.showMessageDialog(
                                 agreementDV,

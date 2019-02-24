@@ -1,12 +1,16 @@
 package Controller;
 
+import Initializer.SystemConfiguration;
 import Model.UsersManager;
 import View.LoginView;
+import View.ActionCommittedsView;
 import View.PasswordChange;
 import View.UserRegistration;
 import View.UsersList;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
@@ -18,26 +22,32 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Alejandro Juarez
  */
-public class UserControl implements ActionListener {
-
+public class UserControl implements ActionListener, KeyListener {
+    
     LoginView loginV;
     UsersList usersLV;
     UserRegistration userRV;
     PasswordChange passCV;
+    ActionCommittedsView actionCV;
     UsersManager um = UsersManager.getUsersManager();
 
     /**
      * Constructor of the class
      */
     public UserControl() {
+        actionCV = new ActionCommittedsView();
         loginV = new LoginView();
         usersLV = new UsersList();
         loginV.setController(this);
         usersLV.setController(this);
+        actionCV.setController(this);
     }
 
-    public void fillListView() {
-        List<EnumMap<UsersManager.user_param, String>> usersEL = um.consultAll();
+    /**
+     *
+     */
+    public void fillUsersListView() {
+        List<EnumMap<UsersManager.user_param, String>> usersEL = um.consultAllUsers();
         //Table model creation
         DefaultTableModel tableModel = new DefaultTableModel(
                 null, new String[]{
@@ -67,8 +77,48 @@ public class UserControl implements ActionListener {
     /**
      *
      */
-    public void showListView() {
-        fillListView();
+    public void fillLogView() {
+        List<EnumMap<UsersManager.actionCommitted, String>> actionCommittedsEL = um.consultAllActionsCommitted();
+        //Table model creation
+        DefaultTableModel tableModel = new DefaultTableModel(
+                null, new String[]{
+                    "NRO. DE MOVIMIENTO",
+                    "FECHA",
+                    "MOVIMIENTO",
+                    "USUARIO",
+                    "DESCRIPCION"}) {
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                return false;
+            }
+        };
+        //For each EnumMap on landPropEL
+        for (EnumMap<UsersManager.actionCommitted, String> acMap : actionCommittedsEL) {
+            Object nuevo[] = new Object[]{
+                acMap.get(UsersManager.actionCommitted.ID_MOVEMENT),
+                acMap.get(UsersManager.actionCommitted.DATE),
+                acMap.get(UsersManager.actionCommitted.MOVEMENT),
+                acMap.get(UsersManager.actionCommitted.USER_NAME),
+                acMap.get(UsersManager.actionCommitted.DESCRIPTION)};
+            tableModel.addRow(nuevo);
+        }
+        actionCV.setTableModel(tableModel); //Setting model to the view.
+    }
+
+    /**
+     *
+     */
+    public void showActionCommitedsView() {
+        fillLogView();
+        actionCV.setLocationRelativeTo(null);
+        actionCV.setVisible(true);
+    }
+
+    /**
+     *
+     */
+    public void showUserListView() {
+        fillUsersListView();
         usersLV.setLocationRelativeTo(null);
         usersLV.setVisible(true);
     }
@@ -128,6 +178,7 @@ public class UserControl implements ActionListener {
         switch (event.getActionCommand()) {
             case "LOGIN":
                 if (um.validateSession(loginV.getTfPassword(), loginV.getTfNickName())) {
+                    SystemConfiguration.incrementSystemBegginings(); //We increment in 1
                     MainControl pControl = new MainControl();
                     pControl.showPrincipalView();
                     loginV.dispose();
@@ -150,7 +201,7 @@ public class UserControl implements ActionListener {
                             "Informacion",
                             JOptionPane.INFORMATION_MESSAGE);
                     userRV.dispose();
-                    fillListView();
+                    fillUsersListView();
                 } else {
                     JOptionPane.showMessageDialog(
                             userRV,
@@ -172,7 +223,7 @@ public class UserControl implements ActionListener {
                                 "Se ha eliminado con exito",
                                 "Informacion",
                                 JOptionPane.INFORMATION_MESSAGE);
-                        fillListView();
+                        fillUsersListView();
                     } else {
                         JOptionPane.showMessageDialog(
                                 userRV,
@@ -219,7 +270,7 @@ public class UserControl implements ActionListener {
                 }
                 break;
         }
-
+        
     }
 
     /**
@@ -228,6 +279,27 @@ public class UserControl implements ActionListener {
     public void showLoginView() {
         loginV.setLocationRelativeTo(null);
         loginV.setVisible(true);
+        SystemConfiguration.testServerConnection();
     }
-
+    
+    @Override
+    public void keyTyped(KeyEvent ke) {
+        
+    }
+    
+    @Override
+    public void keyPressed(KeyEvent ke) {
+        
+    }
+    
+    @Override
+    public void keyReleased(KeyEvent ke) {
+        if (actionCV != null) {
+            if (ke.getSource() == actionCV.getTfSearch()) {
+                fillLogView();
+                actionCV.filterMovements();
+            }
+        }
+    }
+    
 }

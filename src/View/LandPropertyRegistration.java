@@ -39,22 +39,15 @@ public class LandPropertyRegistration extends javax.swing.JDialog {
         if (tfApple.getText().equals("")) {
             JOptionPane.showMessageDialog(
                     this,
-                    "El dominio del vehiculo es obligatorio",
+                    "La nro. de manzana donde se ubica el terreno / propiedad es obligatorio",
                     "Advertencia",
                     JOptionPane.WARNING_MESSAGE);
             return false;
         }
-        if (tfDecree.getText().equals("")) {
+        if (tfBatch.getText().equals("")) {
             JOptionPane.showMessageDialog(
                     this,
-                    "EL modelo del vehiculo es obligatorio",
-                    "Advertencia",
-                    JOptionPane.WARNING_MESSAGE);
-            return false;
-        }
-        if (tfAddress.getText().equals("")) {
-            JOptionPane.showMessageDialog(this,
-                    "El fabricante del vehiculo es obligatorio",
+                    "El nro. de lote del terreno / propiedad es obligatorio",
                     "Advertencia",
                     JOptionPane.WARNING_MESSAGE);
             return false;
@@ -67,7 +60,7 @@ public class LandPropertyRegistration extends javax.swing.JDialog {
      * @return
      */
     public String getTfApple() {
-        return tfApple.getText();
+        return tfApple.getText().toUpperCase();
     }
 
     /**
@@ -75,7 +68,7 @@ public class LandPropertyRegistration extends javax.swing.JDialog {
      * @return
      */
     public String getTfDecree() {
-        return tfDecree.getText();
+        return tfDecree.getText().toUpperCase();
     }
 
     /**
@@ -83,15 +76,15 @@ public class LandPropertyRegistration extends javax.swing.JDialog {
      * @return
      */
     public String getTfAddress() {
-        return tfAddress.getText();
+        return tfAddress.getText().toUpperCase();
     }
-    
-     /**
+
+    /**
      *
      * @return
      */
     public String getTfBatch() {
-        return tfBatch.getText();
+        return tfBatch.getText().toUpperCase();
     }
 
     /**
@@ -163,6 +156,11 @@ public class LandPropertyRegistration extends javax.swing.JDialog {
 
         tfApple.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tfApple.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfApple.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfAppleKeyTyped(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
@@ -174,6 +172,11 @@ public class LandPropertyRegistration extends javax.swing.JDialog {
 
         tfDecree.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tfDecree.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfDecree.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfDecreeKeyTyped(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
@@ -181,6 +184,11 @@ public class LandPropertyRegistration extends javax.swing.JDialog {
 
         tfAddress.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tfAddress.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfAddress.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfAddressKeyTyped(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
@@ -188,6 +196,11 @@ public class LandPropertyRegistration extends javax.swing.JDialog {
 
         tfBatch.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tfBatch.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfBatch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfBatchKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -264,49 +277,45 @@ public class LandPropertyRegistration extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
-     * @param args the command line arguments
+     *
+     * @param evt
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LandPropertyRegistration.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LandPropertyRegistration.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LandPropertyRegistration.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LandPropertyRegistration.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void tfAppleKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfAppleKeyTyped
+        if (tfApple.getText().length() == 4) {
+            evt.consume();
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
+    }//GEN-LAST:event_tfAppleKeyTyped
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                LandPropertyRegistration dialog = new LandPropertyRegistration(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+    /**
+     *
+     * @param evt
+     */
+    private void tfBatchKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfBatchKeyTyped
+        if (tfBatch.getText().length() == 4) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_tfBatchKeyTyped
+
+    /**
+     *
+     * @param evt
+     */
+    private void tfDecreeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfDecreeKeyTyped
+        if (tfDecree.getText().length() == 10) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_tfDecreeKeyTyped
+
+    /**
+     *
+     * @param evt
+     */
+    private void tfAddressKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfAddressKeyTyped
+        if (tfAddress.getText().length() == 12) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_tfAddressKeyTyped
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;

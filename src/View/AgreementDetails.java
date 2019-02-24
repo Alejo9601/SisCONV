@@ -69,15 +69,23 @@ public class AgreementDetails extends javax.swing.JFrame {
     }
 
     /**
-     * Will show this view disabling all the functions.
+     *
+     * @param condition
      */
-    public void visibleAsWithoutEffect() {
-        btnDeletePayment.setEnabled(false);
-        btnLeaveWithoutEffect.setEnabled(false);
-        btnModify.setEnabled(false);
-        btnNewPayment.setEnabled(false);
-        btnGenerateReport.setEnabled(false);
-        this.setVisible(true);
+    public void setWithoutEffect(boolean condition) {
+        btnDeletePayment.setEnabled(!condition);
+        btnLeaveWithoutEffect.setEnabled(!condition);
+        btnModify.setEnabled(!condition);
+        btnNewPayment.setEnabled(!condition);
+        btnMakeReport.setEnabled(!condition);
+    }
+
+    /**
+     *
+     * @param condition
+     */
+    public void setCancelled(boolean condition) {
+        btnNewPayment.setEnabled(!condition);
     }
 
     /**
@@ -94,6 +102,8 @@ public class AgreementDetails extends javax.swing.JFrame {
         btnModify.setActionCommand("MODIFY_AGREEMENT");
         btnDeletePayment.addActionListener(control);
         btnDeletePayment.setActionCommand("DELETE_PAYMENT");
+        btnMakeReport.addActionListener(control);
+        btnMakeReport.setActionCommand("MAKE_AGREEMENT_DETAILS_REPORT");
     }
 
     /**
@@ -124,7 +134,7 @@ public class AgreementDetails extends javax.swing.JFrame {
         jPanel8 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        btnGenerateReport = new javax.swing.JButton();
+        btnMakeReport = new javax.swing.JButton();
         btnLeaveWithoutEffect = new javax.swing.JButton();
         btnModify = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
@@ -198,9 +208,9 @@ public class AgreementDetails extends javax.swing.JFrame {
 
         jPanel2.setBorder(null);
 
-        btnGenerateReport.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnGenerateReport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/PDF.png"))); // NOI18N
-        btnGenerateReport.setText("Generar reporte");
+        btnMakeReport.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnMakeReport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/PDF.png"))); // NOI18N
+        btnMakeReport.setText("Generar reporte");
 
         btnLeaveWithoutEffect.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnLeaveWithoutEffect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/LeaveWithoutEffect.png"))); // NOI18N
@@ -222,7 +232,7 @@ public class AgreementDetails extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnLeaveWithoutEffect)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnGenerateReport)
+                .addComponent(btnMakeReport)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -230,7 +240,7 @@ public class AgreementDetails extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGenerateReport)
+                    .addComponent(btnMakeReport)
                     .addComponent(btnLeaveWithoutEffect)
                     .addComponent(btnModify))
                 .addGap(14, 14, 14))
@@ -880,8 +890,8 @@ public class AgreementDetails extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDeletePayment;
-    private javax.swing.JButton btnGenerateReport;
     private javax.swing.JButton btnLeaveWithoutEffect;
+    private javax.swing.JButton btnMakeReport;
     private javax.swing.JButton btnModify;
     private javax.swing.JButton btnNewPayment;
     private javax.swing.JLabel jLabel1;

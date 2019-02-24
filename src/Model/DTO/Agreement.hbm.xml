@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Feb 16, 2019 12:20:16 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated Feb 22, 2019 2:08:51 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="Model.DTO.Agreement" table="agreement" catalog="proyecto_sisconv" optimistic-lock="version">
+    <class name="Model.DTO.Agreement" table="agreement" catalog="sisconv28" optimistic-lock="version">
         <id name="idAgreementNumber" type="java.lang.Long">
             <column name="id_agreementNumber" />
             <generator class="identity" />
         </id>
         <many-to-one name="concept" class="Model.DTO.Concept" fetch="select">
-            <column name="concept_id_concept" not-null="true" />
+            <column name="concept_id_conceptCode" not-null="true" />
         </many-to-one>
         <many-to-one name="landProperty" class="Model.DTO.LandProperty" fetch="select">
-            <column name="property_id_property" />
+            <column name="land_property_id_property" />
         </many-to-one>
         <many-to-one name="taxpayer" class="Model.DTO.Taxpayer" fetch="select">
             <column name="taxpayer_id_docNumber" not-null="true" />

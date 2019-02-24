@@ -1,39 +1,44 @@
 UPDATE `proyecto_sisconv`.`concept` SET `id_conceptCode` = '1202', `conceptName` = 'VENTAS DE ACTIVO FIJO' WHERE (`id_conceptCode` = '1');
 
-INSERT INTO `proyecto_sisconv`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('1201', 'VENTA DE TIERRAS');
+INSERT INTO `sisconv28`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('1201', 'VENTA DE TIERRAS');
 
-INSERT INTO `proyecto_sisconv`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110101', 'IMP. INMOBILIARIO');
+INSERT INTO `sisconv28`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110101', 'IMP. INMOBILIARIO');
 
-INSERT INTO `proyecto_sisconv`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110201', 'RECOLECCION DE RESIDUOS');
+INSERT INTO `sisconv28`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110201', 'RECOLECCION DE RESIDUOS');
 
-INSERT INTO `proyecto_sisconv`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110104', 'PATENTE RODADO');
+INSERT INTO `sisconv28`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110104', 'PATENTE RODADO');
 
-INSERT INTO `proyecto_sisconv`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110106', 'COMERC. Y/O DST. DE MERCADERIA');
+INSERT INTO `sisconv28`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110106', 'COMERC. Y/O DST. DE MERCADERIA');
 
-INSERT INTO `proyecto_sisconv`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110107', 'ANALISIS BROMATOLOGIA');
+INSERT INTO `sisconv28`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110107', 'ANALISIS BROMATOLOGIA');
 
-INSERT INTO `proyecto_sisconv`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110108', 'DCHO. HAB. DE COMERCIO');
+INSERT INTO `sisconv28`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110108', 'DCHO. HAB. DE COMERCIO');
 
-INSERT INTO `proyecto_sisconv`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110109', 'DCHO. INS. SALUB E HIG.');
+INSERT INTO `sisconv28`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110109', 'DCHO. INS. SALUB E HIG.');
 
-INSERT INTO `proyecto_sisconv`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110110', 'DCHO. VENDEDOR AMBULANTE');
+INSERT INTO `sisconv28`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110110', 'DCHO. VENDEDOR AMBULANTE');
 
-INSERT INTO `proyecto_sisconv`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110111', 'DCHO. CONSTRUCCION');
+INSERT INTO `sisconv28`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110111', 'DCHO. CONSTRUCCION');
 
-INSERT INTO `proyecto_sisconv`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110112', 'DCHO. CEMENTERIO');
+INSERT INTO `sisconv28`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110112', 'DCHO. CEMENTERIO');
 
-INSERT INTO `proyecto_sisconv`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110113', 'PERMISO OCUP. ESP. PUBLICO');
+INSERT INTO `sisconv28`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110113', 'PERMISO OCUP. ESP. PUBLICO');
 
-INSERT INTO `proyecto_sisconv`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110114', 'TASAS POR SERVICIO ADMINISTRATIVO');
+INSERT INTO `sisconv28`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110114', 'TASAS POR SERVICIO ADMINISTRATIVO');
 
-INSERT INTO `proyecto_sisconv`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110115', 'TASAS POR SERVIVIOS VARIOS');
+INSERT INTO `sisconv28`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110115', 'TASAS POR SERVIVIOS VARIOS');
 
-INSERT INTO `proyecto_sisconv`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110117', 'USO MAQUINA AGRICOLA');
+INSERT INTO `sisconv28`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110117', 'USO MAQUINA AGRICOLA');
 
-INSERT INTO `proyecto_sisconv`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110118', 'INGRESOS POLIDEPORTIVO');
+INSERT INTO `sisconv28`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110118', 'INGRESOS POLIDEPORTIVO');
 
-INSERT INTO `proyecto_sisconv`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110207', 'DEUDORES EJERCICIO ANTERIOR');
+INSERT INTO `sisconv28`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110207', 'DEUDORES EJERCICIO ANTERIOR');
 
-INSERT INTO `proyecto_sisconv`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110203', 'MULTAS FALTAS MUNICIPALES');
+INSERT INTO `sisconv28`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110203', 'MULTAS FALTAS MUNICIPALES');
 
-INSERT INTO `proyecto_sisconv`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110205', 'OTROS');
+INSERT INTO `sisconv28`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110205', 'OTROS');
+
+
+jdbc:mysql://localhost:3306/sisconv28
+
+INSERT INTO `sisconv28`.`user` (`names`, `lastname`, `nickName`, `password`, `administrator`, `activeSession`, `writtenOff`) VALUES ('admin', 'admin', 'admin', 'adminroot', '1', '0', '0');

@@ -1,5 +1,5 @@
 package Model.DTO;
-// Generated Feb 16, 2019 12:20:15 PM by Hibernate Tools 4.3.1
+// Generated Feb 22, 2019 2:08:50 PM by Hibernate Tools 4.3.1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +14,7 @@ public class LandProperty implements java.io.Serializable {
     private String batch;
     private String adjudicationDecree;
     private Byte wasteland;
+    private String address;
     private Set agreements = new HashSet(0);
 
     /**
@@ -24,26 +25,28 @@ public class LandProperty implements java.io.Serializable {
     public LandProperty(Long landPropertyIdentifier) {
         this.idProperty = landPropertyIdentifier;
     }
+    
+    /**
+     * Added by me.
+     * @param apple
+     * @param batch
+     * @param decree 
+     */
+    public LandProperty(String apple, String batch, String decree) {
+        this.apple = apple;
+        this.batch = batch;
+        this.adjudicationDecree = decree;
+    }
 
     public LandProperty() {
     }
 
-    public LandProperty(String apple, String batch, String address, String adjudicationDecree) {
-        this.apple = apple;
-        this.batch = batch;
-        this.adjudicationDecree = adjudicationDecree;
-    }
-
-    public LandProperty(String apple, String batch) {
-        this.apple = apple;
-        this.batch = batch;
-    }
-
-    public LandProperty(String apple, String batch, String adjudicationDecree, Byte wasteland, Set agreements) {
+    public LandProperty(String apple, String batch, String adjudicationDecree, Byte wasteland, String address, Set agreements) {
         this.apple = apple;
         this.batch = batch;
         this.adjudicationDecree = adjudicationDecree;
         this.wasteland = wasteland;
+        this.address = address;
         this.agreements = agreements;
     }
 
@@ -85,6 +88,14 @@ public class LandProperty implements java.io.Serializable {
 
     public void setWasteland(Byte wasteland) {
         this.wasteland = wasteland;
+    }
+
+    public String getAddress() {
+        return this.address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public Set getAgreements() {

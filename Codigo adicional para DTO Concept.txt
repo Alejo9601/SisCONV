@@ -1,4 +1,4 @@
- /**
+   /**
      * Added by me.
      *
      * @param conceptCode
@@ -17,7 +17,7 @@
     public Concept(int idConceptCode, String conceptName, String description) {
         this.idConceptCode = idConceptCode;
         this.conceptName = conceptName;
-        this.description = description;
+        this.conceptDescription = description;
     }
 
     /**

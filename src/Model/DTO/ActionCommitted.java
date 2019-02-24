@@ -1,5 +1,5 @@
 package Model.DTO;
-// Generated Feb 16, 2019 12:20:15 PM by Hibernate Tools 4.3.1
+// Generated Feb 22, 2019 2:08:50 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -10,8 +10,7 @@ import java.util.Date;
 public class ActionCommitted  implements java.io.Serializable {
 
 
-     private long idAction;
-     private User user;
+     private Long idAction;
      private String actionCommitted;
      private Date date;
      private String description;
@@ -19,34 +18,18 @@ public class ActionCommitted  implements java.io.Serializable {
     public ActionCommitted() {
     }
 
-	
-    public ActionCommitted(long idAction, User user, String actionCommitted, Date date) {
-        this.idAction = idAction;
-        this.user = user;
-        this.actionCommitted = actionCommitted;
-        this.date = date;
-    }
-    public ActionCommitted(long idAction, User user, String actionCommitted, Date date, String description) {
-       this.idAction = idAction;
-       this.user = user;
+    public ActionCommitted(String actionCommitted, Date date, String description) {
        this.actionCommitted = actionCommitted;
        this.date = date;
        this.description = description;
     }
    
-    public long getIdAction() {
+    public Long getIdAction() {
         return this.idAction;
     }
     
-    public void setIdAction(long idAction) {
+    public void setIdAction(Long idAction) {
         this.idAction = idAction;
-    }
-    public User getUser() {
-        return this.user;
-    }
-    
-    public void setUser(User user) {
-        this.user = user;
     }
     public String getActionCommitted() {
         return this.actionCommitted;

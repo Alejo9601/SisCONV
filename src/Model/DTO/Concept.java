@@ -1,5 +1,5 @@
 package Model.DTO;
-// Generated Feb 16, 2019 12:20:15 PM by Hibernate Tools 4.3.1
+// Generated Feb 22, 2019 2:08:50 PM by Hibernate Tools 4.3.1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,9 +9,9 @@ import java.util.Set;
  */
 public class Concept implements java.io.Serializable {
 
-    private int idConceptCode;
+    private long idConceptCode;
     private String conceptName;
-    private String description;
+    private String conceptDescription;
     private Set agreements = new HashSet(0);
 
     /**
@@ -33,7 +33,7 @@ public class Concept implements java.io.Serializable {
     public Concept(int idConceptCode, String conceptName, String description) {
         this.idConceptCode = idConceptCode;
         this.conceptName = conceptName;
-        this.description = description;
+        this.conceptDescription = description;
     }
 
     /**
@@ -41,30 +41,30 @@ public class Concept implements java.io.Serializable {
      *
      * @return
      */
-    public int getConceptID() {
+    public long getConceptID() {
         return this.idConceptCode;
     }
 
     public Concept() {
     }
 
-    public Concept(int idConceptCode, String conceptName) {
+    public Concept(long idConceptCode, String conceptName) {
         this.idConceptCode = idConceptCode;
         this.conceptName = conceptName;
     }
 
-    public Concept(int idConceptCode, String conceptName, String description, Set agreements) {
+    public Concept(long idConceptCode, String conceptName, String conceptDescription, Set agreements) {
         this.idConceptCode = idConceptCode;
         this.conceptName = conceptName;
-        this.description = description;
+        this.conceptDescription = conceptDescription;
         this.agreements = agreements;
     }
 
-    public int getIdConceptCode() {
+    public long getIdConceptCode() {
         return this.idConceptCode;
     }
 
-    public void setIdConceptCode(int idConceptCode) {
+    public void setIdConceptCode(long idConceptCode) {
         this.idConceptCode = idConceptCode;
     }
 
@@ -76,12 +76,12 @@ public class Concept implements java.io.Serializable {
         this.conceptName = conceptName;
     }
 
-    public String getDescription() {
-        return this.description;
+    public String getConceptDescription() {
+        return this.conceptDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setConceptDescription(String conceptDescription) {
+        this.conceptDescription = conceptDescription;
     }
 
     public Set getAgreements() {

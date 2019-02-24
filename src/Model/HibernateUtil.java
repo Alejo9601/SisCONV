@@ -1,22 +1,25 @@
 package Model;
 
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import javax.swing.JOptionPane;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.filter.Filters;
 import org.jdom2.input.SAXBuilder;
-import org.jdom2.output.DOMOutputter;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
 import org.jdom2.Document;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 
 /**
  * Hibernate Utility class with a convenient method to get Session Factory
@@ -26,63 +29,84 @@ import org.jdom2.Document;
  */
 public class HibernateUtil {
 
-    private static URL xmlFileURL;
     private static SessionFactory sessionFactory;
 
-    static {
-        xmlFileURL = HibernateUtil.class.getClassLoader().getResource("hibernate.cfg.xml");
+    private static void configureSessionFactory() {
         try {
-            // Create the SessionFactory from standard (hibernate.cfg.xml) 
-            // config file.
-            sessionFactory = new AnnotationConfiguration().configure(xmlFileURL).buildSessionFactory();
+            Configuration configuration = new Configuration();
+            configuration.configure("hibernate.cfg.xml");
+            System.out.println("Hibernate Configuration loaded");
+            //apply configuration property settings to StandardServiceRegistryBuilder
+            ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
+            System.out.println("Hibernate serviceRegistry created");
+            sessionFactory = configuration.buildSessionFactory(serviceRegistry);
         } catch (HibernateException ex) {
             // Log the exception.
             JOptionPane.showMessageDialog(
                     null,
                     "Initial SessionFactory creation failed. Make sure your Database is available " + ex,
                     "Warning", JOptionPane.WARNING_MESSAGE);
-//            System.err.println("Initial SessionFactory creation failed." + ex);
+            //System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         }
     }
 
+    /**
+     * Returns session factory
+     *
+     * @return
+     */
     public static SessionFactory getSessionFactory() {
+        if (sessionFactory == null) {
+            configureSessionFactory();
+        }
         return sessionFactory;
     }
 
     /**
-     * 
+     *
      * @param dataBaseName
      * @param userName
      * @param password
      * @throws FileNotFoundException
      * @throws JDOMException
-     * @throws IOException 
+     * @throws IOException
      */
     public static void configureConnect(String dataBaseName, String userName, String password) throws FileNotFoundException, JDOMException, IOException {
-        sessionFactory.close();
-        sessionFactory = new Configuration().configure(modifyConnectConfiguration(dataBaseName, userName, password)).buildSessionFactory();
+        if (sessionFactory != null) {
+            sessionFactory.close();
+        }//Closing session factory before configuring}
+        modifyConnectConfiguration(dataBaseName, userName, password);
     }
 
     /**
-     * 
+     *
      * @param dataBaseName
      * @param userName
      * @param password
      * @return
      * @throws FileNotFoundException
      * @throws JDOMException
-     * @throws IOException 
+     * @throws IOException
      */
-    private static org.w3c.dom.Document modifyConnectConfiguration(String dataBaseName, String userName, String password) throws FileNotFoundException, JDOMException, IOException {
-        Document documentJDOM = new SAXBuilder().build(xmlFileURL);
+    private static void modifyConnectConfiguration(String dataBaseName, String userName, String password) throws FileNotFoundException, JDOMException, IOException {
+        SAXBuilder builder = new SAXBuilder(false);
+        builder.setValidation(false);
+        builder.setFeature("http://xml.org/sax/features/validation", false);
+        builder.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+        builder.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+        //Building new Document 
+        Document documentJDOM = builder.build("hibernate.cfg.xml");
         XPathExpression<Element> xPathExpression = XPathFactory.instance().compile("/hibernate-configuration/session-factory/property", Filters.element());
         List<Element> elementList = xPathExpression.evaluate(documentJDOM);
-        //Esto es relativo a en que posición aparecen las lineas en el hibernate.cfg.xml
-        elementList.get(2).setText(dataBaseName);
-        elementList.get(3).setText(userName);
-        elementList.get(4).setText(password);
-        DOMOutputter domOutputter = new DOMOutputter();
-        return domOutputter.output(documentJDOM);
+        //Relative to position of element on list
+        elementList.get(1).setText(dataBaseName);
+        elementList.get(2).setText(userName);
+        elementList.get(3).setText(password);
+        //Preparing for overriding hibernate.cfg.xml
+        XMLOutputter xmlOutput = new XMLOutputter();
+        xmlOutput.setFormat(Format.getPrettyFormat());
+        xmlOutput.output(documentJDOM, new FileWriter("hibernate.cfg.xml"));
     }
+
 }
