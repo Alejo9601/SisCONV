@@ -17,6 +17,7 @@ import java.awt.event.MouseListener;
 import java.util.EnumMap;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -28,6 +29,7 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
     AgreementDetails agreementDV;
     AgreementsList agreementsLV;
     ConceptsList conceptsLV;
+    Timer refreshTimer;//Timer for refreshing views
 
     /**
      * Constructor
@@ -42,7 +44,7 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
     /**
      * Will fill agreements padron table.
      */
-    private void fillAgreementsPadron() {
+    private void fillAgreementsListTable() {
         AgreementsManager am = new AgreementsManager();
         TaxpayersManager tm = new TaxpayersManager();
         ParametersManager pm = new ParametersManager();
@@ -245,7 +247,12 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
      * Will show the agreement list view.
      */
     public void ShowAgreementListView() {
-        fillAgreementsPadron();
+        fillAgreementsListTable();
+
+        refreshTimer = new Timer(120000, this);
+        refreshTimer.setActionCommand("REFRESH_AGREEMENTS_LIST_TABLE");
+        refreshTimer.start();
+
         agreementsLV.setVisible(true); //Making visible the view.
         agreementsLV.setLocationRelativeTo(null); //Centering the view.
     }
@@ -291,7 +298,7 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
                         JOptionPane.YES_NO_OPTION) == 0) {
                     am = new AgreementsManager(); //New agreements manager
                     am.changeAgreementStatus(Long.parseLong(agreementDV.getTfAgreementNumber()), AgreementsManager.agreement_status.WITHOUT_EFFECT);
-                    fillAgreementsPadron(); //Refilling table model again to refresh changes. 
+                    fillAgreementsListTable(); //Refilling table model again to refresh changes. 
                     agreementDV.dispose();
                 }
                 break;
@@ -339,7 +346,7 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
                                 "Informacion!",
                                 JOptionPane.INFORMATION_MESSAGE);
                         fillAgreementDetailsView(Long.parseLong(agreementDV.getTfAgreementNumber()));
-                        fillAgreementsPadron();
+                        fillAgreementsListTable();
                     } else {
                         JOptionPane.showMessageDialog(
                                 agreementDV,
@@ -347,6 +354,13 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
                                 "Advertencia!",
                                 JOptionPane.WARNING_MESSAGE);
                     }
+                }
+                break;
+            case "REFRESH_AGREEMENTS_LIST_TABLE":
+                if (agreementsLV.isVisible()) {
+                    fillAgreementsListTable();
+                } else {
+                    refreshTimer.stop();
                 }
                 break;
         }
@@ -369,9 +383,10 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
      */
     @Override
     public void keyReleased(KeyEvent ke) {
-        if (ke.getSource().equals(agreementsLV.getTfSearch())) {
-            fillAgreementsPadron();//Refilling agreements padron.
-            agreementsLV.filterAgreements();
+        if (agreementsLV != null) {
+            if (ke.getSource().equals(agreementsLV.getTfSearch())) {
+                agreementsLV.filterAgreements();
+            }
         }
     }
 
@@ -393,7 +408,11 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
 
     @Override
     public void keyTyped(KeyEvent ke) {
-
+        char c = ke.getKeyChar();
+        if (Character.isLetter(c) || Character.isDigit(c)) {
+        } else {
+            ke.consume();
+        }
     }
 
     @Override

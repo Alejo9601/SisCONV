@@ -21,18 +21,20 @@ public class ActionCommittedsView extends javax.swing.JFrame {
         initComponents();
     }
 
-    /**|
+    /**
+     * |
      * Will filter agreements table.
      */
     public void filterMovements() {
         TableRowSorter trsFiltro = new TableRowSorter(tblAgreements.getModel());
         if (chkMovement.isSelected() || chkDate.isSelected() || chkUserName.isSelected()) {
             if (chkMovement.isSelected()) {
-                trsFiltro.setRowFilter(RowFilter.regexFilter(tfSearch.getText().toUpperCase(), 2));
+                trsFiltro.setRowFilter(RowFilter.regexFilter(tfSearch.getText().toUpperCase().replaceFirst("O", "Ó"), 2));
             } else if (chkDate.isSelected()) {
                 trsFiltro.setRowFilter(RowFilter.regexFilter(tfSearch.getText().toUpperCase(), 1));
+            } else {
+                trsFiltro.setRowFilter(RowFilter.regexFilter(tfSearch.getText().toUpperCase(), 3));
             }
-            trsFiltro.setRowFilter(RowFilter.regexFilter(tfSearch.getText().toUpperCase(), 3));
         }
         tblAgreements.setRowSorter(trsFiltro);
     }
@@ -44,6 +46,8 @@ public class ActionCommittedsView extends javax.swing.JFrame {
      */
     public void setController(UserControl control) {
         tfSearch.addKeyListener(control);
+        btnMakeReport.addActionListener(control);
+        btnMakeReport.setActionCommand("MAKE_ACTIONS_COMMITTEDS_REPORT");
     }
 
     /**
@@ -219,14 +223,17 @@ public class ActionCommittedsView extends javax.swing.JFrame {
 
     private void chkMovementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkMovementActionPerformed
         chkDate.setSelected(false);
+        chkUserName.setSelected(false);
     }//GEN-LAST:event_chkMovementActionPerformed
 
     private void chkDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkDateActionPerformed
         chkMovement.setSelected(false);
+        chkUserName.setSelected(false);
     }//GEN-LAST:event_chkDateActionPerformed
 
     private void chkUserNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkUserNameActionPerformed
-        // TODO add your handling code here:
+        chkMovement.setSelected(false);
+        chkDate.setSelected(false);
     }//GEN-LAST:event_chkUserNameActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -92,7 +92,7 @@ public class MainView extends javax.swing.JFrame {
         btnAgreementsList.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnAgreementsList.setForeground(new java.awt.Color(255, 255, 255));
         btnAgreementsList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ListOFAgreements.png"))); // NOI18N
-        btnAgreementsList.setText("  Padron de Convenios");
+        btnAgreementsList.setText("  Padrón de Convenios");
         btnAgreementsList.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 153), 23));
         btnAgreementsList.setFocusPainted(false);
         btnAgreementsList.setFocusable(false);

@@ -23,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Alejandro Juarez
  */
 public class UserControl implements ActionListener, KeyListener {
-    
+
     LoginView loginV;
     UsersList usersLV;
     UserRegistration userRV;
@@ -270,7 +270,7 @@ public class UserControl implements ActionListener, KeyListener {
                 }
                 break;
         }
-        
+
     }
 
     /**
@@ -281,17 +281,21 @@ public class UserControl implements ActionListener, KeyListener {
         loginV.setVisible(true);
         SystemConfiguration.testServerConnection();
     }
-    
+
     @Override
     public void keyTyped(KeyEvent ke) {
-        
+        char c = ke.getKeyChar();
+        if (Character.isLetter(c) || Character.isDigit(c) || c == ' ') {
+        } else {
+            ke.consume();
+        }
     }
-    
+
     @Override
     public void keyPressed(KeyEvent ke) {
-        
+
     }
-    
+
     @Override
     public void keyReleased(KeyEvent ke) {
         if (actionCV != null) {
@@ -301,5 +305,5 @@ public class UserControl implements ActionListener, KeyListener {
             }
         }
     }
-    
+
 }

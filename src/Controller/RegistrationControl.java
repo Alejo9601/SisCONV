@@ -559,8 +559,8 @@ public class RegistrationControl implements ActionListener, KeyListener {
                 break;
             case "SAVE_TAXPAYER":
                 tm = new TaxpayersManager();
-                if (tm.consult(Long.parseLong(taxpayerRV.getTfDocNumber())) == null) {
-                    if (taxpayerRV.verifyInformation()) {
+                if (taxpayerRV.verifyInformation()) {
+                    if (tm.consult(Long.parseLong(taxpayerRV.getTfDocNumber())) == null) {
                         if (tm.newTaxpayer(getTaxpayerInfo())) {
                             JOptionPane.showMessageDialog(taxpayerRV,
                                     "Se ha registrado con exito",
@@ -576,18 +576,19 @@ public class RegistrationControl implements ActionListener, KeyListener {
                                     "Advertencia",
                                     JOptionPane.WARNING_MESSAGE);
                         }
+                        break;
                     }
+                    JOptionPane.showMessageDialog(taxpayerRV,
+                            "El nro. de documento del contribuyente ya existe",
+                            "Advertencia",
+                            JOptionPane.WARNING_MESSAGE);
                 }
-                JOptionPane.showMessageDialog(taxpayerRV,
-                        "El nro. de documento del contribuyente ya existe",
-                        "Advertencia",
-                        JOptionPane.WARNING_MESSAGE);
                 break;
             case "SAVE_CONCEPT":
                 pm = new ParametersManager();
-                if (pm.consult(Integer.parseInt(conceptRV.getTfCode())) == null) {
-                    if (pm.consult(conceptRV.getTfName()) == null) {
-                        if (conceptRV.verifyInformation()) {
+                if (conceptRV.verifyInformation()) {
+                    if (pm.consult(Integer.parseInt(conceptRV.getTfCode())) == null) {
+                        if (pm.consult(conceptRV.getTfName()) == null) {
                             if (pm.newConcept(getConceptInfo())) {
                                 JOptionPane.showMessageDialog(conceptRV,
                                         "Se ha registrado con exito",
@@ -600,13 +601,14 @@ public class RegistrationControl implements ActionListener, KeyListener {
                                         "Advertencia",
                                         JOptionPane.WARNING_MESSAGE);
                             }
+                            break;
                         }
                     }
+                    JOptionPane.showMessageDialog(conceptRV,
+                            "El codigo o nombre del concepto ya existe",
+                            "Advertencia",
+                            JOptionPane.WARNING_MESSAGE);
                 }
-                JOptionPane.showMessageDialog(conceptRV,
-                        "El codigo o nombre del concepto ya existe",
-                        "Advertencia",
-                        JOptionPane.WARNING_MESSAGE);
                 break;
             case "SAVE_PAYMENT":
                 am = new AgreementsManager();
@@ -682,6 +684,12 @@ public class RegistrationControl implements ActionListener, KeyListener {
                                     "Se ha registrado con exito",
                                     "Informacion",
                                     JOptionPane.INFORMATION_MESSAGE);
+                            agreementsRV.setTfVehicle(
+                                    plm.consultVehicle(vehicleRV.getDomain()).get(PropertyManager.vehicle_param.ID_VEHICLE)
+                                    + " : " + vehicleRV.getDomain()
+                                    + " : " + vehicleRV.getModel()
+                                    + " : " + vehicleRV.getManufacturer()
+                                    + " : " + vehicleRV.getCmbType());
                             vehicleRV.dispose();
                         } else {
                             JOptionPane.showMessageDialog(vehicleRV,
@@ -700,6 +708,11 @@ public class RegistrationControl implements ActionListener, KeyListener {
                                 "Se ha registrado con exito",
                                 "Informacion",
                                 JOptionPane.INFORMATION_MESSAGE);
+                        agreementsRV.setTfLandProperty(
+                                plm.consultLandProperty(landPropertyRV.getTfApple(),
+                                        landPropertyRV.getTfBatch()).get(PropertyManager.landProperty_param.ID_LANDPROPERTY)
+                                + " : M" + landPropertyRV.getTfApple() + "-L" + landPropertyRV.getTfBatch()
+                                + " : " + landPropertyRV.getTfDecree());
                         landPropertyRV.dispose();
                     } else {
                         JOptionPane.showMessageDialog(landPropertyRV,
@@ -714,7 +727,11 @@ public class RegistrationControl implements ActionListener, KeyListener {
 
     @Override
     public void keyTyped(KeyEvent ke) {
-
+        char c = ke.getKeyChar();
+        if (Character.isLetter(c) || Character.isDigit(c) || c == '-' || c == '/') {
+        } else {
+            ke.consume();
+        }
     }
 
     @Override

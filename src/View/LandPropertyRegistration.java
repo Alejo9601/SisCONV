@@ -284,6 +284,11 @@ public class LandPropertyRegistration extends javax.swing.JDialog {
         if (tfApple.getText().length() == 4) {
             evt.consume();
         }
+        char c = evt.getKeyChar();
+        if (Character.isDigit(c) || c == 'a' || c == 'b' || c == 'c' || c == 'd') {
+        } else {
+            evt.consume();
+        }
     }//GEN-LAST:event_tfAppleKeyTyped
 
     /**
@@ -292,6 +297,11 @@ public class LandPropertyRegistration extends javax.swing.JDialog {
      */
     private void tfBatchKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfBatchKeyTyped
         if (tfBatch.getText().length() == 4) {
+            evt.consume();
+        }
+        char c = evt.getKeyChar();
+        if (Character.isDigit(c) || c == 'a' || c == 'b' || c == 'c' || c == 'd') {
+        } else {
             evt.consume();
         }
     }//GEN-LAST:event_tfBatchKeyTyped
@@ -304,6 +314,11 @@ public class LandPropertyRegistration extends javax.swing.JDialog {
         if (tfDecree.getText().length() == 10) {
             evt.consume();
         }
+        char c = evt.getKeyChar();
+        if (c == '/' || Character.isDigit(c)) {
+        } else {
+            evt.consume();
+        }
     }//GEN-LAST:event_tfDecreeKeyTyped
 
     /**
@@ -311,7 +326,12 @@ public class LandPropertyRegistration extends javax.swing.JDialog {
      * @param evt
      */
     private void tfAddressKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfAddressKeyTyped
-        if (tfAddress.getText().length() == 12) {
+        if (tfAddress.getText().length() == 50) {
+            evt.consume();
+        }
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c) || Character.isDigit(c) || c == ' ') {
+        } else {
             evt.consume();
         }
     }//GEN-LAST:event_tfAddressKeyTyped

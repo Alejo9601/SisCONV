@@ -39,6 +39,4 @@ INSERT INTO `sisconv28`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110
 INSERT INTO `sisconv28`.`concept` (`id_conceptCode`, `conceptName`) VALUES ('110205', 'OTROS');
 
 
-jdbc:mysql://localhost:3306/sisconv28
-
-INSERT INTO `sisconv28`.`user` (`names`, `lastname`, `nickName`, `password`, `administrator`, `activeSession`, `writtenOff`) VALUES ('admin', 'admin', 'admin', 'adminroot', '1', '0', '0');
+INSERT INTO `sisconv28`.`user` (`names`, `lastname`, `nickName`, `password`, `administrator`, `activeSession`, `writtenOff`) VALUES ('ADMIN', 'ADMIN', 'ADMINBD2896', 'adminroot28', '1', '0', '0');

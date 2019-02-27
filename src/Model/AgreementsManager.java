@@ -514,7 +514,7 @@ public class AgreementsManager {
                 transaction.commit();
                 //Registering movement
                 um.registerUserAction(
-                        UsersManager.user_actions.PAYMENT_REGISTRATION,
+                        UsersManager.user_actions.DELETE_PAYMENT,
                         "Recibo nro. " + receiptNumber
                         + " Del Convenio nro. " + paymentsL.get(0).getAgreement().getIdAgreementNumber());
             } catch (Exception e) {
@@ -540,7 +540,7 @@ public class AgreementsManager {
             changeAgreementStatus(paymentsL.get(0).getAgreement().getIdAgreementNumber(), agreement_status.VALID);
             //Registering movement
             um.registerUserAction(
-                    UsersManager.user_actions.PAYMENT_REGISTRATION,
+                    UsersManager.user_actions.DELETE_PAYMENT,
                     "Recibo nro. " + receiptNumber
                     + " Del Convenio nro. " + paymentsL.get(0).getAgreement().getIdAgreementNumber());
             return true;

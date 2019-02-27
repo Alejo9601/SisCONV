@@ -224,6 +224,11 @@ public class PaymentRegistration extends javax.swing.JDialog {
 
         tfReceiptNumber.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tfReceiptNumber.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfReceiptNumber.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfReceiptNumberKeyTyped(evt);
+            }
+        });
 
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Nro. Recibo :");
@@ -233,6 +238,9 @@ public class PaymentRegistration extends javax.swing.JDialog {
         tfAmount.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 tfAmountKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfAmountKeyTyped(evt);
             }
         });
 
@@ -361,6 +369,28 @@ public class PaymentRegistration extends javax.swing.JDialog {
             tfAmount.setText("");
         }
     }//GEN-LAST:event_tfAmountKeyReleased
+
+    private void tfAmountKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfAmountKeyTyped
+        if (tfAmount.getText().length() == 11) {
+            evt.consume();
+        }
+        char c = evt.getKeyChar();
+        if (Character.isDigit(c)) {
+        } else {
+            evt.consume();
+        }
+    }//GEN-LAST:event_tfAmountKeyTyped
+
+    private void tfReceiptNumberKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfReceiptNumberKeyTyped
+        if (tfReceiptNumber.getText().length() == 9) {
+            evt.consume();
+        }
+        char c = evt.getKeyChar();
+        if (Character.isDigit(c)) {
+        } else {
+            evt.consume();
+        }
+    }//GEN-LAST:event_tfReceiptNumberKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

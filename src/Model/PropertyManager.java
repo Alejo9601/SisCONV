@@ -253,6 +253,29 @@ public class PropertyManager {
     }
 
     /**
+     * Gets the land / property for the specified id.
+     *
+     * @param apple
+     * @param batch
+     * @return
+     */
+    public EnumMap<landProperty_param, String> consultLandProperty(String apple, String batch) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        LandProperty landProperty = null;
+        try {
+            SQLQuery consulta = session.createSQLQuery(
+                    "SELECT * FROM land_property WHERE land_property.apple = '" + apple + "' AND land_property.batch = '" + batch + "'");
+            consulta.addEntity(LandProperty.class);
+            landProperty = (LandProperty) consulta.uniqueResult();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Excepcion consultando el terreno / inmueble" + e);
+        } finally {
+            session.close();
+        }
+        return landPropertyOnEnumMap(landProperty);
+    }
+
+    /**
      * Will extract all the data of a land / property from EnumMap.
      *
      * @param landPropMap

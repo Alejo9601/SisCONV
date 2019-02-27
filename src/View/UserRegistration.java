@@ -39,33 +39,33 @@ public class UserRegistration extends javax.swing.JDialog {
 
         if (tfNames.getText().equals("")) {
             JOptionPane.showMessageDialog(
-                    this, 
-                    "El nombre del usuario es obligatorio", 
-                    "Advertencia", 
+                    this,
+                    "El nombre del usuario es obligatorio",
+                    "Advertencia",
                     JOptionPane.WARNING_MESSAGE);
             return false;
         }
         if (tfLastname.getText().equals("")) {
             JOptionPane.showMessageDialog(
-                    this, 
-                    "EL apellido del usuario es obligatorio", 
-                    "Advertencia", 
+                    this,
+                    "EL apellido del usuario es obligatorio",
+                    "Advertencia",
                     JOptionPane.WARNING_MESSAGE);
             return false;
         }
         if (tfNickName.getText().equals("")) {
             JOptionPane.showMessageDialog(
                     this,
-                    "El nick del usuario es obligatorio", 
-                    "Advertencia", 
+                    "El nick del usuario es obligatorio",
+                    "Advertencia",
                     JOptionPane.WARNING_MESSAGE);
             return false;
         }
         if (tfPassword.getText().equals("")) {
             JOptionPane.showMessageDialog(
-                    this, 
-                    "La contraseña es obligatoria", 
-                    "Advertencia", 
+                    this,
+                    "La contraseña es obligatoria",
+                    "Advertencia",
                     JOptionPane.WARNING_MESSAGE);
             return false;
         }
@@ -78,7 +78,7 @@ public class UserRegistration extends javax.swing.JDialog {
      * @return
      */
     public String getTfNames() {
-        return tfNames.getText();
+        return tfNames.getText().toUpperCase();
     }
 
     /**
@@ -86,7 +86,7 @@ public class UserRegistration extends javax.swing.JDialog {
      * @return
      */
     public String getTfLastname() {
-        return tfLastname.getText();
+        return tfLastname.getText().toUpperCase();
     }
 
     /**
@@ -183,10 +183,14 @@ public class UserRegistration extends javax.swing.JDialog {
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "REGISTRO USUARIO", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("sansserif", 0, 14), new java.awt.Color(0, 0, 0))); // NOI18N
 
-        tfNames.setBackground(java.awt.Color.white);
         tfNames.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tfNames.setForeground(new java.awt.Color(0, 0, 0));
         tfNames.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfNames.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfNamesKeyTyped(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
@@ -196,25 +200,32 @@ public class UserRegistration extends javax.swing.JDialog {
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Apellido :");
 
-        tfLastname.setBackground(java.awt.Color.white);
         tfLastname.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tfLastname.setForeground(new java.awt.Color(0, 0, 0));
         tfLastname.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfLastname.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfLastnameKeyTyped(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Nick usuario :");
 
-        tfNickName.setBackground(java.awt.Color.white);
         tfNickName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tfNickName.setForeground(new java.awt.Color(0, 0, 0));
         tfNickName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfNickName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfNickNameKeyTyped(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 0, 0));
         jLabel6.setText("Contraseña :");
 
-        tfPassword.setBackground(java.awt.Color.white);
         tfPassword.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tfPassword.setForeground(new java.awt.Color(0, 0, 0));
         tfPassword.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -309,50 +320,39 @@ public class UserRegistration extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(UserRegistration.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(UserRegistration.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(UserRegistration.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UserRegistration.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void tfNamesKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfNamesKeyTyped
+        if (tfNames.getText().length() == 35) {
+            evt.consume();
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c) || c == ' ') {
+        } else {
+            evt.consume();
+        }
+    }//GEN-LAST:event_tfNamesKeyTyped
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                UserRegistration dialog = new UserRegistration(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+    private void tfLastnameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfLastnameKeyTyped
+        if (tfLastname.getText().length() == 25) {
+            evt.consume();
+        }
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c) || c == ' ') {
+        } else {
+            evt.consume();
+        }
+    }//GEN-LAST:event_tfLastnameKeyTyped
+
+    private void tfNickNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfNickNameKeyTyped
+        if (tfLastname.getText().length() == 15) {
+            evt.consume();
+        }
+        char c = evt.getKeyChar();
+        if (Character.isDigit(c) || Character.isLetter(c)) {
+        } else {
+            evt.consume();
+        }
+    }//GEN-LAST:event_tfNickNameKeyTyped
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;

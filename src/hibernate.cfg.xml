@@ -3,17 +3,19 @@
 <hibernate-configuration>
   <session-factory>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/sisconv28</property>
-    <property name="hibernate.connection.username">root</property>
-    <property name="hibernate.connection.password">holasoyalej</property>
-    <mapping resource="Model/DTO/ActionCommitted.hbm.xml" />
-    <mapping resource="Model/DTO/Concept.hbm.xml" />
-    <mapping resource="Model/DTO/Agreement.hbm.xml" />
-    <mapping resource="Model/DTO/Payment.hbm.xml" />
-    <mapping resource="Model/DTO/Taxpayer.hbm.xml" />
-    <mapping resource="Model/DTO/LandProperty.hbm.xml" />
-    <mapping resource="Model/DTO/Vehicle.hbm.xml" />
-    <mapping resource="Model/DTO/User.hbm.xml" />
-    <mapping resource="Model/DTO/Receipt.hbm.xml" />
+    <property name="hibernate.connection.url">jdbc:mysql://ALEJO9601:3306/sisconv28</property>
+    <property name="hibernate.connection.username">admin</property>
+    <property name="hibernate.connection.password">adminroot</property>
+    <property name="hibernate.cache.use_second_level_cache">false</property>
+    <property name="hibernate.cache.use_query_cache">false</property>
+    <mapping resource="Model/DTO/ActionCommitted.hbm.xml"/>
+    <mapping resource="Model/DTO/Concept.hbm.xml"/>
+    <mapping resource="Model/DTO/Agreement.hbm.xml"/>
+    <mapping resource="Model/DTO/Payment.hbm.xml"/>
+    <mapping resource="Model/DTO/Taxpayer.hbm.xml"/>
+    <mapping resource="Model/DTO/LandProperty.hbm.xml"/>
+    <mapping resource="Model/DTO/Vehicle.hbm.xml"/>
+    <mapping resource="Model/DTO/User.hbm.xml"/>
+    <mapping resource="Model/DTO/Receipt.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

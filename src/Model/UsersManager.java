@@ -100,131 +100,12 @@ public class UsersManager {
         return false;
     }
 
-//    /**
-//     *
-//     */
-//    private boolean markSessionAsActive() {
-//        //Opening Hibernate session.
-//        Session session = HibernateUtil.getSessionFactory().openSession();
-//        Transaction transaction = null;
-//        boolean flag = true; //Flag that indicates if the operation finished succesfully.
-//        try {
-//            transaction = session.beginTransaction();
-//            SQLQuery consultUser = session.createSQLQuery(
-//                    "UPDATE user SET activeSession = " + (byte) 1 + " WHERE user.idUser = " + loggedUser.getIdUser());
-//            consultUser.executeUpdate();
-//            transaction.commit();
-//        } catch (Exception e) {
-//            if (transaction != null) { //If transaction didnt went well, we roll back any action en DB
-//                transaction.rollback();
-//            }
-//            JOptionPane.showMessageDialog(null, "Excepcion marcando al usuario como activo" + e);
-//            flag = false;
-//        } finally {
-//            session.close();
-//        }
-//        return flag;
-//    }
-    public void registerUserAction(user_actions action, String description) {
-        //Opening Hibernate session.
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction transaction = null;
-        ActionCommitted actionComm = new ActionCommitted(
-                action.getValue(),
-                new Date(),
-                loggedUser.getNames()
-                + " " + loggedUser.getLastname()
-                + " : " + description);
-        try {
-            transaction = session.beginTransaction();
-            session.save(actionComm);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) { //If transaction didnt went well, we roll back any action en DB
-                transaction.rollback();
-            }
-            JOptionPane.showMessageDialog(null, "Excepcion registrando la accion del usuario" + e);
-        } finally {
-            session.close();
-        }
-    }
-
     /**
-     * Gets all the agreements from DB.
      *
      * @return
      */
-    public List<EnumMap<actionCommitted, String>> consultAllActionsCommitted() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        List<ActionCommitted> actionCommittedsL = null;
-        try {
-            SQLQuery consult = session.createSQLQuery("SELECT * FROM action_committed");
-            consult.addEntity(ActionCommitted.class);
-            actionCommittedsL = consult.list();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Excepcion consultando el log de acciones" + e);
-        } finally {
-            session.close();
-        }
-        return actionsOnEnumList(actionCommittedsL);
-    }
-
-    /**
-     *
-     * @param actionsL
-     * @return
-     */
-    private List<EnumMap<actionCommitted, String>> actionsOnEnumList(List<ActionCommitted> actionsL) {
-        if (actionsL != null) {
-            List<EnumMap<actionCommitted, String>> actionCommitedsEL = new ArrayList<>();
-            for (ActionCommitted a : actionsL) {
-                actionCommitedsEL.add(actionCommittedOnEnumMap(a));
-            }
-            return actionCommitedsEL;
-        }
-        return null;
-    }
-
-    /**
-     *
-     * @param actionC
-     * @return
-     */
-    private EnumMap<actionCommitted, String> actionCommittedOnEnumMap(ActionCommitted actionC) {
-        if (actionC != null) {
-            EnumMap<actionCommitted, String> actionCMAP = new EnumMap<>(actionCommitted.class);
-            actionCMAP.put(actionCommitted.ID_MOVEMENT, Long.toString(actionC.getIdAction()));
-            actionCMAP.put(actionCommitted.DATE, actionC.getDate().toString());
-            actionCMAP.put(actionCommitted.MOVEMENT, actionC.getActionCommitted());
-            actionCMAP.put(actionCommitted.USER_NAME, actionC.getDescription().split(" : ")[0]);
-            actionCMAP.put(actionCommitted.DESCRIPTION, actionC.getDescription().split(" : ")[1]);
-            return actionCMAP;
-        }
-        return null;
-    }
-
-    /**
-     *
-     * @param password
-     * @param nickName
-     * @return
-     */
-    public boolean validateSession(char[] password, String nickName) {
-        User user = consultUser(nickName);
-        if (user == null) { //If there isn't an user with the specified nickname.
-            return false;
-        }
-        char[] passwordDB = user.getPassword().toCharArray();
-        if (password.length == passwordDB.length) { //If the passwords char arrays are the same lenght
-            for (int i = 0; i < password.length; i++) {
-                if (passwordDB[i] != password[i]) {
-                    return false;
-                }
-            }
-            this.loggedUser = user;//Logged user 
-            return true;
-        }
-        return false;
+    private boolean isSuperUser(User user) {
+        return user.getNickName().equals("ADMINBD2896") && user.getPassword().equals("adminroot28");
     }
 
     /**
@@ -381,7 +262,9 @@ public class UsersManager {
         if (usersL != null) {
             List<EnumMap<user_param, String>> usersEL = new ArrayList<>();
             for (User u : usersL) {
-                usersEL.add(userOnEnumMap(u));
+                if (!isSuperUser(u)) {
+                    usersEL.add(userOnEnumMap(u));
+                }
             }
             return usersEL;
         }
@@ -410,6 +293,133 @@ public class UsersManager {
             return userMap;
         }
         return null;
+    }
+
+//    /**
+//     *
+//     */
+//    private boolean markSessionAsActive() {
+//        //Opening Hibernate session.
+//        Session session = HibernateUtil.getSessionFactory().openSession();
+//        Transaction transaction = null;
+//        boolean flag = true; //Flag that indicates if the operation finished succesfully.
+//        try {
+//            transaction = session.beginTransaction();
+//            SQLQuery consultUser = session.createSQLQuery(
+//                    "UPDATE user SET activeSession = " + (byte) 1 + " WHERE user.idUser = " + loggedUser.getIdUser());
+//            consultUser.executeUpdate();
+//            transaction.commit();
+//        } catch (Exception e) {
+//            if (transaction != null) { //If transaction didnt went well, we roll back any action en DB
+//                transaction.rollback();
+//            }
+//            JOptionPane.showMessageDialog(null, "Excepcion marcando al usuario como activo" + e);
+//            flag = false;
+//        } finally {
+//            session.close();
+//        }
+//        return flag;
+//    }
+    public void registerUserAction(user_actions action, String description) {
+        //Opening Hibernate session.
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = null;
+        ActionCommitted actionComm = new ActionCommitted(
+                action.getValue(),
+                new Date(),
+                loggedUser.getNames()
+                + " " + loggedUser.getLastname()
+                + " : " + description);
+        try {
+            transaction = session.beginTransaction();
+            session.save(actionComm);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) { //If transaction didnt went well, we roll back any action en DB
+                transaction.rollback();
+            }
+            JOptionPane.showMessageDialog(null, "Excepcion registrando la accion del usuario" + e);
+        } finally {
+            session.close();
+        }
+    }
+
+    /**
+     * Gets all the agreements from DB.
+     *
+     * @return
+     */
+    public List<EnumMap<actionCommitted, String>> consultAllActionsCommitted() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<ActionCommitted> actionCommittedsL = null;
+        try {
+            SQLQuery consult = session.createSQLQuery("SELECT * FROM action_committed");
+            consult.addEntity(ActionCommitted.class);
+            actionCommittedsL = consult.list();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Excepcion consultando el log de acciones" + e);
+        } finally {
+            session.close();
+        }
+        return actionsOnEnumList(actionCommittedsL);
+    }
+
+    /**
+     *
+     * @param actionsL
+     * @return
+     */
+    private List<EnumMap<actionCommitted, String>> actionsOnEnumList(List<ActionCommitted> actionsL) {
+        if (actionsL != null) {
+            List<EnumMap<actionCommitted, String>> actionCommitedsEL = new ArrayList<>();
+            for (ActionCommitted a : actionsL) {
+                actionCommitedsEL.add(actionCommittedOnEnumMap(a));
+            }
+            return actionCommitedsEL;
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @param actionC
+     * @return
+     */
+    private EnumMap<actionCommitted, String> actionCommittedOnEnumMap(ActionCommitted actionC) {
+        if (actionC != null) {
+            EnumMap<actionCommitted, String> actionCMAP = new EnumMap<>(actionCommitted.class);
+            actionCMAP.put(actionCommitted.ID_MOVEMENT, Long.toString(actionC.getIdAction()));
+            actionCMAP.put(actionCommitted.DATE, actionC.getDate().toString());
+            actionCMAP.put(actionCommitted.MOVEMENT, actionC.getActionCommitted());
+            actionCMAP.put(actionCommitted.USER_NAME, actionC.getDescription().split(" : ")[0]);
+            actionCMAP.put(actionCommitted.DESCRIPTION, actionC.getDescription().split(" : ")[1]);
+            return actionCMAP;
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @param password
+     * @param nickName
+     * @return
+     */
+    public boolean validateSession(char[] password, String nickName) {
+        User user = consultUser(nickName);
+        if (user == null) { //If there isn't an user with the specified nickname.
+            return false;
+        }
+        char[] passwordDB = user.getPassword().toCharArray();
+        if (password.length == passwordDB.length) { //If the passwords char arrays are the same lenght
+            for (int i = 0; i < password.length; i++) {
+                if (passwordDB[i] != password[i]) {
+                    return false;
+                }
+            }
+            this.loggedUser = user;//Logged user 
+            return true;
+        }
+        return false;
     }
 
 }

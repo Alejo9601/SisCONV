@@ -284,7 +284,12 @@ public class VehicleRegistration extends javax.swing.JDialog {
      * @param evt
      */
     private void tfDomainKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfDomainKeyTyped
-        if (tfDomain.getText().length() == 8) {
+        if (tfDomain.getText().length() == 10) {
+            evt.consume();
+        }
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c) || Character.isDigit(c)) {
+        } else {
             evt.consume();
         }
     }//GEN-LAST:event_tfDomainKeyTyped
@@ -294,7 +299,12 @@ public class VehicleRegistration extends javax.swing.JDialog {
      * @param evt
      */
     private void tfModelKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfModelKeyTyped
-        if (tfModel.getText().length() == 50) {
+        if (tfModel.getText().length() == 48) {
+            evt.consume();
+        }
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c) || Character.isDigit(c) || c == ' ' || c == '.' || c == '-') {
+        } else {
             evt.consume();
         }
     }//GEN-LAST:event_tfModelKeyTyped
@@ -304,7 +314,12 @@ public class VehicleRegistration extends javax.swing.JDialog {
      * @param evt
      */
     private void tfManufacturerKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfManufacturerKeyTyped
-        if (tfManufacturer.getText().length() == 17) {
+        if (tfManufacturer.getText().length() == 19) {
+            evt.consume();
+        }
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c) || Character.isDigit(c) || c == ' ') {
+        } else {
             evt.consume();
         }
     }//GEN-LAST:event_tfManufacturerKeyTyped

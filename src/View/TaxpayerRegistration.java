@@ -369,6 +369,11 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
         if (tfNames.getText().length() == 35) {
             evt.consume();
         }
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c) || c == ' ') {
+        } else {
+            evt.consume();
+        }
     }//GEN-LAST:event_tfNamesKeyTyped
 
     /**
@@ -377,6 +382,11 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
      */
     private void tfLastnameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfLastnameKeyTyped
         if (tfLastname.getText().length() == 25) {
+            evt.consume();
+        }
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c) || c == ' ') {
+        } else {
             evt.consume();
         }
     }//GEN-LAST:event_tfLastnameKeyTyped
@@ -389,6 +399,11 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
         if (tfDocNum.getText().length() == 8) {
             evt.consume();
         }
+        char c = evt.getKeyChar();
+        if (Character.isDigit(c)) {
+        } else {
+            evt.consume();
+        }
     }//GEN-LAST:event_tfDocNumKeyTyped
 
     /**
@@ -399,10 +414,20 @@ public class TaxpayerRegistration extends javax.swing.JDialog {
         if (tfAddress.getText().length() == 50) {
             evt.consume();
         }
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c) || Character.isDigit(c) || c == ' ') {
+        } else {
+            evt.consume();
+        }
     }//GEN-LAST:event_tfAddressKeyTyped
 
     private void tfPhoneNumKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfPhoneNumKeyTyped
         if (tfPhoneNum.getText().length() == 12) {
+            evt.consume();
+        }
+        char c = evt.getKeyChar();
+        if (Character.isDigit(c) || c == '-') {
+        } else {
             evt.consume();
         }
     }//GEN-LAST:event_tfPhoneNumKeyTyped

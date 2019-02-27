@@ -20,15 +20,19 @@ public class AgreementRegistration extends javax.swing.JFrame {
         initComponents();
     }
 
-    private boolean isNumeric(String expression) {
-        try {
-            Double.valueOf(expression);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
+//    /**
+//     *
+//     * @param expression
+//     * @return
+//     */
+//    private boolean isNumeric(String expression) {
+//        try {
+//            Double.valueOf(expression);
+//            return true;
+//        } catch (NumberFormatException e) {
+//            return false;
+//        }
+//    }
     /**
      * Will show this view to mofidy an agreement, enabling partially its
      * components.
@@ -39,7 +43,7 @@ public class AgreementRegistration extends javax.swing.JFrame {
         tfCreationDate.setEnabled(false);
         btnDateOfCreation.setEnabled(false);
         tfExpirationDate.setEnabled(false);
-        cmbSetFees.setEnabled(false);
+        cmbFees.setEnabled(false);
         cmbConcept.setEnabled(false);
 
         this.setVisible(true);
@@ -54,7 +58,7 @@ public class AgreementRegistration extends javax.swing.JFrame {
         tfCreationDate.setEnabled(true);
         btnDateOfCreation.setEnabled(true);
         tfExpirationDate.setEnabled(true);
-        cmbSetFees.setEnabled(true);
+        cmbFees.setEnabled(true);
         cmbConcept.setEnabled(true);
 
         this.setVisible(true);
@@ -196,10 +200,7 @@ public class AgreementRegistration extends javax.swing.JFrame {
      * @param feesNumber
      */
     public void setFeesNumber(String feesNumber) {
-        for (int i = 0; i < Integer.parseInt(feesNumber) + 1; i++) {
-            cmbSetFees.addItem(Integer.toString(i + 1));
-        }
-        cmbSetFees.setSelectedItem(feesNumber);
+        cmbFees.setSelectedItem(feesNumber);
     }
 
     /**
@@ -218,14 +219,15 @@ public class AgreementRegistration extends javax.swing.JFrame {
                     "Advertencia",
                     JOptionPane.WARNING_MESSAGE);
             return false;
-        } else if (!isNumeric(tfAmountOfDebt.getText().split(" ")[1])) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Por favor ingrese un numero valido como monto de la deuda",
-                    "Advertencia",
-                    JOptionPane.WARNING_MESSAGE);
-            return false;
         }
+//        else if (!isNumeric(tfAmountOfDebt.getText().split(" ")[1])) {
+//            JOptionPane.showMessageDialog(
+//                    this,
+//                    "Por favor ingrese un numero valido como monto de la deuda",
+//                    "Advertencia",
+//                    JOptionPane.WARNING_MESSAGE);
+//            return false;
+//        }
         if (tfCreationDate.getText().equals("")) {
             JOptionPane.showMessageDialog(
                     this,
@@ -338,7 +340,7 @@ public class AgreementRegistration extends javax.swing.JFrame {
      * @return
      */
     public String getCmbFeesNumber() {
-        return cmbSetFees.getSelectedItem().toString();
+        return cmbFees.getSelectedItem().toString();
     }
 
     /**
@@ -408,7 +410,7 @@ public class AgreementRegistration extends javax.swing.JFrame {
         tfVehicle = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
         tfLandProperty = new javax.swing.JTextField();
-        cmbSetFees = new javax.swing.JComboBox<>();
+        cmbFees = new javax.swing.JComboBox<>();
         btnSetVehicle = new javax.swing.JButton();
         btnSetLandProperty = new javax.swing.JButton();
         btnEraseTaxPayer = new javax.swing.JButton();
@@ -482,7 +484,7 @@ public class AgreementRegistration extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel9.setText("Cantidad de cuotas :");
+        jLabel9.setText("Seleccione la cantidad de cuotas :");
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(0, 0, 0));
@@ -538,12 +540,12 @@ public class AgreementRegistration extends javax.swing.JFrame {
         tfLandProperty.setForeground(new java.awt.Color(0, 0, 0));
         tfLandProperty.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        cmbSetFees.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        cmbSetFees.setForeground(new java.awt.Color(0, 0, 0));
-        cmbSetFees.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30" }));
-        cmbSetFees.addActionListener(new java.awt.event.ActionListener() {
+        cmbFees.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        cmbFees.setForeground(new java.awt.Color(0, 0, 0));
+        cmbFees.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30" }));
+        cmbFees.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbSetFeesActionPerformed(evt);
+                cmbFeesActionPerformed(evt);
             }
         });
 
@@ -626,25 +628,13 @@ public class AgreementRegistration extends javax.swing.JFrame {
                         .addComponent(tfAgreementNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel10)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(tfCreationDate, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnDateOfCreation))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(tfExpirationDate, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel11))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfAmountOfDebt)
-                            .addComponent(cmbSetFees, 0, 153, Short.MAX_VALUE)))
+                        .addComponent(tfExpirationDate, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel9)
+                        .addGap(18, 18, 18)
+                        .addComponent(cmbFees, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel12)
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -677,7 +667,17 @@ public class AgreementRegistration extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSetVehicle)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEraseVehicle)))
+                        .addComponent(btnEraseVehicle))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tfCreationDate, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDateOfCreation)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel11)
+                        .addGap(18, 18, 18)
+                        .addComponent(tfAmountOfDebt, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -701,15 +701,14 @@ public class AgreementRegistration extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(tfExpirationDate, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8)))
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel9)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
                             .addComponent(tfAmountOfDebt, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel9)
-                            .addComponent(cmbSetFees, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(cmbFees, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel12)
                 .addGap(16, 16, 16)
@@ -792,11 +791,16 @@ public class AgreementRegistration extends javax.swing.JFrame {
      *
      */
     private void setExpirationDate() {
-        String year = tfCreationDate.getText().split("-")[0];
+        int year = Integer.parseInt(tfCreationDate.getText().split("-")[0]);
         int month = Integer.parseInt(tfCreationDate.getText().split("-")[1]);
-        String day = tfCreationDate.getText().split("-")[2];
-        for (int i = 0; i < Integer.parseInt(cmbSetFees.getSelectedItem().toString()); i++) {
-            month++;
+        int day = Integer.parseInt(tfCreationDate.getText().split("-")[2]);
+        for (int i = 0; i < Integer.parseInt(cmbFees.getSelectedItem().toString()); i++) {
+            if (month < 12) {
+                month++;
+            } else if (month == 12) {
+                year++;
+                month = 1;
+            }
         }
         tfExpirationDate.setText(year + "-" + month + "-" + day);
     }
@@ -833,17 +837,21 @@ public class AgreementRegistration extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbConceptActionPerformed
 
     private void tfAmountOfDebtKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfAmountOfDebtKeyTyped
-
         if (tfAmountOfDebt.getText().length() == 12) {
+            evt.consume();
+        }
+        char c = evt.getKeyChar();
+        if (Character.isDigit(c)) {
+        } else {
             evt.consume();
         }
     }//GEN-LAST:event_tfAmountOfDebtKeyTyped
 
-    private void cmbSetFeesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSetFeesActionPerformed
+    private void cmbFeesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbFeesActionPerformed
         if (!"".equals(tfCreationDate.getText())) {
             setExpirationDate();
         }
-    }//GEN-LAST:event_cmbSetFeesActionPerformed
+    }//GEN-LAST:event_cmbFeesActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDateOfCreation;
@@ -858,7 +866,7 @@ public class AgreementRegistration extends javax.swing.JFrame {
     private javax.swing.JButton btnSetTaxpayer;
     private javax.swing.JButton btnSetVehicle;
     private javax.swing.JComboBox<String> cmbConcept;
-    private javax.swing.JComboBox<String> cmbSetFees;
+    private javax.swing.JComboBox<String> cmbFees;
     private datechooser.beans.DateChooserDialog dateChooserDialog1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

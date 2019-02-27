@@ -26,14 +26,19 @@ public class AgreementsList extends javax.swing.JFrame {
      */
     public void filterAgreements() {
         TableRowSorter trsFiltro = new TableRowSorter(tblAgreements.getModel());
-        if (chkAgreementNumber.isSelected() || chkTaxPayerDoc.isSelected()) {
+        if (chkAgreementNumber.isSelected() || chkTaxPayerDoc.isSelected() || chkTaxPayerLastname.isSelected()) {
             if (chkAgreementNumber.isSelected()) {
                 trsFiltro.setRowFilter(RowFilter.regexFilter(tfSearch.getText().toUpperCase(), 2));
             } else {
-                trsFiltro.setRowFilter(RowFilter.regexFilter(tfSearch.getText().toUpperCase(), 1));
+                if (chkTaxPayerDoc.isSelected()) {
+                    trsFiltro.setRowFilter(RowFilter.regexFilter(tfSearch.getText().toUpperCase(), 1));
+                } else {
+                    trsFiltro.setRowFilter(RowFilter.regexFilter(tfSearch.getText().toUpperCase(), 0));
+                }
             }
+            tblAgreements.setRowSorter(trsFiltro);
         }
-        tblAgreements.setRowSorter(trsFiltro);
+        lblNumberAgreements.setText(Integer.toString(tblAgreements.getRowCount()));
     }
 
     /**
@@ -72,6 +77,7 @@ public class AgreementsList extends javax.swing.JFrame {
         for (int i = 0; i < tblAgreements.getColumnCount(); i++) {
             tblAgreements.getColumnModel().getColumn(i).setCellRenderer(tcr);
         }
+        lblNumberAgreements.setText(Integer.toString(tblAgreements.getRowCount()));
     }
 
     /**
@@ -80,6 +86,14 @@ public class AgreementsList extends javax.swing.JFrame {
      */
     public JTextField getTfSearch() {
         return this.tfSearch;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getTfSearchText() {
+        return this.tfSearch.getText();
     }
 
     /**
@@ -94,12 +108,15 @@ public class AgreementsList extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         btnMakeReport = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        lblNumberAgreements = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblAgreements = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         tfSearch = new javax.swing.JTextField();
         chkAgreementNumber = new javax.swing.JCheckBox();
         chkTaxPayerDoc = new javax.swing.JCheckBox();
+        chkTaxPayerLastname = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PADRON GENERAL DE CONVENIOS");
@@ -112,19 +129,32 @@ public class AgreementsList extends javax.swing.JFrame {
         btnMakeReport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/PDF.png"))); // NOI18N
         btnMakeReport.setText("Generar reporte");
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        jLabel1.setText("Registros en la tabla:");
+
+        lblNumberAgreements.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        lblNumberAgreements.setText("-");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 1081, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblNumberAgreements)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 887, Short.MAX_VALUE)
                 .addComponent(btnMakeReport))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(14, Short.MAX_VALUE)
-                .addComponent(btnMakeReport)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnMakeReport)
+                    .addComponent(jLabel1)
+                    .addComponent(lblNumberAgreements))
                 .addGap(14, 14, 14))
         );
 
@@ -162,6 +192,14 @@ public class AgreementsList extends javax.swing.JFrame {
             }
         });
 
+        chkTaxPayerLastname.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        chkTaxPayerLastname.setText("Busqueda por apellido del titular");
+        chkTaxPayerLastname.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkTaxPayerLastnameActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -171,8 +209,10 @@ public class AgreementsList extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(chkTaxPayerDoc)
                 .addGap(18, 18, 18)
+                .addComponent(chkTaxPayerLastname)
+                .addGap(18, 18, 18)
                 .addComponent(tfSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(449, Short.MAX_VALUE))
+                .addContainerGap(154, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -181,7 +221,8 @@ public class AgreementsList extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(chkAgreementNumber)
-                    .addComponent(chkTaxPayerDoc))
+                    .addComponent(chkTaxPayerDoc)
+                    .addComponent(chkTaxPayerLastname))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
@@ -193,7 +234,7 @@ public class AgreementsList extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1268, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -201,7 +242,7 @@ public class AgreementsList extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 756, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(6, 6, 6))
         );
 
         pack();
@@ -209,20 +250,30 @@ public class AgreementsList extends javax.swing.JFrame {
 
     private void chkAgreementNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkAgreementNumberActionPerformed
         chkTaxPayerDoc.setSelected(false);
+        chkTaxPayerLastname.setSelected(false);
     }//GEN-LAST:event_chkAgreementNumberActionPerformed
 
     private void chkTaxPayerDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkTaxPayerDocActionPerformed
         chkAgreementNumber.setSelected(false);
+        chkTaxPayerLastname.setSelected(false);
     }//GEN-LAST:event_chkTaxPayerDocActionPerformed
+
+    private void chkTaxPayerLastnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkTaxPayerLastnameActionPerformed
+        chkAgreementNumber.setSelected(false);
+        chkTaxPayerDoc.setSelected(false);
+    }//GEN-LAST:event_chkTaxPayerLastnameActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnMakeReport;
     private javax.swing.JCheckBox chkAgreementNumber;
     private javax.swing.JCheckBox chkTaxPayerDoc;
+    private javax.swing.JCheckBox chkTaxPayerLastname;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblNumberAgreements;
     private javax.swing.JTable tblAgreements;
     private javax.swing.JTextField tfSearch;
     // End of variables declaration//GEN-END:variables
