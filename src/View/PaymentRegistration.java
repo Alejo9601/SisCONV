@@ -5,9 +5,10 @@
  */
 package View;
 
-import Controller.RegistrationControl;
+import Controller.DetailControl;
 import datechooser.beans.DateChooserDialog;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Calendar;
 import javax.swing.JOptionPane;
 
@@ -47,7 +48,7 @@ public class PaymentRegistration extends javax.swing.JDialog {
      *
      * @param control
      */
-    public void setController(RegistrationControl control) {
+    public void setController(DetailControl control) {
         this.btnSave.addActionListener(control);
         this.btnSave.setActionCommand("SAVE_PAYMENT");
     }
@@ -66,6 +67,14 @@ public class PaymentRegistration extends javax.swing.JDialog {
 
     /**
      *
+     * @param amount
+     */
+    public void setTfAmount(String amount) {
+        tfAmount.setText("$ " + amount);
+    }
+
+    /**
+     *
      * @return
      */
     public String getTfReceiptNumber() {
@@ -77,7 +86,7 @@ public class PaymentRegistration extends javax.swing.JDialog {
      * @return
      */
     public String getTfAmount() {
-        return this.tfAmount.getText().split(" ")[1];
+        return this.tfAmount.getText().split(" ")[1].replaceAll("[,]", "");
     }
 
     /**
@@ -128,10 +137,10 @@ public class PaymentRegistration extends javax.swing.JDialog {
                     "Advertencia",
                     JOptionPane.WARNING_MESSAGE);
             return false;
-        } else if (!isNumeric(tfAmount.getText().split(" ")[1])) {
+        } else if (!isNumeric(getTfAmount())) {
             JOptionPane.showMessageDialog(
                     this,
-                    "Por favor ingrese un monto valido",
+                    "Por favor ingrese un monto valido, separando miles por (,) y decimales por (.)",
                     "Advertencia",
                     JOptionPane.WARNING_MESSAGE);
             return false;
@@ -163,6 +172,7 @@ public class PaymentRegistration extends javax.swing.JDialog {
         lblAgreementNumber = new javax.swing.JLabel();
         dateChooserDialog1 = new datechooser.beans.DateChooserDialog();
         lblFeesNumber = new javax.swing.JLabel();
+        lblAgreementDate = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         btnSave = new javax.swing.JButton();
@@ -181,6 +191,8 @@ public class PaymentRegistration extends javax.swing.JDialog {
         lblAgreementNumber.setText("jLabel4");
 
         lblFeesNumber.setText("jLabel5");
+
+        lblAgreementDate.setText("jLabel5");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -273,28 +285,25 @@ public class PaymentRegistration extends javax.swing.JDialog {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tfPaymentDate))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(0, 18, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tfReceiptNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tfAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(tfPaymentDate, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(btnDate)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cmbFee, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cmbFee, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tfReceiptNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(tfAmount)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -304,9 +313,9 @@ public class PaymentRegistration extends javax.swing.JDialog {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfReceiptNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
-                    .addComponent(tfAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel2)
+                    .addComponent(tfAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfPaymentDate, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
@@ -371,11 +380,11 @@ public class PaymentRegistration extends javax.swing.JDialog {
     }//GEN-LAST:event_tfAmountKeyReleased
 
     private void tfAmountKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfAmountKeyTyped
-        if (tfAmount.getText().length() == 11) {
+        if (tfAmount.getText().length() >= 15) {
             evt.consume();
         }
         char c = evt.getKeyChar();
-        if (Character.isDigit(c)) {
+        if (Character.isDigit(c) || c == '.' || c == ',') {
         } else {
             evt.consume();
         }
@@ -406,6 +415,7 @@ public class PaymentRegistration extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JLabel lblAgreementDate;
     private javax.swing.JLabel lblAgreementNumber;
     private javax.swing.JLabel lblFeesNumber;
     private javax.swing.JTextField tfAmount;

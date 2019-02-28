@@ -8,7 +8,7 @@ import java.util.EnumMap;
 import java.util.List;
 import javax.swing.JOptionPane;
 import org.hibernate.SQLQuery;
-import org.hibernate.Session;
+import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 
 /**
@@ -110,6 +110,14 @@ public class UsersManager {
 
     /**
      *
+     * @return
+     */
+    private boolean isLoggedUser(User user) {
+        return user.getNickName().equals(loggedUser.getNickName());
+    }
+
+    /**
+     *
      * @param userMap
      * @return
      */
@@ -117,12 +125,12 @@ public class UsersManager {
         //Unpacking all the data.
         User user = unpackUserMap(userMap);
         //Opening Hibernate session.
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         Transaction transaction = null;
         boolean flag = true; //Flag that indicates if the operation finished succesfully.
         try {
             transaction = session.beginTransaction();
-            session.save(user);
+            session.insert(user);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) { //If transaction didnt went well, we roll back any action en DB
@@ -143,7 +151,7 @@ public class UsersManager {
      * @return
      */
     private User consultUser(String nickname) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         User user = null;
         try {
             SQLQuery consult = session.createSQLQuery("SELECT * FROM user WHERE user.nickname = '" + nickname + "'");
@@ -165,7 +173,7 @@ public class UsersManager {
      * @return
      */
     public List<EnumMap<user_param, String>> consultAllUsers() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         List<User> agreementL = null;
         try {
             SQLQuery consult = session.createSQLQuery("SELECT * FROM user");
@@ -184,7 +192,7 @@ public class UsersManager {
 //        for(int i = 0; i < password.length; i++) {
 //            stringPass.concat(String.password[i]);
 //        }
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         Transaction transaction = null;
         boolean flag = true;
         try {
@@ -215,7 +223,7 @@ public class UsersManager {
      * @return
      */
     public boolean deleteUser(int userID) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         Transaction transaction = null;
         boolean flag = true; //Flag that indicates if the operation finished succesfully.
         try {
@@ -262,8 +270,13 @@ public class UsersManager {
         if (usersL != null) {
             List<EnumMap<user_param, String>> usersEL = new ArrayList<>();
             for (User u : usersL) {
-                if (!isSuperUser(u)) {
-                    usersEL.add(userOnEnumMap(u));
+                //Si no es el superusuario o el usuario logueado
+                if (!isSuperUser(u) && !isLoggedUser(u)) {
+                    if (u.getAdministrator() == 0) {
+                        usersEL.add(userOnEnumMap(u));
+                    } else if (isSuperUser(loggedUser)) {
+                        usersEL.add(userOnEnumMap(u));
+                    }
                 }
             }
             return usersEL;
@@ -322,7 +335,7 @@ public class UsersManager {
 //    }
     public void registerUserAction(user_actions action, String description) {
         //Opening Hibernate session.
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         Transaction transaction = null;
         ActionCommitted actionComm = new ActionCommitted(
                 action.getValue(),
@@ -332,7 +345,7 @@ public class UsersManager {
                 + " : " + description);
         try {
             transaction = session.beginTransaction();
-            session.save(actionComm);
+            session.insert(actionComm);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) { //If transaction didnt went well, we roll back any action en DB
@@ -350,7 +363,7 @@ public class UsersManager {
      * @return
      */
     public List<EnumMap<actionCommitted, String>> consultAllActionsCommitted() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         List<ActionCommitted> actionCommittedsL = null;
         try {
             SQLQuery consult = session.createSQLQuery("SELECT * FROM action_committed");

@@ -66,7 +66,7 @@ public class ConceptRegistration extends javax.swing.JDialog {
      * @return
      */
     public String getTfName() {
-        return tfName.getText();
+        return tfName.getText().toUpperCase();
     }
 
     /**
@@ -109,6 +109,11 @@ public class ConceptRegistration extends javax.swing.JDialog {
 
         tfCode.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tfCode.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfCode.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfCodeKeyTyped(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
@@ -120,14 +125,24 @@ public class ConceptRegistration extends javax.swing.JDialog {
 
         tfName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tfName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfNameKeyTyped(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel3.setText("Descripcion :");
+        jLabel3.setText("Descripcion :  (opcional)");
 
         tfDescription.setColumns(20);
         tfDescription.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tfDescription.setRows(5);
+        tfDescription.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfDescriptionKeyTyped(evt);
+            }
+        });
         jScrollPane2.setViewportView(tfDescription);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -148,7 +163,7 @@ public class ConceptRegistration extends javax.swing.JDialog {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -239,6 +254,39 @@ public class ConceptRegistration extends javax.swing.JDialog {
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void tfCodeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfCodeKeyTyped
+        if (tfCode.getText().length() == 10) {
+            evt.consume();
+        }
+        char c = evt.getKeyChar();
+        if (Character.isDigit(c)) {
+        } else {
+            evt.consume();
+        }
+    }//GEN-LAST:event_tfCodeKeyTyped
+
+    private void tfNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfNameKeyTyped
+        if (tfName.getText().length() == 37) {
+            evt.consume();
+        }
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c) || c == ' ') {
+        } else {
+            evt.consume();
+        }
+    }//GEN-LAST:event_tfNameKeyTyped
+
+    private void tfDescriptionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfDescriptionKeyTyped
+        if (tfName.getText().length() == 100) {
+            evt.consume();
+        }
+        char c = evt.getKeyChar();
+        if (Character.isDigit(c) || Character.isLetter(c) || c == ' ') {
+        } else {
+            evt.consume();
+        }
+    }//GEN-LAST:event_tfDescriptionKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;

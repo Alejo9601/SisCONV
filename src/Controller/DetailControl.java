@@ -8,12 +8,16 @@ import Model.UsersManager;
 import View.AgreementDetails;
 import View.AgreementsList;
 import View.ConceptsList;
+import View.PaymentRegistration;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Date;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.EnumMap;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -29,6 +33,7 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
     AgreementDetails agreementDV;
     AgreementsList agreementsLV;
     ConceptsList conceptsLV;
+    PaymentRegistration paymentRV;
     Timer refreshTimer;//Timer for refreshing views
 
     /**
@@ -42,14 +47,44 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
     }
 
     /**
+     * Will get the info of a payment from view.
+     *
+     * @return
+     */
+    private EnumMap<AgreementsManager.payment_param, String> getPaymentInfo() {
+        EnumMap<AgreementsManager.payment_param, String> payMap
+                = new EnumMap<>(AgreementsManager.payment_param.class);
+        payMap.put(
+                AgreementsManager.payment_param.RECEIPT_NUMBER,
+                paymentRV.getTfReceiptNumber());
+        payMap.put(
+                AgreementsManager.payment_param.AMOUNT,
+                paymentRV.getTfAmount());
+        payMap.put(
+                AgreementsManager.payment_param.DATE_OF_PAYMENT,
+                paymentRV.getTfDate());
+        payMap.put(
+                AgreementsManager.payment_param.AGREEMENT_NUMBER,
+                agreementDV.getTfAgreementNumber());
+        payMap.put(
+                AgreementsManager.payment_param.FEE, paymentRV.getCmbFee());
+        return payMap;
+    }
+
+    /**
      * Will fill agreements padron table.
      */
-    private void fillAgreementsListTable() {
-        AgreementsManager am = new AgreementsManager();
+    private DefaultTableModel fillModelForPadron(List<EnumMap<AgreementsManager.agreement_param, String>> agreementsEL) {
         TaxpayersManager tm = new TaxpayersManager();
         ParametersManager pm = new ParametersManager();
-        //Consulting Agreements information.
-        List<EnumMap<AgreementsManager.agreement_param, String>> agreementsEL = am.consultAllAgreements();
+
+        //Will help me to define the format of amount
+        DecimalFormat format = new DecimalFormat("##,###,###.00");
+        DecimalFormatSymbols dfs = DecimalFormatSymbols.getInstance();
+        dfs.setDecimalSeparator('.');
+        dfs.setGroupingSeparator(',');
+        format.setDecimalFormatSymbols(dfs);
+
         //Table model that is going to be filled with information of the agreements.
         DefaultTableModel tableModel
                 = new DefaultTableModel(null, new String[]{
@@ -67,6 +102,9 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
         };
         //For each EnumMap on paymentsEL
         for (EnumMap<AgreementsManager.agreement_param, String> a : agreementsEL) {
+
+            String amount = format.format(Double.valueOf(a.get(AgreementsManager.agreement_param.AMOUNT_OF_DEBT)));
+
             //Consulting the respecting taxpayer for the agreement.
             EnumMap<TaxpayersManager.taxpayer_param, String> tpMap
                     = tm.consult(Long.parseLong(a.get(AgreementsManager.agreement_param.TAXPAYER)));
@@ -79,13 +117,31 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
                 + " " + tpMap.get(TaxpayersManager.taxpayer_param.LASTNAME),
                 tpMap.get(TaxpayersManager.taxpayer_param.DOC_NUMBER),
                 a.get(AgreementsManager.agreement_param.AGREEMENT_NUMBER),
-                a.get(AgreementsManager.agreement_param.AMOUNT_OF_DEBT),
+                "$ " + amount, //amount of debt
                 a.get(AgreementsManager.agreement_param.FEES_NUMBER),
                 ctMap.get(ParametersManager.concept_param.CONCEPT_NAME),
                 a.get(AgreementsManager.agreement_param.STATUS)};
             tableModel.addRow(nuevo); //Adding new row at the table model.
         }
-        agreementsLV.setTableModel(tableModel); //Setting table model to the view.
+        return tableModel;
+    }
+
+    private void fillPadronByTaxpayerDocNumber(long taxpayerDocNumber) {
+        AgreementsManager am = new AgreementsManager();
+        List<EnumMap<AgreementsManager.agreement_param, String>> agreementsEL = am.consultAgreementForTaxpayer(taxpayerDocNumber);
+        agreementsLV.setTableModel(fillModelForPadron(agreementsEL));
+    }
+
+    private void fillPadronByAgreementNumber(long agreementNumber) {
+        AgreementsManager am = new AgreementsManager();
+        List<EnumMap<AgreementsManager.agreement_param, String>> agreementsEL = am.consultAgreementForNumberLike(agreementNumber);
+        agreementsLV.setTableModel(fillModelForPadron(agreementsEL));
+    }
+
+    private void fillPadron() {
+        AgreementsManager am = new AgreementsManager();
+        List<EnumMap<AgreementsManager.agreement_param, String>> agreementsEL = am.consultAllAgreements(agreementsLV.consultedRegistriesCount());
+        agreementsLV.setTableModel(fillModelForPadron(agreementsEL));
     }
 
     /**
@@ -99,13 +155,24 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
         TaxpayersManager tm = new TaxpayersManager();
         ParametersManager pm = new ParametersManager();
         PropertyManager lpm = new PropertyManager();
+
+        //Will help me to define the format of amount
+        DecimalFormat format = new DecimalFormat("##,###,###.00");
+        DecimalFormatSymbols dfs = DecimalFormatSymbols.getInstance();
+        dfs.setDecimalSeparator('.');
+        dfs.setGroupingSeparator(',');
+        format.setDecimalFormatSymbols(dfs);
+
         //Consulting the agreement.
         EnumMap<AgreementsManager.agreement_param, String> agreementMap
                 = am.consultAgreement(agreementNumber);
+
+        String amount = format.format(Double.valueOf(agreementMap.get(AgreementsManager.agreement_param.AMOUNT_OF_DEBT)));
+
         agreementDV.setTfagreementNumber(
                 agreementMap.get(AgreementsManager.agreement_param.AGREEMENT_NUMBER));
         agreementDV.setTfAmountOfDebt(
-                "$ " + agreementMap.get(AgreementsManager.agreement_param.AMOUNT_OF_DEBT));
+                "$ " + amount);
         agreementDV.setTfCreationDate(
                 agreementMap.get(AgreementsManager.agreement_param.CREATION_DATE));
         agreementDV.setTfExpirationDate(
@@ -167,15 +234,18 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
         UsersManager um = UsersManager.getUsersManager();
         fillAgreementPaymentsList();
         if (um.checkUserPermitions() == true) {//If user is administrator
-            agreementDV.enableAdminFunctions();
+            agreementDV.enableAdminFunctions(true);
         }
         if (agreementMap.get(AgreementsManager.agreement_param.STATUS).equals(AgreementsManager.agreement_status.WITHOUT_EFFECT.getValue())) {
+//            agreementDV.setTfStatus(AgreementsManager.agreement_status.WITHOUT_EFFECT.getValue());
             agreementDV.setWithoutEffect(true);
         } else {
-            if (agreementMap.get(AgreementsManager.agreement_param.STATUS).equals(AgreementsManager.agreement_status.CANCELLED.getValue())) {
+            if (Integer.parseInt(agreementDV.getTfFee()) == agreementDV.getNumberOfPayments()) {
                 agreementDV.setCancelled(true);
+//                agreementDV.setTfStatus(AgreementsManager.agreement_status.CANCELLED.getValue());
             } else {
                 agreementDV.setCancelled(false);
+//                agreementDV.setTfStatus(AgreementsManager.agreement_status.VALID.getValue());
             }
         }
     }
@@ -185,6 +255,13 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
      */
     private void fillAgreementPaymentsList() {
         AgreementsManager am = new AgreementsManager();
+        //Will help me to define the format of amount
+        DecimalFormat format = new DecimalFormat("##,###,###.00");
+        DecimalFormatSymbols dfs = DecimalFormatSymbols.getInstance();
+        dfs.setDecimalSeparator('.');
+        dfs.setGroupingSeparator(',');
+        format.setDecimalFormatSymbols(dfs);
+
         //Consulting Agreements information.
         List<EnumMap<AgreementsManager.payment_param, String>> paymentsEL
                 = am.consultPaymentsForAgreement(Long.parseLong(agreementDV.getTfAgreementNumber()));
@@ -203,12 +280,13 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
         };
         //For each EnumMap on paymentsEL
         for (EnumMap<AgreementsManager.payment_param, String> p : paymentsEL) {
+            String amount = format.format(Double.valueOf(p.get(AgreementsManager.payment_param.AMOUNT)));
             //Array of objects representing a row.
             Object nuevo[] = new Object[]{
                 p.get(AgreementsManager.payment_param.PAYMENT_ID),
                 p.get(AgreementsManager.payment_param.FEE),
                 p.get(AgreementsManager.payment_param.RECEIPT_NUMBER),
-                p.get(AgreementsManager.payment_param.AMOUNT),
+                "$ " + amount,
                 p.get(AgreementsManager.payment_param.DATE_OF_PAYMENT)};
             tableModel.addRow(nuevo); //Adding new row at the table model.
         }
@@ -244,15 +322,44 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
     }
 
     /**
+     * Will show payment registration view.
+     *
+     */
+    public void showPaymentRegistrationView() {
+        AgreementsManager am = new AgreementsManager();
+        paymentRV = new PaymentRegistration(agreementDV, true);
+
+        //Setting amount predifined on amount box
+        DecimalFormat format = new DecimalFormat("##,###,###.00");
+        DecimalFormatSymbols dfs = DecimalFormatSymbols.getInstance();
+
+        dfs.setDecimalSeparator('.');
+        dfs.setGroupingSeparator(',');
+        format.setDecimalFormatSymbols(dfs);
+        paymentRV.setTfAmount(format.format(am.feeValueOf(Double.valueOf(agreementDV.getTfAmountOfDebt()), Integer.parseInt(agreementDV.getTfFee()))));
+
+        paymentRV.setCmbFee(agreementDV.getTfFee());
+        paymentRV.setController(this);
+        paymentRV.setLocationRelativeTo(null);
+        paymentRV.setVisible(true);
+    }
+
+    /**
      * Will show the agreement list view.
      */
     public void ShowAgreementListView() {
-        fillAgreementsListTable();
+        AgreementsManager am = new AgreementsManager();
+        double agreementsNumber = am.agreementsCount();
+        if (agreementsNumber != 0) {
 
-        refreshTimer = new Timer(120000, this);
-        refreshTimer.setActionCommand("REFRESH_AGREEMENTS_LIST_TABLE");
-        refreshTimer.start();
+            agreementsLV.setStaticPage((int) Math.ceil(agreementsNumber / 100));
+            agreementsLV.incrementChangingPage();
 
+            fillPadron();
+            refreshTimer = new Timer(120000, this);
+            refreshTimer.setActionCommand("REFRESH_AGREEMENTS_LIST_TABLE");
+            refreshTimer.start();
+        }
         agreementsLV.setVisible(true); //Making visible the view.
         agreementsLV.setLocationRelativeTo(null); //Centering the view.
     }
@@ -285,11 +392,15 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
     public void actionPerformed(ActionEvent ae) {
         RegistrationControl rc;
         AgreementsManager am;
+        ParametersManager pm;
         switch (ae.getActionCommand()) {
+
             case "CONCEPT_REGISTRATION":
                 rc = new RegistrationControl();
                 rc.showConceptRegistrationView(conceptsLV);
+                fillConceptsList();
                 break;
+
             case "LEAVE_WITHOUT_EFFECT":
                 if (JOptionPane.showConfirmDialog(
                         agreementDV,
@@ -298,26 +409,114 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
                         JOptionPane.YES_NO_OPTION) == 0) {
                     am = new AgreementsManager(); //New agreements manager
                     am.changeAgreementStatus(Long.parseLong(agreementDV.getTfAgreementNumber()), AgreementsManager.agreement_status.WITHOUT_EFFECT);
-                    fillAgreementsListTable(); //Refilling table model again to refresh changes. 
+                    fillPadron(); //Refilling table model again to refresh changes. 
                     agreementDV.dispose();
                 }
                 break;
-            case "PAYMENT_REGISTRATION":
-                rc = new RegistrationControl();
-                rc.showPaymentRegistrationView(
-                        agreementDV,
-                        agreementDV.getTfAgreementNumber(),
-                        agreementDV.getTfFee());
-                fillAgreementDetailsView(Long.parseLong(agreementDV.getTfAgreementNumber()));
+
+            case "SHOW_PAYMENT_REGISTRATION_VIEW":
+                showPaymentRegistrationView();
                 break;
+
+            case "SAVE_PAYMENT":
+                am = new AgreementsManager();
+                if (paymentRV.verifyInformation()) {//Verifing information is complete
+                    //If receipt date is after agreement creation date 
+                    if (Date.valueOf(paymentRV.getTfDate()).after(Date.valueOf(agreementDV.getTfCreationDate()))
+                            || Date.valueOf(agreementDV.getTfCreationDate()).equals(Date.valueOf(paymentRV.getTfDate()))) {
+                        //If amount is less tha fee value for this agreement
+                        if (Double.valueOf(paymentRV.getTfAmount()) < am.feeValueOf(Double.valueOf(
+                                agreementDV.getTfAmountOfDebt()),
+                                Integer.parseInt(agreementDV.getTfFee()))) {
+                            if (JOptionPane.showConfirmDialog(
+                                    agreementDV,
+                                    "Va a ingresar un monto menor al del valor de la cuota ¿Desea continuar?",
+                                    "Advertencia!",
+                                    JOptionPane.YES_NO_OPTION) == 0) {
+                            } else {
+                                break; //if no we stop execution
+                            }
+                        }
+                        /**
+                         * We must compare if receipt exists... and if exists
+                         * then... if its on same agreement, and for the same
+                         * fee.
+                         */
+                        if (am.receiptExists(Long.parseLong(paymentRV.getTfReceiptNumber()))) {
+                            //If payment with specified receipt exists on agreement
+                            if (am.receiptExistsForAgreement(
+                                    Long.parseLong(paymentRV.getTfReceiptNumber()),
+                                    Long.parseLong(agreementDV.getTfAgreementNumber()))) {
+                                //If payment exists for agreement
+                                if (am.paymentExistsForAgreement(getPaymentInfo())) {
+                                    JOptionPane.showMessageDialog(paymentRV,
+                                            "Un pago por la misma cuota ya se encuentra registrado",
+                                            "Advertencia",
+                                            JOptionPane.WARNING_MESSAGE);
+                                    break;
+                                } else {
+                                    if (am.newPayment(getPaymentInfo())) {
+                                        JOptionPane.showMessageDialog(paymentRV,
+                                                "Se ha registrado con exito",
+                                                "Informacion",
+                                                JOptionPane.INFORMATION_MESSAGE);
+                                        paymentRV.dispose();
+                                        break;
+                                    } else {
+                                        JOptionPane.showMessageDialog(paymentRV,
+                                                "No se ha podido registrar",
+                                                "Advertencia",
+                                                JOptionPane.WARNING_MESSAGE);
+                                        break;
+                                    }
+                                }
+                            }
+                            JOptionPane.showMessageDialog(paymentRV,
+                                    "El recibo ya se encuentra registrado para otro convenio",
+                                    "Advertencia",
+                                    JOptionPane.WARNING_MESSAGE);
+                            break;
+                        }
+                        //If payment exists for agreement
+                        if (am.paymentExistsForAgreement(getPaymentInfo())) {
+                            JOptionPane.showMessageDialog(paymentRV,
+                                    "Un pago por la misma cuota ya se encuentra registrado",
+                                    "Advertencia",
+                                    JOptionPane.WARNING_MESSAGE);
+                            break;
+                        } else if (am.newPayment(getPaymentInfo())) { //If payment does not exists
+                            JOptionPane.showMessageDialog(paymentRV,
+                                    "Se ha registrado con exito",
+                                    "Informacion",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            paymentRV.dispose();
+                            fillAgreementDetailsView(Long.parseLong(agreementDV.getTfAgreementNumber()));
+                            break;
+                        } else {
+                            JOptionPane.showMessageDialog(paymentRV,
+                                    "No se ha podido registrar",
+                                    "Advertencia",
+                                    JOptionPane.WARNING_MESSAGE);
+                            break;
+                        }
+                    }
+                    JOptionPane.showMessageDialog(paymentRV,
+                            "No se puede registrar un pago con una fecha anterior a la de la creacion del convenio",
+                            "Advertencia",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+                break;
+
             case "MAKE_AGREEMENTS_PADRON_REPORT":
                 am = new AgreementsManager();
                 am.agreementsReport();
                 break;
+
             case "MAKE_AGREEMENT_DETAILS_REPORT":
                 am = new AgreementsManager();
                 am.agreementDetails(Long.parseLong(agreementDV.getTfAgreementNumber()));
                 break;
+
             case "MODIFY_AGREEMENT":
                 if (JOptionPane.showConfirmDialog(
                         agreementDV,
@@ -330,6 +529,7 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
                     agreementDV.dispose();
                 }
                 break;
+
             case "DELETE_PAYMENT":
                 if (JOptionPane.showConfirmDialog(
                         agreementDV,
@@ -346,7 +546,6 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
                                 "Informacion!",
                                 JOptionPane.INFORMATION_MESSAGE);
                         fillAgreementDetailsView(Long.parseLong(agreementDV.getTfAgreementNumber()));
-                        fillAgreementsListTable();
                     } else {
                         JOptionPane.showMessageDialog(
                                 agreementDV,
@@ -356,11 +555,70 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
                     }
                 }
                 break;
+
+            case "DELETE_CONCEPT":
+                if (JOptionPane.showConfirmDialog(
+                        agreementDV,
+                        "¿Esta seguro de que desea eliminar el pago?",
+                        "Advertencia!",
+                        JOptionPane.YES_NO_OPTION) == 0) {
+                    pm = new ParametersManager();
+                    if (!pm.isDefaultConcept(Long.parseLong(conceptsLV.getSelectedConcept()))) {
+                        am = new AgreementsManager();
+                        if (am.countAgreementsForConcept(Long.parseLong(conceptsLV.getSelectedConcept())) == 0) {
+                            if (pm.deleteConcept(Long.parseLong(conceptsLV.getSelectedConcept()))) {
+                                JOptionPane.showMessageDialog(
+                                        conceptsLV,
+                                        "Se ha eliminado el concepto",
+                                        "Informacion",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                                fillConceptsList();
+                                break;
+                            }
+                            JOptionPane.showMessageDialog(
+                                    conceptsLV,
+                                    "No se ha podido eliminar el concepto",
+                                    "Advertencia!",
+                                    JOptionPane.WARNING_MESSAGE);
+                            break;
+                        }
+                        JOptionPane.showMessageDialog(
+                                conceptsLV,
+                                "El concepto que intenta eliminar esta siendo usado",
+                                "Advertencia!",
+                                JOptionPane.WARNING_MESSAGE);
+                        break;
+                    }
+                    JOptionPane.showMessageDialog(
+                            conceptsLV,
+                            "La eliminacion de este concepto esta restringida por el sistema",
+                            "Advertencia!",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+                break;
+
             case "REFRESH_AGREEMENTS_LIST_TABLE":
                 if (agreementsLV.isVisible()) {
-                    fillAgreementsListTable();
+                    fillPadron();
+                    System.out.println("ME ACTUALICE");
                 } else {
                     refreshTimer.stop();
+                }
+                break;
+
+            case "FORWARD_AGREEMENTS_LIST_TABLE":
+                if (agreementsLV.getStaticPage() != agreementsLV.getChangingPage() && agreementsLV.getChangingPage() != 0) {
+                    agreementsLV.incrementConsultedRegistriesCount();
+                    fillPadron();
+                    agreementsLV.incrementChangingPage();
+                }
+                break;
+
+            case "BACK_AGREEMENTS_LIST_TABLE":
+                if (agreementsLV.getChangingPage() != 1 && agreementsLV.getChangingPage() != 0) {
+                    agreementsLV.decrementConsultedRegistriesCount();
+                    fillPadron();
+                    agreementsLV.decrementChangingPage();
                 }
                 break;
         }
@@ -384,8 +642,14 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
     @Override
     public void keyReleased(KeyEvent ke) {
         if (agreementsLV != null) {
-            if (ke.getSource().equals(agreementsLV.getTfSearch())) {
-                agreementsLV.filterAgreements();
+            if (ke.getSource().equals(agreementsLV.getTfSearch()) && agreementsLV.getTfSearchText().length() > 1) {
+                if (agreementsLV.searchByTaxpayerDoc()) {
+                    fillPadronByTaxpayerDocNumber(Long.parseLong(agreementsLV.getTfSearchText()));
+                } else if (agreementsLV.searchByAgreementNumber()) {
+                    fillPadronByAgreementNumber(Long.parseLong(agreementsLV.getTfSearchText()));
+                }
+            } else {
+                fillPadron();
             }
         }
     }
@@ -408,8 +672,11 @@ public class DetailControl implements ActionListener, MouseListener, KeyListener
 
     @Override
     public void keyTyped(KeyEvent ke) {
+        if (agreementsLV.getTfSearchText().length() == 8) {
+            ke.consume();
+        }
         char c = ke.getKeyChar();
-        if (Character.isLetter(c) || Character.isDigit(c)) {
+        if (Character.isDigit(c)) {
         } else {
             ke.consume();
         }

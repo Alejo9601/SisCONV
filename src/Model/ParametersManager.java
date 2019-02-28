@@ -6,7 +6,7 @@ import java.util.EnumMap;
 import java.util.List;
 import javax.swing.JOptionPane;
 import org.hibernate.SQLQuery;
-import org.hibernate.Session;
+import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 
 /**
@@ -19,6 +19,37 @@ public class ParametersManager {
         CONCEPT_CODE, CONCEPT_NAME, DESCRIPTION
     };
 
+    private static enum default_concepts {
+        LAND_SALESMENT(1201),
+        REAL_STATE_TAXES(110101),
+        RESIDUE_RECOLECTION(110201),
+        VEHICLE_DOMAIN(110104);
+
+        private final long code;
+
+        default_concepts(long code) {
+            this.code = code;
+        }
+
+        public long getCode() {
+            return this.code;
+        }
+    }
+
+    /**
+     *
+     * @param code
+     * @return
+     */
+    public boolean isDefaultConcept(Long code) {
+        for (default_concepts c : default_concepts.values()) {
+            if (c.getCode() == code) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Will add a new concept on DB.
      *
@@ -26,13 +57,13 @@ public class ParametersManager {
      * @return
      */
     public boolean newConcept(EnumMap<concept_param, String> conceptMap) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         Transaction transaction = null;
         Concept concept = unpackConceptMap(conceptMap);
         boolean flag = true;
         try {
             transaction = session.beginTransaction();
-            session.save(concept);
+            session.insert(concept);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -52,7 +83,7 @@ public class ParametersManager {
      * @return
      */
     public List<EnumMap<concept_param, String>> consultAll() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         List<Concept> conceptL = null;
         List<EnumMap<concept_param, String>> conceptEL = null;
         try {
@@ -84,7 +115,7 @@ public class ParametersManager {
      * @return
      */
     public EnumMap<concept_param, String> consult(int conceptCode) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         Concept concept = null;
         try {
             SQLQuery consult = session.createSQLQuery("SELECT * FROM concept WHERE concept.id_conceptCode = " + conceptCode);
@@ -105,10 +136,10 @@ public class ParametersManager {
      * @return
      */
     public EnumMap<concept_param, String> consult(String conceptName) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         Concept concept = null;
         try {
-            SQLQuery consult = session.createSQLQuery("SELECT * FROM concept WHERE concept.id_concepName = '" + conceptName + "'");
+            SQLQuery consult = session.createSQLQuery("SELECT * FROM concept WHERE concept.conceptName = '" + conceptName + "'");
             consult.addEntity(Concept.class);
             concept = (Concept) consult.uniqueResult();
         } catch (Exception e) {
@@ -117,6 +148,33 @@ public class ParametersManager {
             session.close();
         }
         return conceptOnEnumMap(concept);
+    }
+
+    /**
+     *
+     * @param conceptCode
+     * @return
+     */
+    public boolean deleteConcept(long conceptCode) {
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
+        Transaction transaction = null;
+        boolean flag = true; //Flag that indicates if the operation finished succesfully.
+        try {
+            transaction = session.beginTransaction();
+            SQLQuery consult = session.createSQLQuery(
+                    "DELETE FROM concept WHERE concept.id_conceptCode = " + conceptCode);
+            consult.executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) { //If transaction didnt went well, we roll back any action en DB
+                transaction.rollback();
+            }
+            JOptionPane.showMessageDialog(null, "Excepcion tratando de eliminar el concepto" + e);
+            flag = false;
+        } finally {
+            session.close();
+        }
+        return flag;
     }
 
     /**

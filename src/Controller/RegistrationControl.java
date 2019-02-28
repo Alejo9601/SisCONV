@@ -90,18 +90,17 @@ public class RegistrationControl implements ActionListener, KeyListener {
         agreementMap.put(
                 AgreementsManager.agreement_param.EXPIRATION_DATE,
                 agreementsRV.getTfDateOfExpiration());
-        agreementMap.put(AgreementsManager.agreement_param.FEES_NUMBER,
+        agreementMap.put(
+                AgreementsManager.agreement_param.FEES_NUMBER,
                 agreementsRV.getCmbFeesNumber());
-
-        if (agreementsRV.getTfDescription().equals("")) {
-            agreementMap.put(
-                    AgreementsManager.agreement_param.DESCRIPTION,
-                    "No hay descripcion");
-        }
-
-        agreementMap.put(AgreementsManager.agreement_param.TAXPAYER,
+        agreementMap.put(
+                AgreementsManager.agreement_param.DESCRIPTION,
+                agreementsRV.getTfDescription());
+        agreementMap.put(
+                AgreementsManager.agreement_param.TAXPAYER,
                 agreementsRV.getTfTaxPayer());
-        agreementMap.put(AgreementsManager.agreement_param.CONCEPT,
+        agreementMap.put(
+                AgreementsManager.agreement_param.CONCEPT,
                 agreementsRV.getCmbConcept());
 
         if ((!agreementsRV.getTfVehicle().equals("")) || (!agreementsRV.getTfLandProperty().equals(""))) {
@@ -160,31 +159,6 @@ public class RegistrationControl implements ActionListener, KeyListener {
     }
 
     /**
-     * Will get the info of a payment from view.
-     *
-     * @return
-     */
-    private EnumMap<AgreementsManager.payment_param, String> getPaymentInfo() {
-        EnumMap<AgreementsManager.payment_param, String> payMap
-                = new EnumMap<>(AgreementsManager.payment_param.class);
-        payMap.put(
-                AgreementsManager.payment_param.RECEIPT_NUMBER,
-                paymentRV.getTfReceiptNumber());
-        payMap.put(
-                AgreementsManager.payment_param.AMOUNT,
-                paymentRV.getTfAmount());
-        payMap.put(
-                AgreementsManager.payment_param.DATE_OF_PAYMENT,
-                paymentRV.getTfDate());
-        payMap.put(
-                AgreementsManager.payment_param.AGREEMENT_NUMBER,
-                paymentRV.getLblAgreementNumber());
-        payMap.put(
-                AgreementsManager.payment_param.FEE, paymentRV.getCmbFee());
-        return payMap;
-    }
-
-    /**
      * Will get the info of a vehicle from view.
      *
      * @return
@@ -239,9 +213,9 @@ public class RegistrationControl implements ActionListener, KeyListener {
         //Table model creation
         DefaultTableModel tableModel = new DefaultTableModel(
                 null, new String[]{
-                    "Nro. Doc",
-                    "Nombre",
-                    "Apellido"}) {
+                    "NRO. DOC.",
+                    "NOMBRE",
+                    "APELLIDO"}) {
             @Override
             public boolean isCellEditable(int row, int col) {
                 return false;
@@ -267,11 +241,11 @@ public class RegistrationControl implements ActionListener, KeyListener {
         //Table model creation
         DefaultTableModel tableModel = new DefaultTableModel(
                 null, new String[]{
-                    "Identificador",
-                    "Dominio",
-                    "Modelo",
-                    "Fabricante",
-                    "Tipo"}) {
+                    "IDENTIFICADOR",
+                    "DOMINIO",
+                    "MODELO",
+                    "FABRICANTE",
+                    "TIPO"}) {
             @Override
             public boolean isCellEditable(int row, int col) {
                 return false;
@@ -299,9 +273,9 @@ public class RegistrationControl implements ActionListener, KeyListener {
         //Table model creation
         DefaultTableModel tableModel = new DefaultTableModel(
                 null, new String[]{
-                    "Identificador",
-                    "Manzana y Lote",
-                    "Decreto"}) {
+                    "IDENTIFICADOR",
+                    "MANZANA Y LOTE",
+                    "DECRETO"}) {
             @Override
             public boolean isCellEditable(int row, int col) {
                 return false;
@@ -372,22 +346,6 @@ public class RegistrationControl implements ActionListener, KeyListener {
         conceptRV.setController(this);
         conceptRV.setLocationRelativeTo(null);
         conceptRV.setVisible(true);
-    }
-
-    /**
-     * Will show payment registration view.
-     *
-     * @param parent
-     * @param agreementNumber
-     * @param feesNumber
-     */
-    public void showPaymentRegistrationView(JFrame parent, String agreementNumber, String feesNumber) {
-        paymentRV = new PaymentRegistration(parent, true);
-        paymentRV.setLblAgreementNumber(agreementNumber);
-        paymentRV.setCmbFee(feesNumber);
-        paymentRV.setController(this);
-        paymentRV.setLocationRelativeTo(null);
-        paymentRV.setVisible(true);
     }
 
     /**
@@ -496,33 +454,42 @@ public class RegistrationControl implements ActionListener, KeyListener {
             case "SELECT_TAXPAYER":
                 showTaxpayerSelectionView();
                 break;
+
             case "SELECT_VEHICLE":
                 showVehicleSelectionView();
                 break;
+
             case "SELECT_LANDPROPERTY":
                 showLandPropertySelectionView();
                 break;
+
             case "TAXPAYER_SELECTED":
                 agreementsRV.setTfTaxPayer(taxpayerSV.getSelectedRecord());
                 taxpayerSV.dispose();
                 break;
+
             case "VEHICLE_SELECTED":
                 agreementsRV.setTfVehicle(vehicleSV.getSelectedRecord());
                 vehicleSV.dispose();
                 break;
+
             case "LANDPROPERTY_SELECTED":
                 agreementsRV.setTfLandProperty(landPropertySV.getSelectedRecord());
                 landPropertySV.dispose();
                 break;
+
             case "NEW_TAXPAYER":
                 showTaxpayerRegistrationView();
                 break;
+
             case "NEW_VEHICLE":
                 showVehicleRegistrationView();
                 break;
+
             case "NEW_LANDPROPERTY":
                 showLandPropertyRegistrationView();
                 break;
+
             case "SAVE_AGREEMENT":
                 am = new AgreementsManager();
                 if (agreementsRV.verifyInformation()) {
@@ -540,6 +507,7 @@ public class RegistrationControl implements ActionListener, KeyListener {
                     }
                 }
                 break;
+
             case "UPDATE_AGREEMENT":
                 am = new AgreementsManager();
                 if (agreementsRV.verifyInformation()) {
@@ -557,6 +525,7 @@ public class RegistrationControl implements ActionListener, KeyListener {
                     }
                 }
                 break;
+
             case "SAVE_TAXPAYER":
                 tm = new TaxpayersManager();
                 if (taxpayerRV.verifyInformation()) {
@@ -584,6 +553,7 @@ public class RegistrationControl implements ActionListener, KeyListener {
                             JOptionPane.WARNING_MESSAGE);
                 }
                 break;
+
             case "SAVE_CONCEPT":
                 pm = new ParametersManager();
                 if (conceptRV.verifyInformation()) {
@@ -610,75 +580,76 @@ public class RegistrationControl implements ActionListener, KeyListener {
                             JOptionPane.WARNING_MESSAGE);
                 }
                 break;
-            case "SAVE_PAYMENT":
-                am = new AgreementsManager();
-                if (paymentRV.verifyInformation()) {
-                    /**
-                     * We must compare if receipt exists... and if exists
-                     * then... if its on same agreement, and for the same fee.
-                     */
-                    EnumMap<AgreementsManager.payment_param, String> pay = getPaymentInfo();
-                    if (am.receiptExists(Long.parseLong(pay.get(AgreementsManager.payment_param.RECEIPT_NUMBER)))) {
-                        //If payment with specified receipt exists on agreement
-                        if (am.receiptExistsForAgreement(
-                                Long.parseLong(pay.get(AgreementsManager.payment_param.RECEIPT_NUMBER)),
-                                Long.parseLong(pay.get(AgreementsManager.payment_param.AGREEMENT_NUMBER)))) {
-                            //If payment exists for agreement
-                            if (am.paymentExistsForAgreement(pay)) {
-                                JOptionPane.showMessageDialog(paymentRV,
-                                        "Un pago por la misma cuota ya se encuentra registrado",
-                                        "Advertencia",
-                                        JOptionPane.WARNING_MESSAGE);
-                                break;
-                            } else {
-                                if (am.newPayment(getPaymentInfo())) {
-                                    JOptionPane.showMessageDialog(paymentRV,
-                                            "Se ha registrado con exito",
-                                            "Informacion",
-                                            JOptionPane.INFORMATION_MESSAGE);
-                                    paymentRV.dispose();
-                                    break;
-                                } else {
-                                    JOptionPane.showMessageDialog(paymentRV,
-                                            "No se ha podido registrar",
-                                            "Advertencia",
-                                            JOptionPane.WARNING_MESSAGE);
-                                    break;
-                                }
-                            }
-                        }
-                        JOptionPane.showMessageDialog(paymentRV,
-                                "El recibo ya se encuentra registrado para otro convenio",
-                                "Advertencia",
-                                JOptionPane.WARNING_MESSAGE);
-                        break;
-                    }
-                    if (am.paymentExistsForAgreement(pay)) {
-                        JOptionPane.showMessageDialog(paymentRV,
-                                "Un pago por la misma cuota ya se encuentra registrado",
-                                "Advertencia",
-                                JOptionPane.WARNING_MESSAGE);
-                        break;
-                    } else {
-                        if (am.newPayment(getPaymentInfo())) {
-                            JOptionPane.showMessageDialog(paymentRV,
-                                    "Se ha registrado con exito",
-                                    "Informacion",
-                                    JOptionPane.INFORMATION_MESSAGE);
-                            paymentRV.dispose();
-                        } else {
-                            JOptionPane.showMessageDialog(paymentRV,
-                                    "No se ha podido registrar",
-                                    "Advertencia",
-                                    JOptionPane.WARNING_MESSAGE);
-                        }
-                    }
-                }
-                break;
+
+//            case "SAVE_PAYMENT":
+//                am = new AgreementsManager();
+//                if (paymentRV.verifyInformation()) {
+//                    /**
+//                     * We must compare if receipt exists... and if exists
+//                     * then... if its on same agreement, and for the same fee.
+//                     */
+//                    EnumMap<AgreementsManager.payment_param, String> pay = getPaymentInfo();
+//                    if (am.receiptExists(Long.parseLong(pay.get(AgreementsManager.payment_param.RECEIPT_NUMBER)))) {
+//                        //If payment with specified receipt exists on agreement
+//                        if (am.receiptExistsForAgreement(
+//                                Long.parseLong(pay.get(AgreementsManager.payment_param.RECEIPT_NUMBER)),
+//                                Long.parseLong(pay.get(AgreementsManager.payment_param.AGREEMENT_NUMBER)))) {
+//                            //If payment exists for agreement
+//                            if (am.paymentExistsForAgreement(pay)) {
+//                                JOptionPane.showMessageDialog(paymentRV,
+//                                        "Un pago por la misma cuota ya se encuentra registrado",
+//                                        "Advertencia",
+//                                        JOptionPane.WARNING_MESSAGE);
+//                                break;
+//                            } else {
+//                                if (am.newPayment(getPaymentInfo())) {
+//                                    JOptionPane.showMessageDialog(paymentRV,
+//                                            "Se ha registrado con exito",
+//                                            "Informacion",
+//                                            JOptionPane.INFORMATION_MESSAGE);
+//                                    paymentRV.dispose();
+//                                    break;
+//                                } else {
+//                                    JOptionPane.showMessageDialog(paymentRV,
+//                                            "No se ha podido registrar",
+//                                            "Advertencia",
+//                                            JOptionPane.WARNING_MESSAGE);
+//                                    break;
+//                                }
+//                            }
+//                        }
+//                        JOptionPane.showMessageDialog(paymentRV,
+//                                "El recibo ya se encuentra registrado para otro convenio",
+//                                "Advertencia",
+//                                JOptionPane.WARNING_MESSAGE);
+//                        break;
+//                    }
+//                    if (am.paymentExistsForAgreement(pay)) {
+//                        JOptionPane.showMessageDialog(paymentRV,
+//                                "Un pago por la misma cuota ya se encuentra registrado",
+//                                "Advertencia",
+//                                JOptionPane.WARNING_MESSAGE);
+//                        break;
+//                    } else {
+//                        if (am.newPayment(getPaymentInfo())) {
+//                            JOptionPane.showMessageDialog(paymentRV,
+//                                    "Se ha registrado con exito",
+//                                    "Informacion",
+//                                    JOptionPane.INFORMATION_MESSAGE);
+//                            paymentRV.dispose();
+//                        } else {
+//                            JOptionPane.showMessageDialog(paymentRV,
+//                                    "No se ha podido registrar",
+//                                    "Advertencia",
+//                                    JOptionPane.WARNING_MESSAGE);
+//                        }
+//                    }
+//                }
+//                break;
             case "SAVE_VEHICLE":
                 plm = new PropertyManager();
-                if (plm.consultVehicle(vehicleRV.getDomain()) == null) {
-                    if (vehicleRV.verifyInformation()) {
+                if (vehicleRV.verifyInformation()) {
+                    if (plm.consultVehicle(vehicleRV.getDomain()) == null) {
                         if (plm.newVehicle(getVehicleInfo())) {
                             JOptionPane.showMessageDialog(vehicleRV,
                                     "Se ha registrado con exito",
@@ -691,35 +662,56 @@ public class RegistrationControl implements ActionListener, KeyListener {
                                     + " : " + vehicleRV.getManufacturer()
                                     + " : " + vehicleRV.getCmbType());
                             vehicleRV.dispose();
+                            break;
                         } else {
                             JOptionPane.showMessageDialog(vehicleRV,
                                     "No se ha podido registrar",
                                     "Advertencia",
                                     JOptionPane.WARNING_MESSAGE);
                         }
+                        break;
                     }
+                    JOptionPane.showMessageDialog(vehicleRV,
+                            "El dominio del vehiculo ya existe",
+                            "Advertencia",
+                            JOptionPane.WARNING_MESSAGE);
                 }
                 break;
+
             case "SAVE_LANDPROPERTY":
                 plm = new PropertyManager();
                 if (landPropertyRV.verifyInformation()) {
-                    if (plm.newLandProperty(getLandPropertyInfo())) {
+                    if (plm.consultLandProperty(landPropertyRV.getTfApple(), landPropertyRV.getTfBatch()) == null) {
+                        if (plm.consultLandProperty(landPropertyRV.getTfDecree()) == null) {
+                            if (plm.newLandProperty(getLandPropertyInfo())) {
+                                JOptionPane.showMessageDialog(landPropertyRV,
+                                        "Se ha registrado con exito",
+                                        "Informacion",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                                agreementsRV.setTfLandProperty(
+                                        plm.consultLandProperty(landPropertyRV.getTfApple(),
+                                                landPropertyRV.getTfBatch()).get(PropertyManager.landProperty_param.ID_LANDPROPERTY)
+                                        + " : M" + landPropertyRV.getTfApple() + "-L" + landPropertyRV.getTfBatch()
+                                        + " : " + landPropertyRV.getTfDecree());
+                                landPropertyRV.dispose();
+                                break;
+                            }
+                            JOptionPane.showMessageDialog(landPropertyRV,
+                                    "No se ha podido registrar",
+                                    "Advertencia",
+                                    JOptionPane.WARNING_MESSAGE);
+                            break;
+                        }
                         JOptionPane.showMessageDialog(landPropertyRV,
-                                "Se ha registrado con exito",
-                                "Informacion",
-                                JOptionPane.INFORMATION_MESSAGE);
-                        agreementsRV.setTfLandProperty(
-                                plm.consultLandProperty(landPropertyRV.getTfApple(),
-                                        landPropertyRV.getTfBatch()).get(PropertyManager.landProperty_param.ID_LANDPROPERTY)
-                                + " : M" + landPropertyRV.getTfApple() + "-L" + landPropertyRV.getTfBatch()
-                                + " : " + landPropertyRV.getTfDecree());
-                        landPropertyRV.dispose();
-                    } else {
-                        JOptionPane.showMessageDialog(landPropertyRV,
-                                "No se ha podido registrar",
+                                "El nro. de decreto ya existe",
                                 "Advertencia",
                                 JOptionPane.WARNING_MESSAGE);
+                        break;
                     }
+                    JOptionPane.showMessageDialog(landPropertyRV,
+                            "El terreno / propiedad ya existe",
+                            "Advertencia",
+                            JOptionPane.WARNING_MESSAGE);
                 }
                 break;
         }

@@ -1,5 +1,5 @@
 package Model.DTO;
-// Generated Feb 22, 2019 2:08:50 PM by Hibernate Tools 4.3.1
+// Generated Feb 28, 2019 11:12:19 AM by Hibernate Tools 4.3.1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -25,20 +25,28 @@ public class LandProperty implements java.io.Serializable {
     public LandProperty(Long landPropertyIdentifier) {
         this.idProperty = landPropertyIdentifier;
     }
-    
+
     /**
      * Added by me.
+     *
      * @param apple
      * @param batch
-     * @param decree 
+     * @param decree
+     * @param address
      */
-    public LandProperty(String apple, String batch, String decree) {
+    public LandProperty(String apple, String batch, String decree, String address) {
         this.apple = apple;
         this.batch = batch;
         this.adjudicationDecree = decree;
+        this.address = address;
     }
 
     public LandProperty() {
+    }
+
+    public LandProperty(String apple, String batch) {
+        this.apple = apple;
+        this.batch = batch;
     }
 
     public LandProperty(String apple, String batch, String adjudicationDecree, Byte wasteland, String address, Set agreements) {

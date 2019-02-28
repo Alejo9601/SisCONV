@@ -76,7 +76,7 @@ public class UsersList extends javax.swing.JFrame {
         tblUsers = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("DETALLE DE CONCEPTOS");
+        setTitle("DETALLE DE USUARIOS DEL SISTEMA");
         setResizable(false);
 
         jPanel1.setBorder(null);

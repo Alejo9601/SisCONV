@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.EnumMap;
 import javax.swing.JOptionPane;
 import org.hibernate.SQLQuery;
-import org.hibernate.Session;
+import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 
 /**
@@ -20,13 +20,13 @@ public class TaxpayersManager {
     };
 
     public boolean newTaxpayer(EnumMap<taxpayer_param, String> taxpayerMap) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         Transaction tn = null;
         Taxpayer taxpayer = unpackTaxpayerMap(taxpayerMap);
         Boolean flag = true;
         try {
             tn = session.beginTransaction();
-            session.save(taxpayer);
+            session.insert(taxpayer);
             tn.commit();
         } catch (Exception e) {
             if (tn != null) {
@@ -46,7 +46,7 @@ public class TaxpayersManager {
      * @return
      */
     public List<EnumMap<taxpayer_param, String>> consultAll() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         List<Taxpayer> taxpayerL = null;
         List<EnumMap<taxpayer_param, String>> taxpayersEL = null;
         try {
@@ -74,7 +74,7 @@ public class TaxpayersManager {
      * @return
      */
     public EnumMap<taxpayer_param, String> consult(Long taxpayerNroDoc) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         Taxpayer tp = null;
         try {
             SQLQuery consult = session.createSQLQuery("SELECT * FROM taxpayer WHERE taxpayer.id_docNumber = " + taxpayerNroDoc);

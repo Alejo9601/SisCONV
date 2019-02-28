@@ -51,11 +51,11 @@ public class UserControl implements ActionListener, KeyListener {
         //Table model creation
         DefaultTableModel tableModel = new DefaultTableModel(
                 null, new String[]{
-                    "Identificador",
-                    "Nombres",
-                    "Apellido",
-                    "Nick",
-                    "Administrador"}) {
+                    "NRO.",
+                    "NOMBRE",
+                    "APELLIDO",
+                    "NICK",
+                    "ADMINISTRADOR"}) {
             @Override
             public boolean isCellEditable(int row, int col) {
                 return false;
@@ -82,7 +82,7 @@ public class UserControl implements ActionListener, KeyListener {
         //Table model creation
         DefaultTableModel tableModel = new DefaultTableModel(
                 null, new String[]{
-                    "NRO. DE MOVIMIENTO",
+                    "ID MOV.",
                     "FECHA",
                     "MOVIMIENTO",
                     "USUARIO",
@@ -285,7 +285,7 @@ public class UserControl implements ActionListener, KeyListener {
     @Override
     public void keyTyped(KeyEvent ke) {
         char c = ke.getKeyChar();
-        if (Character.isLetter(c) || Character.isDigit(c) || c == ' ') {
+        if (Character.isLetter(c) || Character.isDigit(c) || c == ' ' || c == '-') {
         } else {
             ke.consume();
         }

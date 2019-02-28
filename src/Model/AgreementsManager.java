@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -24,7 +25,6 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import org.hibernate.HibernateException;
 import org.hibernate.SQLQuery;
-import org.hibernate.Session;
 import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 
@@ -73,12 +73,12 @@ public class AgreementsManager {
         //The agreement initially is valid.
         agreement.setStatus(agreement_status.VALID.getValue());
         //Opening Hibernate session.
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         Transaction transaction = null;
         boolean flag = true; //Flag that indicates if the operation finished succesfully.
         try {
             transaction = session.beginTransaction();
-            session.save(agreement);
+            session.insert(agreement);
             transaction.commit();
             //Registering movement
             um.registerUserAction(
@@ -119,17 +119,68 @@ public class AgreementsManager {
     }
 
     /**
-     * Gets all the agreements from DB.
+     * Gets the agreement for agreementNumber like...
      *
+     * @param agreementNumber
      * @return
      */
-    public List<EnumMap<agreement_param, String>> consultAllAgreements() {
+    public List<EnumMap<agreement_param, String>> consultAgreementForNumberLike(long agreementNumber) {
         StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         List<Agreement> agreementL = null;
         try {
-            SQLQuery consult = session.createSQLQuery("SELECT * FROM agreement ORDER BY id_agreementNumber DESC");
+            SQLQuery consulta = session.createSQLQuery(
+                    "SELECT * FROM agreement WHERE agreement.id_agreementNumber LIKE '" + agreementNumber + "%' ORDER BY id_agreementNumber DESC LIMIT 100");
+            consulta.addEntity(Agreement.class);
+            agreementL = consulta.list();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Excepcion consultando el convenio" + e);
+        } finally {
+            session.close();
+        }
+        return agreementsOnEnumList(agreementL);
+    }
+
+    /**
+     * Gets the agreement for the doc number of taxpayer
+     *
+     * @param taxpayerDocNumber
+     * @return
+     */
+    public List<EnumMap<agreement_param, String>> consultAgreementForTaxpayer(long taxpayerDocNumber) {
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
+        List<Agreement> agreementL = null;
+        try {
+            SQLQuery consulta = session.createSQLQuery(
+                    "SELECT * FROM agreement WHERE agreement.taxpayer_id_docNumber LIKE '" + taxpayerDocNumber + "%' ORDER BY id_agreementNumber DESC LIMIT 100");
+            consulta.addEntity(Agreement.class);
+            agreementL = consulta.list();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Excepcion consultando el convenio" + e);
+        } finally {
+            session.close();
+        }
+        return agreementsOnEnumList(agreementL);
+    }
+
+    /**
+     * Gets all the agreements from DB.
+     *
+     * @param offset
+     * @return
+     */
+    public List<EnumMap<agreement_param, String>> consultAllAgreements(long offset) {
+////        HibernateUtil.refreshSessionFactory();
+//        HibernateUtil.evict2ndLevelCache();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
+        List<Agreement> agreementL = null;
+        try {
+            SQLQuery consult = session.createSQLQuery(
+                    "SELECT * FROM agreement ORDER BY id_agreementNumber DESC LIMIT 100 OFFSET " + offset);
             consult.addEntity(Agreement.class);
             agreementL = consult.list();
+            for (Agreement a : agreementL) {
+                session.refresh(a);
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Excepcion consultando el padron de convenios" + e);
         } finally {
@@ -151,7 +202,7 @@ public class AgreementsManager {
         Agreement agreement = unpackAgreementMap(agreementMap);
         agreement.setStatus(aux.getStatus());
         //Opening Hibernate session.
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         Transaction transaction = null;
         boolean flag = true; //Flag that indicates if the operation finished succesfully.
         try {
@@ -175,12 +226,73 @@ public class AgreementsManager {
     }
 
     /**
+     * Gets agreements count for specified concept
+     *
+     * @param conceptCode
+     * @return
+     */
+    public long countAgreementsForConcept(Long conceptCode) {
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
+        long count = 0;
+        try {
+            SQLQuery consulta = session.createSQLQuery(
+                    "SELECT count(*) FROM agreement WHERE agreement.concept_id_conceptCode = " + conceptCode);
+            BigInteger largeN = (BigInteger) consulta.uniqueResult();
+            count = largeN.longValue();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Excepcion consultando la cuenta de los convenios para el concepto" + e);
+        } finally {
+            session.close();
+        }
+        return count;
+    }
+
+    /**
+     * Gets the agreements count from DB.
+     *
+     * @return
+     */
+    public long agreementsCount() {
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
+        long count = 0;
+        try {
+            SQLQuery consulta = session.createSQLQuery("SELECT count(*) FROM agreement");
+            BigInteger largeN = (BigInteger) consulta.uniqueResult();
+            count = largeN.longValue();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Excepcion consultando la cuenta de los convenios para el concepto" + e);
+        } finally {
+            session.close();
+        }
+        return count;
+    }
+
+//    /**
+//     * Gets all the agreements from DB.
+//     *
+//     * @return
+//     */
+//    public List<EnumMap<agreement_param, String>> consultAllAgreements() {
+//        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
+//        List<Agreement> agreementL = null;
+//        try {
+//            SQLQuery consult = session.createSQLQuery("SELECT * FROM agreement ORDER BY id_agreementNumber DESC");
+//            consult.addEntity(Agreement.class);
+//            agreementL = consult.list();
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(null, "Excepcion consultando el padron de convenios" + e);
+//        } finally {
+//            session.close();
+//        }
+//        return agreementsOnEnumList(agreementL);
+//    }
+    /**
      * Gets the next number available for an agreement.
      *
      * @return
      */
     public long consultLastAgreementNumber() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         long lastNumber = -1; // Will return -1 if something bad happens
         try {
             SQLQuery consult = session.createSQLQuery("SELECT MAX(id_agreementNumber) FROM agreement");
@@ -208,7 +320,7 @@ public class AgreementsManager {
      * @return
      */
     public boolean changeAgreementStatus(Long agreementNumber, agreement_status status) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         Transaction transaction = null;
         boolean flag = true;
         try {
@@ -322,12 +434,12 @@ public class AgreementsManager {
                 Date.valueOf(payMap.get(payment_param.DATE_OF_PAYMENT)),
                 Double.parseDouble(payMap.get(payment_param.AMOUNT)));
         //Opening Hibernate session.
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         Transaction transaction = null;
         boolean flag = true;
         try {
             transaction = session.beginTransaction();
-            session.save(receipt);
+            session.insert(receipt);
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) { //If transaction didnt went well, we roll back any action en DB
@@ -346,7 +458,7 @@ public class AgreementsManager {
      * @return
      */
     private Receipt consultReceipt(Long receiptNumber) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         Receipt receipt = null;
         try {
             SQLQuery consulta = session.createSQLQuery(
@@ -368,7 +480,7 @@ public class AgreementsManager {
      * @return
      */
     private boolean deleteReceipt(Long receiptNumber) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         Transaction transaction = null;
         boolean flag = true; //Flag that indicates if the operation finished succesfully.
         try {
@@ -440,7 +552,7 @@ public class AgreementsManager {
      * @return
      */
     private List<Payment> consultPaymentsForReceipt(Long receiptNumber) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         List<Payment> paymentL = null;
         try {
             SQLQuery consult = session.createSQLQuery("SELECT * FROM payment WHERE payment.receipt_id_receiptNumber = " + receiptNumber);
@@ -467,7 +579,7 @@ public class AgreementsManager {
      * @return
      */
     public List<EnumMap<payment_param, String>> consultPaymentsForAgreement(Long agreementNumber) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         List<Payment> paymentL = null;
         try {
             SQLQuery consult = session.createSQLQuery(
@@ -503,7 +615,7 @@ public class AgreementsManager {
         }
         //If there are  more than one payment for that receipt.
         if (paymentsL.size() > 1) {
-            Session session = HibernateUtil.getSessionFactory().openSession();
+            StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
             Transaction transaction = null;
             boolean flag = true;
             try {
@@ -605,12 +717,22 @@ public class AgreementsManager {
     }
 
     /**
+     *
+     * @param amountOfDebt
+     * @param feesNumber
+     * @return
+     */
+    public double feeValueOf(Double amountOfDebt, int feesNumber) {
+        return amountOfDebt / feesNumber;
+    }
+
+    /**
      * Will
      *
      * @param paymentList
      * @return
      */
-    public List<EnumMap<payment_param, String>> paymentsOnEnumList(List<Payment> paymentList) {
+    private List<EnumMap<payment_param, String>> paymentsOnEnumList(List<Payment> paymentList) {
         if (paymentList == null) {
             return null;
         }
@@ -680,7 +802,6 @@ public class AgreementsManager {
         String userName = System.getProperty("user.name");
         String directoryOfSavements = "C:\\Users\\" + userName + "\\Documents\\SisCONV";
         Connection con = null;
-//        File file = new File("src\\Reports\\AgreementsPadron.jasper");
         File filePDF = new File(directoryOfSavements + "\\AgreementsPadron.pdf");
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -716,7 +837,6 @@ public class AgreementsManager {
         String userName = System.getProperty("user.name");
         String directoryOfSavements = "C:\\Users\\" + userName + "\\Documents\\SisCONV";
         Connection con = null;
-//        File file = new File("src\\Reports\\AgreementDetail.jasper");
         File filePDF = new File(directoryOfSavements + "\\AgreementDetails.pdf");
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();

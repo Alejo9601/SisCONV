@@ -205,7 +205,7 @@ public class VehicleRegistration extends javax.swing.JDialog {
         jLabel5.setText("Tipo :");
 
         cmbType.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        cmbType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AUTOMOTOR", "CICLOMOTOR", "OTROS" }));
+        cmbType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AUTOMOTOR", "CICLOMOTOR", "MOTOCICLETA", "OTROS" }));
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);

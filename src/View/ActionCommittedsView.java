@@ -74,6 +74,10 @@ public class ActionCommittedsView extends javax.swing.JFrame {
         for (int i = 0; i < tblAgreements.getColumnCount(); i++) {
             tblAgreements.getColumnModel().getColumn(i).setCellRenderer(tcr);
         }
+        tblAgreements.getColumnModel().getColumn(0).setMinWidth(80);
+        tblAgreements.getColumnModel().getColumn(0).setMaxWidth(80);
+        tblAgreements.getColumnModel().getColumn(1).setMinWidth(200);
+        tblAgreements.getColumnModel().getColumn(1).setMaxWidth(200);
     }
 
     /**
@@ -105,15 +109,15 @@ public class ActionCommittedsView extends javax.swing.JFrame {
         chkUserName = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("PADRON GENERAL DE CONVENIOS");
+        setTitle("LOG DE MOVIMIENTOS DE USUARIOS");
         setMinimumSize(new java.awt.Dimension(1366, 768));
-        setResizable(false);
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         btnMakeReport.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnMakeReport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/PDF.png"))); // NOI18N
         btnMakeReport.setText("Generar reporte");
+        btnMakeReport.setEnabled(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);

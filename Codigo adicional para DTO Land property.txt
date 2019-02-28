@@ -6,3 +6,17 @@
     public LandProperty(Long landPropertyIdentifier) {
         this.idProperty = landPropertyIdentifier;
     }
+
+  /**
+     * Added by me.
+     * @param apple
+     * @param batch
+     * @param decree 
+     * @param address 
+     */
+    public LandProperty(String apple, String batch, String decree, String address) {
+        this.apple = apple;
+        this.batch = batch;
+        this.adjudicationDecree = decree;
+        this.address = address;
+    }

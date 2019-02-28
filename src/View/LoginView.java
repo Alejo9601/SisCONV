@@ -79,6 +79,11 @@ public class LoginView extends javax.swing.JFrame {
         tfPassword.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         tfPassword.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
         tfPassword.setCaretColor(java.awt.Color.white);
+        tfPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfPasswordKeyTyped(evt);
+            }
+        });
 
         jBtnLogin.setBackground(new java.awt.Color(0, 51, 102));
         jBtnLogin.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -113,6 +118,11 @@ public class LoginView extends javax.swing.JFrame {
         tfNickName.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
         tfNickName.setCaretColor(new java.awt.Color(255, 255, 255));
         tfNickName.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        tfNickName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfNickNameKeyTyped(evt);
+            }
+        });
 
         jBtnCancel.setBackground(new java.awt.Color(0, 51, 102));
         jBtnCancel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -217,6 +227,28 @@ public class LoginView extends javax.swing.JFrame {
     private void jBtnCancelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBtnCancelMouseExited
         jBtnCancel.setBackground(new Color(0, 51, 102));
     }//GEN-LAST:event_jBtnCancelMouseExited
+
+    private void tfNickNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfNickNameKeyTyped
+        if (tfNickName.getText().length() == 18) {
+            evt.consume();
+        }
+        char c = evt.getKeyChar();
+        if (Character.isDigit(c) || Character.isLetter(c)) {
+        } else {
+            evt.consume();
+        }
+    }//GEN-LAST:event_tfNickNameKeyTyped
+
+    private void tfPasswordKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfPasswordKeyTyped
+        if (tfPassword.getText().length() == 20) {
+            evt.consume();
+        }
+        char c = evt.getKeyChar();
+        if (Character.isDigit(c) || Character.isLetter(c)) {
+        } else {
+            evt.consume();
+        }
+    }//GEN-LAST:event_tfPasswordKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

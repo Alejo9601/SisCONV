@@ -7,7 +7,7 @@ import java.util.EnumMap;
 import java.util.List;
 import javax.swing.JOptionPane;
 import org.hibernate.SQLQuery;
-import org.hibernate.Session;
+import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 
 /**
@@ -34,12 +34,12 @@ public class PropertyManager {
         //Unpacking all the data.
         Vehicle vehicle = unpackVehicleMap(vehicleMap);
         //Opening Hibernate session.
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         Transaction transaction = null;
         boolean flag = true; //Flag that indicates if the operation finished succesfully.
         try {
             transaction = session.beginTransaction();
-            session.save(vehicle);
+            session.insert(vehicle);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) { //If transaction didnt went well, we roll back any action en DB
@@ -59,7 +59,7 @@ public class PropertyManager {
      * @return
      */
     public List<EnumMap<vehicle_param, String>> consultAllVehicles() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         List<Vehicle> vehicleL = null;
         try {
             SQLQuery consult = session.createSQLQuery("SELECT * FROM vehicle");
@@ -80,7 +80,7 @@ public class PropertyManager {
      * @return
      */
     public EnumMap<vehicle_param, String> consultVehicle(Long idVehicle) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         Vehicle vehicle = null;
         try {
             SQLQuery consulta = session.createSQLQuery(
@@ -102,7 +102,7 @@ public class PropertyManager {
      * @return
      */
     public EnumMap<vehicle_param, String> consultVehicle(String domain) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         Vehicle vehicle = null;
         try {
             SQLQuery consulta = session.createSQLQuery(
@@ -189,12 +189,12 @@ public class PropertyManager {
         //Unpacking all the data.
         LandProperty landProp = unpackLandPropertyMap(landPropMap);
         //Opening Hibernate session.
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         Transaction transaction = null;
         boolean flag = true; //Flag that indicates if the operation finished succesfully.
         try {
             transaction = session.beginTransaction();
-            session.save(landProp);
+            session.insert(landProp);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) { //If transaction didnt went well, we roll back any action en DB
@@ -216,7 +216,7 @@ public class PropertyManager {
      * @return
      */
     public List<EnumMap<landProperty_param, String>> consultAllLandProperties() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         List<LandProperty> landPropertiesL = null;
         try {
             SQLQuery consult = session.createSQLQuery("SELECT * FROM land_property");
@@ -237,7 +237,7 @@ public class PropertyManager {
      * @return
      */
     public EnumMap<landProperty_param, String> consultLandProperty(Long idLandProp) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         LandProperty landProperty = null;
         try {
             SQLQuery consulta = session.createSQLQuery(
@@ -260,11 +260,33 @@ public class PropertyManager {
      * @return
      */
     public EnumMap<landProperty_param, String> consultLandProperty(String apple, String batch) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
         LandProperty landProperty = null;
         try {
             SQLQuery consulta = session.createSQLQuery(
                     "SELECT * FROM land_property WHERE land_property.apple = '" + apple + "' AND land_property.batch = '" + batch + "'");
+            consulta.addEntity(LandProperty.class);
+            landProperty = (LandProperty) consulta.uniqueResult();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Excepcion consultando el terreno / inmueble" + e);
+        } finally {
+            session.close();
+        }
+        return landPropertyOnEnumMap(landProperty);
+    }
+
+    /**
+     * Gets the land / property for the specified id.
+     *
+     * @param adjudicationDecree
+     * @return
+     */
+    public EnumMap<landProperty_param, String> consultLandProperty(String adjudicationDecree) {
+        StatelessSession session = HibernateUtil.getSessionFactory().openStatelessSession();
+        LandProperty landProperty = null;
+        try {
+            SQLQuery consulta = session.createSQLQuery(
+                    "SELECT * FROM land_property WHERE land_property.adjudicationDecree = '" + adjudicationDecree + "'");
             consulta.addEntity(LandProperty.class);
             landProperty = (LandProperty) consulta.uniqueResult();
         } catch (Exception e) {
@@ -282,10 +304,17 @@ public class PropertyManager {
      * @return
      */
     private LandProperty unpackLandPropertyMap(EnumMap<landProperty_param, String> landPropMap) {
+        if ("".equals(landPropMap.get(landProperty_param.DECREE))) {
+            landPropMap.put(landProperty_param.DECREE, null);
+        }
+        if ("".equals(landPropMap.get(landProperty_param.ADDRESS))) {
+            landPropMap.put(landProperty_param.ADDRESS, null);
+        }
         LandProperty landProp = new LandProperty(
                 landPropMap.get(landProperty_param.APPLE),
                 landPropMap.get(landProperty_param.BATCH),
-                landPropMap.get(landProperty_param.DECREE));
+                landPropMap.get(landProperty_param.DECREE),
+                landPropMap.get(landProperty_param.ADDRESS));
         return landProp;
     }
 
@@ -325,12 +354,20 @@ public class PropertyManager {
             landPropMap.put(
                     landProperty_param.BATCH,
                     landProperty.getBatch());
+
+            if (landProperty.getAdjudicationDecree() == null) {
+                landProperty.setAdjudicationDecree("N/N");
+            }
+            if (landProperty.getAddress() == null) {
+                landProperty.setAddress("");
+            }
+
             landPropMap.put(
                     landProperty_param.DECREE,
                     landProperty.getAdjudicationDecree());
-//            landPropMap.put(
-//                    landProperty_param.ADDRESS,
-//                    landProperty.);
+            landPropMap.put(
+                    landProperty_param.ADDRESS,
+                    landProperty.getAddress());
             return landPropMap;
         }
         return null;

@@ -46,6 +46,18 @@ public class AgreementRegistration extends javax.swing.JFrame {
         cmbFees.setEnabled(false);
         cmbConcept.setEnabled(false);
 
+        btnSetTaxpayer.setEnabled(false);
+        btnNewTaxpayer.setEnabled(false);
+        btnEraseTaxPayer.setEnabled(false);
+
+        btnSetLandProperty.setEnabled(false);
+        btnNewLandProperty.setEnabled(false);
+        btnEraseLandProperty.setEnabled(false);
+
+        btnSetVehicle.setEnabled(false);
+        btnNewVehicle.setEnabled(false);
+        btnEraseVehicle.setEnabled(false);
+
         this.setVisible(true);
     }
 
@@ -60,6 +72,18 @@ public class AgreementRegistration extends javax.swing.JFrame {
         tfExpirationDate.setEnabled(true);
         cmbFees.setEnabled(true);
         cmbConcept.setEnabled(true);
+
+        btnSetTaxpayer.setEnabled(true);
+        btnNewTaxpayer.setEnabled(true);
+        btnEraseTaxPayer.setEnabled(true);
+
+        btnSetLandProperty.setEnabled(true);
+        btnNewLandProperty.setEnabled(true);
+        btnEraseLandProperty.setEnabled(true);
+
+        btnSetVehicle.setEnabled(true);
+        btnNewVehicle.setEnabled(true);
+        btnEraseVehicle.setEnabled(true);
 
         this.setVisible(true);
     }
@@ -204,6 +228,20 @@ public class AgreementRegistration extends javax.swing.JFrame {
     }
 
     /**
+     *
+     * @param expression
+     * @return
+     */
+    private boolean isNumeric(String expression) {
+        try {
+            Double.valueOf(expression);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    /**
      * Verifies the information is completed.
      *
      * @return
@@ -219,15 +257,14 @@ public class AgreementRegistration extends javax.swing.JFrame {
                     "Advertencia",
                     JOptionPane.WARNING_MESSAGE);
             return false;
+        } else if (!isNumeric(getTfAmountOfDebt())) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Por favor ingrese un monto valido, separando miles por (,) y decimales por (.)",
+                    "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
         }
-//        else if (!isNumeric(tfAmountOfDebt.getText().split(" ")[1])) {
-//            JOptionPane.showMessageDialog(
-//                    this,
-//                    "Por favor ingrese un numero valido como monto de la deuda",
-//                    "Advertencia",
-//                    JOptionPane.WARNING_MESSAGE);
-//            return false;
-//        }
         if (tfCreationDate.getText().equals("")) {
             JOptionPane.showMessageDialog(
                     this,
@@ -304,7 +341,7 @@ public class AgreementRegistration extends javax.swing.JFrame {
      * @return
      */
     public String getTfAmountOfDebt() {
-        return tfAmountOfDebt.getText().split(" ")[1];
+        return tfAmountOfDebt.getText().split(" ")[1].replaceAll("[,]", "");
     }
 
     /**
@@ -450,9 +487,9 @@ public class AgreementRegistration extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addGap(5, 5, 5)
                 .addComponent(btnSaveAgreement)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_END);
@@ -508,7 +545,7 @@ public class AgreementRegistration extends javax.swing.JFrame {
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel12.setText("Descripcion :");
+        jLabel12.setText("Descripcion :  (opcional)");
 
         btnSetTaxpayer.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnSetTaxpayer.setText("...");
@@ -837,11 +874,11 @@ public class AgreementRegistration extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbConceptActionPerformed
 
     private void tfAmountOfDebtKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfAmountOfDebtKeyTyped
-        if (tfAmountOfDebt.getText().length() == 12) {
+        if (tfAmountOfDebt.getText().length() >= 15) {
             evt.consume();
         }
         char c = evt.getKeyChar();
-        if (Character.isDigit(c)) {
+        if (Character.isDigit(c) || c == '.' || c == ',') {
         } else {
             evt.consume();
         }

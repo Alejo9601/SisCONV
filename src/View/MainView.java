@@ -2,6 +2,8 @@ package View;
 
 import Controller.MainControl;
 import java.awt.Color;
+import java.awt.Image;
+import java.awt.Toolkit;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
@@ -16,6 +18,12 @@ public class MainView extends javax.swing.JFrame {
      */
     public MainView() {
         initComponents();
+    }
+
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("images/agreement.png"));
+        return retValue;
     }
 
     /**
@@ -79,6 +87,7 @@ public class MainView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SisCONV - SISTEMA DE GESTION DE CONVENIOS");
+        setIconImage(getIconImage());
         setMaximumSize(new java.awt.Dimension(1920, 1080));
         setMinimumSize(new java.awt.Dimension(1024, 768));
         setSize(new java.awt.Dimension(1366, 768));

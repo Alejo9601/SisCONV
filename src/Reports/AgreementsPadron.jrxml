@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="61849f35-9510-49dd-ab6d-08ad06c0e58f">
-	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<queryString>
-		<![CDATA[SELECT names, lastname, id_docNumber, id_agreementNumber, amountOfDebt, feesNumber, status, conceptName FROM concept INNER JOIN (agreement INNER JOIN taxpayer ON agreement.taxpayer_id_docNumber = taxpayer.id_docNumber) ON agreement.concept_id_conceptCode = concept.id_conceptCode]]>
+		<![CDATA[SELECT names, lastname, id_docNumber, id_agreementNumber, amountOfDebt, feesNumber, status, conceptName FROM concept INNER JOIN (agreement INNER JOIN taxpayer ON agreement.taxpayer_id_docNumber = taxpayer.id_docNumber) ON agreement.concept_id_conceptCode = concept.id_conceptCode ORDER BY id_agreementNumber DESC]]>
 	</queryString>
 	<field name="names" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>

@@ -1,4 +1,3 @@
-
 package View;
 
 import Controller.DetailControl;
@@ -27,6 +26,17 @@ public class ConceptsList extends javax.swing.JFrame {
     public void setController(DetailControl control) {
         btnRegisterConcept.addActionListener(control);
         btnRegisterConcept.setActionCommand("CONCEPT_REGISTRATION");
+        btnDeleteConcept.addActionListener(control);
+        btnDeleteConcept.setActionCommand("DELETE_CONCEPT");
+    }
+
+    /**
+     * Gets the information of the selected row.
+     *
+     * @return
+     */
+    public String getSelectedConcept() {
+        return tblConceptsDetail.getValueAt(tblConceptsDetail.getSelectedRow(), 0).toString();
     }
 
     /**
@@ -46,6 +56,7 @@ public class ConceptsList extends javax.swing.JFrame {
         for (int i = 0; i < tblConceptsDetail.getColumnCount(); i++) {
             tblConceptsDetail.getColumnModel().getColumn(i).setCellRenderer(tcr);
         }
+        tblConceptsDetail.getColumnModel().getColumn(0).setMaxWidth(400);
     }
 
     /**
@@ -129,6 +140,11 @@ public class ConceptsList extends javax.swing.JFrame {
 
             }
         ));
+        tblConceptsDetail.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblConceptsDetailMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tblConceptsDetail);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -188,6 +204,12 @@ public class ConceptsList extends javax.swing.JFrame {
     private void btnRegisterConceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterConceptActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRegisterConceptActionPerformed
+
+    private void tblConceptsDetailMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblConceptsDetailMouseClicked
+        if (tblConceptsDetail.getSelectedRow() != -1) {
+            btnDeleteConcept.setEnabled(true);
+        }
+    }//GEN-LAST:event_tblConceptsDetailMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

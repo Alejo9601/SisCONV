@@ -1,11 +1,13 @@
 package Model;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -27,8 +29,9 @@ import org.jdom2.output.XMLOutputter;
  *
  * @author Alejandro Juarez
  */
-public class HibernateUtil {
+public class HibernateUtil implements ActionListener {
 
+    Timer timer = new Timer(300000, this);
     private static SessionFactory sessionFactory;
 
     private static void configureSessionFactory() {
@@ -109,4 +112,35 @@ public class HibernateUtil {
         xmlOutput.output(documentJDOM, new FileWriter("hibernate.cfg.xml"));
     }
 
+//    public static void evict2ndLevelCache() {
+//        try {
+//            Map<String, ClassMetadata> classesMetadata = sessionFactory.getAllClassMetadata();
+//            for (String entityName : classesMetadata.keySet()) {
+//                System.out.println("Evicting Entity from 2nd level cache: " + entityName);
+//                sessionFactory.evictEntity(entityName);
+//            }
+//        } catch (HibernateException e) {
+//            System.out.println("Error evicting 2nd level hibernate cache entities: " + e);
+//        }
+//    }
+    /**
+     * Refresh the session factory by creating conecction again.
+     */
+    public static void refreshSessionFactory() {
+        sessionFactory.close();
+        configureSessionFactory();
+    }
+
+//    public static void clear2ndLevelHibernateCache() {
+//
+//        sessionFactory.getCache().evictQueryRegions();
+//        sessionFactory.getCache().evictDefaultQueryRegion();
+//        sessionFactory.getCache().evictCollectionRegions();
+//        sessionFactory.getCache().evictEntityRegions();
+//
+//    }
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+
+    }
 }
